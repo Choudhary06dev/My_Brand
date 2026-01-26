@@ -2,8 +2,8 @@
     <!-- Logo Area -->
     <div>
         <div class="h-16 flex items-center px-8 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md">
-            <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                MY BRAND
+            <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent uppercase">
+                {{ config('app.name') }}
             </h1>
         </div>
 
@@ -51,18 +51,5 @@
                 <span class="font-medium">Settings</span>
             </a>
         </nav>
-    </div>
-
-    <!-- User Mini Profile / Logout -->
-    <div class="p-4 border-t border-slate-800">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors group">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                </svg>
-                <span class="font-medium group-hover:text-red-300">Logout</span>
-            </button>
-        </form>
     </div>
 </aside>
