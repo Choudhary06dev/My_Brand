@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'status',
     ];
 
     /**
@@ -49,5 +52,15 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        return $this->orders()->where('status', 'completed')->sum('total_price');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }
