@@ -21,7 +21,7 @@
                         @endif
                     </div>
                     <div class="md:col-span-3">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ $company->company_name ?? 'AOHT Group' }}</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ $company->company_name ?? config('app.name') }}</h2>
                         <div class="prose max-w-none text-gray-600 leading-relaxed text-sm md:text-base">
                             @php
                                 $about = $company->about ?? 'We are dedicated to providing the best solutions for our clients.';

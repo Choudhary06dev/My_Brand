@@ -46,6 +46,16 @@
                                 @endif
                             </div>
                             <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Sale Status</p>
+                                @if($product->is_sale)
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Sale On</span>
+                                @else
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">Sale Off</span>
+                                @endif
+                            </div>
+                            <div>
                                 <p class="text-sm font-medium text-gray-500 mb-1">Price</p>
                                 <p class="text-gray-900">
                                     {{ $product->price ? '$' . number_format($product->price, 2) : 'N/A' }}</p>

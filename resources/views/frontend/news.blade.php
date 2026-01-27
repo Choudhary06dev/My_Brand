@@ -108,7 +108,7 @@
             @else
                 <!-- NEWS LISTING VIEW -->
                 <h1 class="text-4xl font-extrabold text-gray-900 mb-2 text-center">News & Insights</h1>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Latest updates from AOHT Group.</p>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Latest updates from {{ config('app.name') }}.</p>
 
                 @if($blogs->count() > 0)
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -99,7 +99,7 @@
                             on Home)</label>
                         <textarea name="about" id="about" rows="6"
                             class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
-                            placeholder="Enter a brief summary about AOHT Group...">{{ old('about', $companyInfo->about ?? '') }}</textarea>
+                            placeholder="Enter a brief summary about {{ config('app.name') }}...">{{ old('about', $companyInfo->about ?? '') }}</textarea>
                         <p class="mt-1 text-xs text-gray-500">This text is typically displayed in the "About Us" section on
                             the home page.</p>
                         @error('about')

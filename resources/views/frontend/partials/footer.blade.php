@@ -4,11 +4,11 @@
 
       <div>
         <a href="{{ url('/') }}">
-          <img src="{{ asset('assets/footerlogo.png') }}" style="max-width: 200px; height: auto; margin-bottom: 0.75rem;"
-            alt="{{ $company->company_name ?? 'AOHT Group' }}">
+          <img src="{{ asset('assets/logo.png') }}" style="max-width: 200px; height: auto; margin-bottom: 0.75rem;"
+            alt="{{ $company->company_name ?? config('app.name') }}">
         </a>
         <p style="line-height: 1.6; font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem;">
-          A-One Home Textile Group is a leading textile company dedicated to producing premium quality fabrics and garments.
+          {{ config('app.name') }} is a leading company dedicated to producing premium quality fabrics and garments.
         </p>
 
         <div class="social-links" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
@@ -70,7 +70,7 @@
         <p style="line-height: 1.4; font-size: 0.85rem;">
           <span style="display: block; margin-bottom: 1px;"><b>Address:</b>
             {{ $company->address ?? 'Karachi, Pakistan' }}</span>
-          <span style="display: block; margin-bottom: 1px;"><b>Email:</b> {{ $company->email ?? 'info@aohtgroup.com'
+          <span style="display: block; margin-bottom: 1px;"><b>Email:</b> {{ $company->email ?? 'info@example.com'
             }}</span>
           <span style="display: block; margin-bottom: 1px;"><b>Phone:</b>
             {{ $company->phone ?? '+92 300 1234567' }}</span>
@@ -80,7 +80,7 @@
     </div>
 
     <div class="copyright">
-      © {{ now()->year }} {{ $company->company_name ?? 'AOHT Group' }} — All rights reserved | <a href="#">Privacy
+      © {{ now()->year }} {{ $company->company_name ?? config('app.name') }} — All rights reserved | <a href="#">Privacy
         Policy</a> | <a href="#">Terms of Use</a> | Powered by <a href="https://nexertechsolutions.com" target="_blank"
         style="color: var(--accent-1); font-weight: 600;">Nexer Tech Solutions</a>
     </div>

@@ -1,34 +1,32 @@
-<header class="topnav">
-  <div class="container">
+<header class="topnav" id="topnav">
+  <div class="container-custom">
     <div class="navbar-wrapper">
       <!-- Left: Logo -->
       <div class="navbar-left">
         <a href="{{ route('home') }}">
           @if(isset($company) && $company->logo)
-            <img src="{{ asset('assets/logo.jpg') }}" class="logo-img"
-              alt="{{ $company->company_name ?? 'AOHT' }}">
+            <img src="{{ asset('assets/logo.png') }}" class="logo-img"
+              alt="{{ $company->company_name ?? config('app.name') }}">
           @elseif(file_exists(public_path('assets/logo.jpg')))
-            <img src="{{ asset('assets/logo.jpg') }}" class="logo-img" alt="AOHT Group">
+            <img src="{{ asset('assets/logo.png') }}" class="logo-img" alt="{{ config('app.name') }}">
           @else
-            <div class="logo-img" style="font-size: 1.5rem; font-weight: 800; color: var(--accent-1);">AOHT GROUP</div>
+            <div class="logo-img" style="font-size: 1.5rem; font-weight: 800; color: var(--accent-1);">{{ strtoupper(config('app.name')) }}</div>
           @endif
         </a>
       </div>
 
       <!-- Center: Navigation Links -->
       <div class="navbar-links" id="navbarLinks">
-        <nav class="flex items-center gap-2 text-sm">
-
+        <nav class="flex items-center gap-1">
           <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
           <a class="nav-link {{ request()->routeIs('frontend.about') ? 'active' : '' }}"
             href="{{ route('frontend.about') }}">About</a>
-          <a class="nav-link {{ request()->routeIs('frontend.company.show') ? 'active' : '' }}"
-            href="{{ route('frontend.company.show') }}">Companies</a>
-
 
           <div class="nav-item-dropdown">
             <a class="nav-link {{ request()->routeIs('frontend.products') ? 'active' : '' }}"
-              href="{{ route('frontend.products') }}" onclick="handleDropdownClick(event)">Products</a>
+              href="{{ route('frontend.products') }}" onclick="handleDropdownClick(event)">
+              Products <i class="fas fa-chevron-down ml-2 text-[10px] opacity-50"></i>
+            </a>
             <div class="dropdown-content">
               @if(isset($mainCategories))
                 @foreach($mainCategories as $cat)
@@ -62,22 +60,34 @@
             </div>
           </div>
 
+          <!-- Sale Dropdown -->
+          <div class="nav-item-dropdown">
+            <a class="nav-link {{ request()->routeIs('frontend.sale') ? 'active' : '' }}"
+              href="{{ route('frontend.sale') }}" onclick="handleDropdownClick(event)">
+              Sale <i class="fas fa-chevron-down ml-2 text-[10px] opacity-50"></i>
+            </a>
+            <div class="dropdown-content">
+              @if(isset($saleCategories) && $saleCategories->count() > 0)
+                @foreach($saleCategories as $saleCat)
+                  <a href="{{ route('frontend.sale', $saleCat->slug) }}">{{ $saleCat->category_name }}</a>
+                @endforeach
+              @else
+                <a href="#" class="text-gray-400 pointer-events-none">No Sale Items</a>
+              @endif
+            </div>
+          </div>
 
           <a class="nav-link {{ request()->routeIs('frontend.services') ? 'active' : '' }}"
             href="{{ route('frontend.services') }}">Services</a>
-          <a class="nav-link {{ request()->routeIs('frontend.careers') ? 'active' : '' }}"
-            href="{{ route('frontend.careers') }}">Careers</a>
-          <a class="nav-link {{ request()->routeIs('frontend.news') || request()->routeIs('frontend.news.detail') ? 'active' : '' }}"
-            href="{{ route('frontend.news') }}">News</a>
           <a class="nav-link {{ request()->routeIs('frontend.contact') ? 'active' : '' }}"
-            href="{{ route('frontend.contact') }}">Contact Us</a>
+            href="{{ route('frontend.contact') }}">Contact</a>
         </nav>
       </div>
 
       <!-- Right: Cart & User Dropdown -->
       <div class="navbar-right">
         <a class="icon-link" href="#" title="Shopping Cart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -87,55 +97,33 @@
 
         <!-- User Dropdown -->
         <div class="relative">
-          <button class="icon-link flex items-center" title="Account" onclick="toggleUserDropdown(event)"
-            id="userMenuButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          <button class="icon-link" title="Account" onclick="toggleUserDropdown(event)" id="userMenuButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </button>
 
-          <!-- Dropdown Menu -->
-          <!-- Dropdown Menu -->
+          <!-- User Dropdown Menu -->
           <div id="userDropdown"
-            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50">
+            class="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl opacity-0 invisible transition-all duration-300 transform translate-y-2 z-50 p-2 border border-gray-100">
             @auth
-                {{-- Dashboard link removed as per request --}}
                 <form method="POST" action="{{ route('frontend.logout') }}" id="logout-form">
                     @csrf
                     <button type="submit"
-                      class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-lg">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                      </svg>
-                      Logout
+                      class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors rounded-lg">
+                      <i class="fas fa-sign-out-alt mr-3 opacity-70"></i> Logout
                     </button>
                 </form>
             @else
               <a href="{{ route('frontend.login') }}"
-                class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-t-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
-                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                  <polyline points="10 17 15 12 10 7"></polyline>
-                  <line x1="15" y1="12" x2="3" y2="12"></line>
-                </svg>
-                Login
+                class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-lg">
+                <i class="fas fa-sign-in-alt mr-3 opacity-70"></i> Login
               </a>
               <a href="{{ route('frontend.register') }}"
-                class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-b-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="8.5" cy="7" r="4"></circle>
-                  <line x1="20" y1="8" x2="20" y2="14"></line>
-                  <line x1="23" y1="11" x2="17" y2="11"></line>
-                </svg>
-                Register
+                class="flex items-center px-4 py-3 text-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-lg mt-1">
+                <i class="fas fa-user-plus mr-3 opacity-90"></i> Register
               </a>
             @endauth
           </div>
@@ -148,7 +136,18 @@
       </div>
     </div>
   </div>
+
   <script>
+    // Scroll Header Background
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('topnav');
+      if (window.scrollY > 20) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
     function toggleMobileMenu() {
       const links = document.getElementById('navbarLinks');
       links.classList.toggle('active');
@@ -173,25 +172,33 @@
     function toggleUserDropdown(event) {
       event.stopPropagation();
       const dropdown = document.getElementById('userDropdown');
-      dropdown.classList.toggle('opacity-0');
-      dropdown.classList.toggle('invisible');
+      const isVisible = !dropdown.classList.contains('invisible');
+      
+      // Close all other dropdowns if any
+      
+      if (isVisible) {
+        dropdown.classList.add('opacity-0', 'invisible', 'translate-y-2');
+      } else {
+        dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+      }
     }
 
     document.addEventListener('click', function (event) {
       const links = document.getElementById('navbarLinks');
       const mobileBtn = document.querySelector('.mobile-menu-btn');
+      const dropdown = document.getElementById('userDropdown');
+      const button = document.getElementById('userMenuButton');
 
       // Close mobile menu when clicking outside
-      if (links.classList.contains('active') && !links.contains(event.target) && !mobileBtn.contains(event.target)) {
+      if (links && links.classList.contains('active') && !links.contains(event.target) && !mobileBtn.contains(event.target)) {
         toggleMobileMenu();
       }
 
-      const dropdown = document.getElementById('userDropdown');
-      const button = document.getElementById('userMenuButton');
+      // Close user dropdown when clicking outside
       if (dropdown && !dropdown.classList.contains('invisible') && !button.contains(event.target)) {
-        dropdown.classList.add('opacity-0');
-        dropdown.classList.add('invisible');
+        dropdown.classList.add('opacity-0', 'invisible', 'translate-y-2');
       }
     });
   </script>
+</header>
 </header>

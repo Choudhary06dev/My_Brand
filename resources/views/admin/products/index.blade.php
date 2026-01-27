@@ -30,6 +30,7 @@
                             <th class="px-6 py-4">Subcategory</th>
                             <th class="px-6 py-4 text-center">Gallery Img</th>
                             <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 text-center">Sale</th>
                             <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -70,7 +71,6 @@
                                         class="inline-flex items-center px-2 py-1 rounded-md text-xs font-bold {{ $product->galleries_count > 0 ? 'bg-indigo-50 text-indigo-700' : 'bg-gray-100 text-gray-400' }}">
                                         {{ $product->galleries_count }} imgs
                                     </span>
-                                </td>
                                 <td class="px-6 py-4">
                                     @if($product->status)
                                         <span
@@ -78,6 +78,15 @@
                                     @else
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactive</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if($product->is_sale)
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Sale On</span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">Sale Off</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">

@@ -59,10 +59,13 @@ class ProductController extends Controller
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
             'status' => 'boolean',
+            'is_sale' => 'boolean',
         ]);
 
         $data = $request->all();
         $data['slug'] = $this->generateUniqueSlug($request->product_name);
+        $data['status'] = $request->has('status') ? 1 : 0;
+        $data['is_sale'] = $request->has('is_sale') ? 1 : 0;
 
         if ($request->hasFile('main_image')) {
             $data['main_image'] = $this->uploadImage($request->file('main_image'), 'products');
@@ -129,6 +132,7 @@ class ProductController extends Controller
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
             'status' => 'boolean',
+            'is_sale' => 'boolean',
         ]);
 
         $data = $request->all();
@@ -136,6 +140,7 @@ class ProductController extends Controller
 
         // Handle checkbox for status (if unchecked it's absent from request)
         $data['status'] = $request->has('status') ? 1 : 0;
+        $data['is_sale'] = $request->has('is_sale') ? 1 : 0;
 
         if ($request->hasFile('main_image')) {
             $data['main_image'] = $this->updateImage($request->file('main_image'), 'products', $product->main_image);

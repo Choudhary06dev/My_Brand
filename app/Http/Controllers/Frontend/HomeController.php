@@ -71,6 +71,25 @@ class HomeController extends Controller
         return view('frontend.category-detail', compact('company', 'category', 'subcategories', 'products'));
     }
 
+    public function saleProducts($slug = null)
+    {
+        $company = CompanyInfo::first();
+        $query = Product::where('status', 1)->where('is_sale', 1)->with(['category', 'subcategory', 'childSubcategory']);
+
+        $category = null;
+        if ($slug) {
+            $category = ProductCategory::where('slug', $slug)->firstOrFail();
+            $query->where(function ($q) use ($category) {
+                $q->where('category_id', $category->id)
+                    ->orWhere('subcategory_id', $category->id)
+                    ->orWhere('child_subcategory_id', $category->id);
+            });
+        }
+
+        $products = $query->latest()->get();
+        return view('frontend.sale-products', compact('company', 'products', 'category'));
+    }
+
     public function about()
     {
         $company = CompanyInfo::first();

@@ -11,7 +11,7 @@
             style="background-image: url('{{ $slide->image ? asset('storage/' . $slide->image) : '' }}'); background-size:cover; background-position:center;">
             <div class="overlay"></div>
             <div class="slide-content">
-              <h2 class="title">{{ $slide->title ?? 'AOHT Group' }}</h2>
+              <h2 class="title">{{ $slide->title ?? config('app.name') }}</h2>
               <p class="subtitle">{{ $slide->subtitle ?? '' }}</p>
               @if(!empty($slide->button_text))
                 <a class="btn btn-light mt-4" href="{{ $slide->button_link ?: '#' }}">{{ $slide->button_text }}</a>
@@ -25,7 +25,7 @@
           style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('{{ asset('assets/slider1.png') }}'); background-size:cover; background-position:center;">
           <div class="overlay"></div>
           <div class="slide-content">
-            <h2 class="title">Welcome to AOHT Group</h2>
+            <h2 class="title">Welcome to {{ config('app.name') }}</h2>
             <p class="subtitle">Integrated business solutions across Hospitality, Technology, Real Estate, HR, and
               Consultancy</p>
             <a class="btn btn-light mt-4" href="#">Learn More</a>
@@ -80,7 +80,8 @@
   <section class="categories-section">
     <div class="container-custom">
       <div class="section-header">
-        <h2 class="section-title">Popular Categories</h2>
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Discover our curated collection of premium beach essentials</p>
       </div>
       <div class="categories-grid">
         @if(isset($categories) && $categories->count() > 0)
@@ -96,7 +97,7 @@
                     <div class="image-placeholder"><span>{{ substr($categories[0]->category_name, 0, 1) }}</span></div>
                   @endif
                 </div>
-                <div class="category-label">{{ strtoupper($categories[0]->category_name) }}</div>
+                <div class="category-label">{{ $categories[0]->category_name }}</div>
               </a>
             </div>
           @endif
@@ -114,7 +115,7 @@
                       <div class="image-placeholder"><span>{{ substr($categories[1]->category_name, 0, 1) }}</span></div>
                     @endif
                   </div>
-                  <div class="category-label">{{ strtoupper($categories[1]->category_name) }}</div>
+                  <div class="category-label">{{ $categories[1]->category_name }}</div>
                 </a>
               @endif
               @if(isset($categories[2]))
@@ -127,7 +128,7 @@
                       <div class="image-placeholder"><span>{{ substr($categories[2]->category_name, 0, 1) }}</span></div>
                     @endif
                   </div>
-                  <div class="category-label">{{ strtoupper($categories[2]->category_name) }}</div>
+                  <div class="category-label">{{ $categories[2]->category_name }}</div>
                 </a>
               @endif
             </div>
@@ -145,7 +146,7 @@
                     <div class="image-placeholder"><span>{{ substr($categories[3]->category_name, 0, 1) }}</span></div>
                   @endif
                 </div>
-                <div class="category-label">{{ strtoupper($categories[3]->category_name) }}</div>
+                <div class="category-label">{{ $categories[3]->category_name }}</div>
               </a>
             </div>
           @endif
@@ -163,7 +164,7 @@
                       <div class="image-placeholder"><span>{{ substr($categories[4]->category_name, 0, 1) }}</span></div>
                     @endif
                   </div>
-                  <div class="category-label">{{ strtoupper($categories[4]->category_name) }}</div>
+                  <div class="category-label">{{ $categories[4]->category_name }}</div>
                 </a>
               @endif
               @if(isset($categories[5]))
@@ -176,7 +177,7 @@
                       <div class="image-placeholder"><span>{{ substr($categories[5]->category_name, 0, 1) }}</span></div>
                     @endif
                   </div>
-                  <div class="category-label">{{ strtoupper($categories[5]->category_name) }}</div>
+                  <div class="category-label">{{ $categories[5]->category_name }}</div>
                 </a>
               @endif
             </div>
@@ -194,7 +195,7 @@
                     <div class="image-placeholder"><span>{{ substr($categories[6]->category_name, 0, 1) }}</span></div>
                   @endif
                 </div>
-                <div class="category-label">{{ strtoupper($categories[6]->category_name) }}</div>
+                <div class="category-label">{{ $categories[6]->category_name }}</div>
               </a>
             </div>
           @endif
@@ -226,13 +227,17 @@
     <section class="projects-section">
       <div class="container-custom">
         <div class="section-header">
-          <h2 class="section-title"> Products</h2>
-          {{-- <p class="section-subtitle">Showcasing our latest achievements and innovations</p> --}}
+          <h2 class="section-title">Products</h2>
+          <p class="section-subtitle">Exquisite essentials for your sun-drenched lifestyle</p>
         </div>
         <div class="projects-grid">
           @foreach($products as $index => $product)
             <div class="project-card product-item" style="{{ $index >= 4 ? 'display: none;' : '' }}">
               <div class="project-image">
+                @if($product->discount_price)
+                  <div class="sale-badge">Sale</div>
+                @endif
+                
                 <a href="{{ route('frontend.products.detail', $product->slug) }}" class="block w-full h-full">
                   @if($product->main_image)
                     <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->product_name }}">
@@ -241,20 +246,25 @@
                       <span>📦</span>
                     </div>
                   @endif
+                  
+                  <div class="quick-view-overlay">
+                    <button class="quick-view-btn">Discover</button>
+                  </div>
                 </a>
               </div>
+              
               <div class="project-content">
                 <h3 class="project-title">{{ $product->product_name }}</h3>
-                <div class="flex items-center gap-2 mb-3">
+                <div class="flex-price">
                   @if($product->discount_price)
-                    <span class="text-lg font-bold text-red-600">PKR {{ number_format($product->discount_price) }}</span>
-                    <span class="text-sm text-gray-400 line-through">PKR {{ number_format($product->price) }}</span>
+                    <span class="price-new">PKR {{ number_format($product->discount_price) }}</span>
+                    <span class="price-old">PKR {{ number_format($product->price) }}</span>
                   @elseif($product->price)
-                    <span class="text-lg font-bold text-gray-900">PKR {{ number_format($product->price) }}</span>
+                    <span class="price-new">PKR {{ number_format($product->price) }}</span>
                   @endif
                 </div>
-                <p class="project-description">{{ \Illuminate\Support\Str::limit(strip_tags($product->description), 120) }}
-                </p>
+                <p class="project-description">{{ \Illuminate\Support\Str::limit(strip_tags($product->description), 100) }}</p>
+                <a href="{{ route('frontend.products.detail', $product->slug) }}" class="shop-now-link">Shop Now</a>
               </div>
             </div>
           @endforeach

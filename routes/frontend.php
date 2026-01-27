@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories', [HomeController::class, 'categories'])->name('frontend.categories');
 Route::get('/products', [HomeController::class, 'products'])->name('frontend.products');
+Route::get('/sale/{slug?}', [HomeController::class, 'saleProducts'])->name('frontend.sale');
 
 
 // Frontend Authentication Routes

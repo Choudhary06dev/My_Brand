@@ -1,8 +1,8 @@
 <aside class="w-64 bg-gray-900 text-white min-h-screen flex flex-col font-sans border-r border-gray-800">
-    <div class="h-20 flex items-center justify-center border-b border-gray-800 px-4">
-        <a href="{{ route('admin.dashboard') }}" class="flex items-center">
-            <img src="{{ asset('assets/logo.jpg') }}" alt="A One Home Textile Group"
-                class="h-12 w-auto object-contain">
+    <div class="h-20 flex items-center justify-center border-b border-gray-800 px-2">
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center w-full justify-center">
+            <img src="{{ asset('assets/logo.png') }}" alt="{{ config('app.name') }}"
+                class="w-full h-auto max-h-16 object-contain">
         </a>
     </div>
 

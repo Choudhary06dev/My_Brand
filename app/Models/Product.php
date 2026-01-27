@@ -28,6 +28,7 @@ class Product extends Model
         'fabric_id',
         'main_image',
         'status',
+        'is_sale',
     ];
 
     /**

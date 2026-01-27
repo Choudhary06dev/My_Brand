@@ -331,11 +331,18 @@
                             @error('gallery_images.*') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
-                        <!-- Status -->
-                        <div class="flex items-center mt-6">
-                            <input type="checkbox" name="status" id="status" value="1" {{ old('status', 1) ? 'checked' : '' }}
-                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                            <label for="status" class="ml-2 block text-sm text-gray-900">Active</label>
+                        <!-- Status & Sale -->
+                        <div class="flex items-center gap-6 mt-6">
+                            <div class="flex items-center">
+                                <input type="checkbox" name="status" id="status" value="1" {{ old('status', 1) ? 'checked' : '' }}
+                                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                <label for="status" class="ml-2 block text-sm text-gray-900">Active</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" name="is_sale" id="is_sale" value="1" {{ old('is_sale') ? 'checked' : '' }}
+                                    class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
+                                <label for="is_sale" class="ml-2 block text-sm text-gray-900 font-bold">Is on Sale?</label>
+                            </div>
                         </div>
                     </div>
 

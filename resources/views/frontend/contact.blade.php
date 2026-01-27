@@ -6,7 +6,7 @@
             <div class="text-center mb-8">
                 <h1 class="text-5xl font-extrabold text-gray-900 mb-6">Contact Us</h1>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    A One Home Textile Group is committed to excellence in quality and innovation.
+                    {{ config('app.name') }} is committed to excellence in quality and innovation.
                     Whether you have inquiries about our premium textile products, partnership opportunities,
                     or need expert assistance, we're here to help you weave success.
                 </p>
@@ -154,7 +154,7 @@
                                 <div class="flex items-center justify-between mb-8">
                                     <div>
                                         <h3 class="text-2xl font-black text-white tracking-tight">
-                                            {{ $company->company_name ?? 'AOHT Group' }}
+                                            {{ $company->company_name ?? config('app.name') }}
                                         </h3>
                                         <p class="text-indigo-200 text-[10px] font-black uppercase tracking-[0.2em] mt-1">
                                             Main HQ</p>

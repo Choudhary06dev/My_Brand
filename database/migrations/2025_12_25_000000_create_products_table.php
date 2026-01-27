@@ -29,6 +29,7 @@ return new class extends Migration {
             $table->string('washing_dyeing_category')->nullable();
             $table->string('main_image')->nullable();
             $table->tinyInteger('status')->default(1);
+            $table->boolean('is_sale')->default(0);
             $table->softDeletes();
             $table->timestamps();
 
