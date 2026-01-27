@@ -6,30 +6,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role',
-        'phone',
+        'role_id',
         'status',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -49,18 +51,25 @@ class User extends Authenticatable
         ];
     }
 
-    public function orders()
+    public function role(): BelongsTo
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Role::class);
     }
 
-    public function getTotalSpentAttribute()
+    /**
+     * Check if user has specific permission
+     */
+    public function hasPermission(string $permissionKey): bool
     {
-        return $this->orders()->where('status', 'completed')->sum('total_price');
-    }
+        if (!$this->role) {
+            return false;
+        }
 
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
+        static $permissions = [];
+        if (!isset($permissions[$this->id])) {
+            $permissions[$this->id] = $this->role->permissions()->pluck('permission_key')->toArray();
+        }
+
+        return in_array($permissionKey, $permissions[$this->id]);
     }
 }

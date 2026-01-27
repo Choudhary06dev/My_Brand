@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ request()->is('admin/*') ? route('admin.login') : route('frontend.login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -39,13 +39,18 @@
                 </a>
             @endif
 
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ms-4" href="{{ route('register') }}">
-                {{ __('Register') }}
-            </a>
-
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="mt-4 text-center">
+            <span class="text-sm text-gray-600">Don't have an account?</span>
+            <a class="underline text-sm text-indigo-600 hover:text-indigo-900 font-bold" 
+               href="{{ request()->is('admin/*') ? route('admin.register') : route('frontend.register') }}">
+                {{ __('Register here') }}
+            </a>
         </div>
     </form>
 </x-guest-layout>

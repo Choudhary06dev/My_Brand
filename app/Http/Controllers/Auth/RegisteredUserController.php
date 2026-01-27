@@ -9,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -18,9 +17,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('auth.register');
+        return $request->is('admin/*') ? view('auth.register') : view('frontend.register');
     }
 
     /**
@@ -32,7 +31,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -44,8 +43,27 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Determine guard
+        $isAdmin = $request->is('admin/*');
+        $guard = $isAdmin ? 'admin' : 'web';
 
-        return redirect(route('admin.dashboard', absolute: false));
+        Auth::guard($guard)->login($user);
+
+        // Clear session data from other guards to ensure isolation during login
+        if ($isAdmin) {
+            Auth::guard('web')->logout();
+        } else {
+            Auth::guard('admin')->logout();
+        }
+
+        if ($isAdmin) {
+            return Route::has('admin.dashboard') 
+                ? redirect()->route('admin.dashboard') 
+                : redirect('/admin/dashboard');
+        }
+
+        return Route::has('home') 
+            ? redirect()->route('home') 
+            : redirect('/');
     }
 }

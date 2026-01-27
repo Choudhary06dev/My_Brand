@@ -4,19 +4,23 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Traits\LogsActivity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    use LogsActivity;
+
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('auth.login');
+        return $request->is('admin/*') ? view('auth.login') : view('frontend.login');
     }
 
     /**
@@ -24,11 +28,31 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Determine guard
+        $guard = $request->is('admin/login') ? 'admin' : 'web';
 
+        // Authenticate user
+        $request->authenticate($guard);
+
+        // Regenerate session
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.dashboard', absolute: false));
+        // Log activity
+        $this->logActivity('Login', 'User logged in successfully');
+
+        // Strict Guard Separation: Logout from the other guard
+        if ($guard === 'admin') {
+            Auth::guard('web')->logout();
+        } else {
+            Auth::guard('admin')->logout();
+        }
+
+        // Redirect based on request path
+        if ($request->is('admin/login')) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('home');
     }
 
     /**
@@ -36,12 +60,33 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        // Determine if this is an admin logout request
+        $isAdmin = $request->is('admin/*') || $request->routeIs('admin.*');
+        $guard = $isAdmin ? 'admin' : 'web';
 
+        // Log activity before session is cleared
+        $this->logActivity('Logout', ($isAdmin ? 'Admin' : 'User') . ' logged out');
+
+        // Logout from specific guard
+        Auth::guard($guard)->logout();
+
+        // If it's a web/frontend logout, we might want to also ensure admin is logged out 
+        // if they share a session (though they shouldn't with separate guards)
+        if (!$isAdmin) {
+             // Optional: Auth::guard('admin')->logout(); 
+        }
+
+        // Invalidate the session and regenerate the CSRF token
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        if ($isAdmin) {
+            return Route::has('admin.login') 
+                ? redirect()->route('admin.login') 
+                : redirect('/admin/login');
+        }
+
+        // Default frontend redirect - use route name to ensure it stays on the correct domain/base path
+        return redirect()->route('home');
     }
 }

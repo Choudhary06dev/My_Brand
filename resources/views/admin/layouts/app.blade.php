@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Dashboard') | {{ config('app.name') }}</title>
+    <title>{{ config('app.name', 'AOHT Group') }}</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        window.CKEDITOR_BASEPATH = '//cdn.ckeditor.com/4.22.1/standard/';
+    </script>
 </head>
-<body class="bg-gray-50 font-sans antialiased text-gray-800">
 
+<body class="font-sans antialiased bg-gray-50">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        @include('admin.partials.sidebar')
+        @include('admin.layouts.partials.sidebar')
 
-        <!-- Main Content -->
-        <div class="flex-1 lg:ml-64 flex flex-col min-h-screen transition-all duration-300">
-            <!-- Header -->
-            @include('admin.partials.header')
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <!-- Navbar -->
+            @include('admin.layouts.partials.navbar')
 
             <!-- Page Content -->
-            <main class="flex-1 p-6 lg:p-8">
-                @yield('content')
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+                @isset($header)
+                    <!-- Optional Header for breadcrumbs or page titles if passed -->
+                    <div class="mb-6">
+                        {{ $header }}
+                    </div>
+                @endisset
+
+                <div class="px-4 sm:px-6 lg:px-8">
+                    {{ $slot ?? '' }}
+                    @yield('content')
+                </div>
             </main>
 
             <!-- Footer -->
-            @include('admin.partials.footer')
+            @include('admin.layouts.partials.footer')
         </div>
     </div>
-
     <script>
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (mobileBtn && sidebar) {
-            mobileBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
-            });
-
-            // Close sidebar when clicking outside on mobile
-            document.addEventListener('click', (e) => {
-                if (window.innerWidth < 1024) { // lg breakpoint
-                    if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target) && !sidebar.classList.contains('-translate-x-full')) {
-                        sidebar.classList.add('-translate-x-full');
-                    }
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                const alerts = document.querySelectorAll('[role="alert"]');
+                alerts.forEach(function (alert) {
+                    alert.style.transition = 'opacity 0.3s ease-out';
+                    alert.style.opacity = '0';
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 500);
+                });
+            }, 5000);
+        });
+    </script>
+    <script>
+        if (typeof CKEDITOR !== 'undefined') {
+            CKEDITOR.config.versionCheck = false;
         }
     </script>
+    @stack('scripts')
 </body>
+
 </html>

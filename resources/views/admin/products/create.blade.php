@@ -1,209 +1,461 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Add New Product')
-
 @section('content')
-    <!-- Page Header -->
-    <div class="mb-8">
-        <a href="{{ route('admin.products.index') }}" class="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors mb-4 group">
-            <svg class="w-5 h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            Back to Products
-        </a>
-        <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-            Add New Product
-        </h2>
-        <p class="text-gray-500 mt-1">Fill in the details to list a new item in your catalog.</p>
-    </div>
-
-    @if($errors->any())
-        <div class="mb-6 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-lg shadow-sm">
-            <ul class="list-disc list-inside text-sm">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8 pb-12">
-        @csrf
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Primary Details -->
-            <div class="lg:col-span-2 space-y-8">
-                <!-- Basic Info -->
-                <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-8">
-                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Basic Information
-                    </h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
-                                placeholder="e.g. Bistro Green Stripe Beach Towel">
-                        </div>
-                        <div>
-                            <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
-                            <textarea name="description" id="description" rows="6"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none placeholder-gray-400"
-                                placeholder="Detailed product description...">{{ old('description') }}</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Media -->
-                <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-8">
-                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Product Media
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Main Thumbnail</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-200 border-dashed rounded-2xl hover:border-indigo-400 transition-colors bg-gray-50/50">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="text-sm text-gray-600">
-                                        <label for="image" class="cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500">
-                                            <span>Upload image</span>
-                                            <input id="image" name="image" type="file" class="sr-only">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gallery Images</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-200 border-dashed rounded-2xl hover:border-indigo-400 transition-colors bg-gray-50/50">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M24 10v28m14-14H10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="text-sm text-gray-600">
-                                        <label for="gallery" class="cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500">
-                                            <span>Add multiple</span>
-                                            <input id="gallery" name="gallery[]" type="file" multiple class="sr-only">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Attributes -->
-                <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-8">
-                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        Specifications & Care
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="dimensions" class="block text-sm font-semibold text-gray-700 mb-2">Dimensions</label>
-                            <input type="text" name="dimensions" id="dimensions" value="{{ old('dimensions') }}"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
-                                placeholder="e.g. 34\" x 66\"">
-                        </div>
-                        <div>
-                            <label for="material" class="block text-sm font-semibold text-gray-700 mb-2">Material</label>
-                            <input type="text" name="material" id="material" value="{{ old('material') }}"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
-                                placeholder="e.g. 100% Cotton">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="care_instructions" class="block text-sm font-semibold text-gray-700 mb-2">Care Instructions</label>
-                            <textarea name="care_instructions" id="care_instructions" rows="3"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
-                                placeholder="e.g. Machine wash warm with like colors...">{{ old('care_instructions') }}</textarea>
-                        </div>
-                    </div>
-                </div>
+    <div class="container-fluid p-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-semibold text-gray-800">Add Product</h1>
+                <!-- <a href="{{ route('admin.products.index') }}"
+                        class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-300 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg> Back
+                    </a> -->
             </div>
 
-            <!-- Right Column: Sidebar Settings -->
-            <div class="space-y-8">
-                <!-- Pricing & Stock -->
-                <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-8">
-                    <h3 class="text-lg font-bold text-gray-800 mb-6">Inventory & Pricing</h3>
-                    <div class="space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Product Name -->
                         <div>
-                            <label for="category_id" class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                            <select name="category_id" id="category_id" required
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none bg-white">
+                            <label for="product_name" class="block text-sm font-medium text-gray-700 mb-1">Product Name
+                                <span class="text-red-500">*</span></label>
+                            <input type="text" name="product_name" id="product_name"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                required value="{{ old('product_name') }}">
+                            @error('product_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Product Type -->
+                        <div>
+                            <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">Product Type (e.g. 1 Piece, 3 Piece)</label>
+                            <input type="text" name="product_type" id="product_type"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('product_type', '1 Piece') }}">
+                            @error('product_type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Category -->
+                        <div>
+                            <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <select name="category_id" id="category_id"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }} class="font-bold">
-                                        {{ $category->name }}
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
                                     </option>
-                                    @foreach($category->children as $child)
-                                        <option value="{{ $child->id }}" {{ old('category_id') == $child->id ? 'selected' : '' }}>
-                                            &nbsp;&nbsp;&nbsp;— {{ $child->name }}
-                                        </option>
-                                    @endforeach
                                 @endforeach
                             </select>
+                            @error('category_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
+
+                        <!-- Subcategory -->
                         <div>
-                            <label for="sku" class="block text-sm font-semibold text-gray-700 mb-2">SKU</label>
-                            <input type="text" name="sku" id="sku" value="{{ old('sku') }}"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
-                                placeholder="PROD-001">
+                            <label for="subcategory_id" class="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+                            <select name="subcategory_id" id="subcategory_id" disabled
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm bg-gray-100">
+                                <option value="">Select Subcategory</option>
+                            </select>
+                            @error('subcategory_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="price" class="block text-sm font-semibold text-gray-700 mb-2">Price ($)</label>
-                                <input type="number" name="price" id="price" step="0.01" value="{{ old('price') }}" required
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none">
-                            </div>
-                            <div>
-                                <label for="discount_price" class="block text-sm font-semibold text-gray-700 mb-2">Sale ($)</label>
-                                <input type="number" name="discount_price" id="discount_price" step="0.01" value="{{ old('discount_price') }}"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none">
-                            </div>
-                        </div>
+
+                        <!-- Child Subcategory -->
                         <div>
-                            <label for="stock_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Stock Quantity</label>
-                            <input type="number" name="stock_quantity" id="stock_quantity" value="{{ old('stock_quantity', 0) }}" required
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none">
+                            <label for="child_subcategory_id" class="block text-sm font-medium text-gray-700 mb-1">Child Subcategory</label>
+                            <select name="child_subcategory_id" id="child_subcategory_id" disabled
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm bg-gray-100">
+                                <option value="">Select Child Subcategory</option>
+                            </select>
+                            @error('child_subcategory_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Price -->
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Regular Price</label>
+                            <input type="number" step="0.01" name="price" id="price"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('price') }}">
+                            @error('price') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Discount Price -->
+                        <div>
+                            <label for="discount_price" class="block text-sm font-medium text-gray-700 mb-1">Discount Price</label>
+                            <input type="number" step="0.01" name="discount_price" id="discount_price"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('discount_price') }}">
+                            @error('discount_price') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Color Selection -->
+                        <div x-data="{ 
+                            open: false, 
+                            selected: '{{ old('color') }}' ? '{{ old('color') }}'.split(',').map(c => c.trim()).filter(c => c) : [],
+                            commonColors: [
+                                { name: 'Black', code: '#000000' },
+                                { name: 'White', code: '#FFFFFF' },
+                                { name: 'Red', code: '#EF4444' },
+                                { name: 'Blue', code: '#3B82F6' },
+                                { name: 'Green', code: '#10B981' },
+                                { name: 'Yellow', code: '#F59E0B' },
+                                { name: 'Grey', code: '#6B7280' },
+                                { name: 'Navy', code: '#1E3A8A' },
+                                { name: 'Beige', code: '#F5F5DC' },
+                                { name: 'Pink', code: '#EC4899' }
+                            ],
+                            customColor: '',
+                            addCustom() {
+                                let val = this.customColor.trim();
+                                if (val && !this.selected.includes(val)) {
+                                    this.selected = [...this.selected, val];
+                                    this.customColor = '';
+                                }
+                            },
+                            toggleColor(colorName) {
+                                if (this.selected.includes(colorName)) {
+                                    this.selected = this.selected.filter(c => c !== colorName);
+                                } else {
+                                    this.selected = [...this.selected, colorName];
+                                }
+                            }
+                        }" class="relative" @click.away="open = false">
+                            <label for="color_display" class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                            
+                            <!-- Hidden input for the actual form submission -->
+                            <input type="hidden" name="color" :value="selected.join(', ')">
+
+                            <!-- Dropdown Trigger -->
+                            <div @click="open = !open"
+                                class="w-full bg-white border border-gray-300 rounded-lg shadow-sm px-4 py-2 cursor-pointer flex justify-between items-center focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+                                <div class="flex flex-wrap gap-1 items-center overflow-hidden">
+                                    <template x-if="selected.length === 0">
+                                        <span class="text-gray-400">Select Colors</span>
+                                    </template>
+                                    <template x-for="color in selected" :key="color">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+                                            <span x-text="color"></span>
+                                            <button type="button" @click.stop="toggleColor(color)" class="ml-1 text-indigo-400 hover:text-indigo-600">
+                                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <svg class="h-5 w-5 text-gray-400 transform transition-transform ml-2 shrink-0" :class="open && 'rotate-180'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" 
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                                x-transition:enter-end="opacity-100 transform translate-y-0"
+                                class="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-xl p-4">
+                                
+                                <div class="grid grid-cols-5 gap-3 mb-4">
+                                    <template x-for="color in commonColors" :key="color.name">
+                                        <button type="button" 
+                                            @click="toggleColor(color.name)"
+                                            class="flex flex-col items-center gap-1 group">
+                                            <div class="h-8 w-8 rounded-full border-2 transition-all duration-200 flex items-center justify-center shadow-sm"
+                                                :style="'background-color: ' + color.code"
+                                                :class="selected.includes(color.name) ? 'border-indigo-600 ring-2 ring-indigo-200 scale-110' : 'border-gray-200 hover:border-gray-300'">
+                                                <svg x-show="selected.includes(color.name)" class="h-4 w-4" :class="color.name === 'White' || color.name === 'Beige' ? 'text-gray-800' : 'text-white'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                            <span class="text-[10px] text-gray-500 font-medium" x-text="color.name"></span>
+                                        </button>
+                                    </template>
+                                </div>
+
+                                <div class="border-t border-gray-100 pt-3">
+                                    <div class="flex gap-2 mb-2">
+                                        <input type="text" x-model="customColor" @keydown.enter.prevent="addCustom()"
+                                            class="flex-1 text-sm rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 py-1.5" 
+                                            placeholder="Custom color...">
+                                        <button type="button" @click="addCustom()"
+                                            class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm font-semibold transition-colors">Add</button>
+                                    </div>
+
+                                    <!-- Added Custom Colors List -->
+                                    <div class="flex flex-col gap-1 max-h-32 overflow-y-auto">
+                                        <template x-for="color in selected.filter(c => !commonColors.map(cc => cc.name).includes(c))" :key="color">
+                                            <div class="flex items-center justify-between px-2 py-1 bg-gray-50 rounded text-xs">
+                                                <span x-text="color" class="font-medium text-gray-700"></span>
+                                                <button type="button" @click="toggleColor(color)" class="text-red-400 hover:text-red-600">
+                                                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            @error('color') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Size Selection -->
+                        <div x-data="{ 
+                            open: false, 
+                            selected: '{{ old('size') }}' ? '{{ old('size') }}'.split(',').map(s => s.trim()).filter(s => s) : [],
+                            commonSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL'],
+                            customSize: '',
+                            addCustom() {
+                                let val = this.customSize.trim();
+                                if (val && !this.selected.includes(val)) {
+                                    this.selected = [...this.selected, val];
+                                    this.customSize = '';
+                                }
+                            },
+                            toggleSize(size) {
+                                if (this.selected.includes(size)) {
+                                    this.selected = this.selected.filter(s => s !== size);
+                                } else {
+                                    this.selected = [...this.selected, size];
+                                }
+                            }
+                        }" class="relative" @click.away="open = false">
+                            <label for="size_display" class="block text-sm font-medium text-gray-700 mb-1">Size</label>
+                            
+                            <!-- Hidden input for the actual form submission -->
+                            <input type="hidden" name="size" :value="selected.join(', ')">
+
+                            <!-- Dropdown Trigger -->
+                            <div @click="open = !open"
+                                class="w-full bg-white border border-gray-300 rounded-lg shadow-sm px-4 py-2 cursor-pointer flex justify-between items-center focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+                                <span x-text="selected.length > 0 ? selected.join(', ') : 'Select Sizes'"
+                                    class="text-gray-700 truncate" :class="selected.length === 0 && 'text-gray-400'"></span>
+                                <svg class="h-5 w-5 text-gray-400 transform transition-transform" :class="open && 'rotate-180'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" 
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                                x-transition:enter-end="opacity-100 transform translate-y-0"
+                                class="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-xl py-2 max-h-60 overflow-y-auto">
+                                
+                                <template x-for="size in commonSizes" :key="size">
+                                    <label class="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer">
+                                        <input type="checkbox" :value="size" :checked="selected.includes(size)" @change="toggleSize(size)"
+                                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="ml-3 text-sm text-gray-700" x-text="size"></span>
+                                    </label>
+                                </template>
+
+                                <div class="border-t border-gray-100 my-1"></div>
+                                
+                                <!-- Custom Size Input -->
+                                <div class="px-4 py-2">
+                                    <div class="flex gap-2">
+                                        <input type="text" x-model="customSize" @keydown.enter.prevent="addCustom()"
+                                            class="flex-1 text-xs rounded border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 py-1" 
+                                            placeholder="Custom...">
+                                        <button type="button" @click="addCustom()"
+                                            class="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 text-xs font-bold">Add</button>
+                                    </div>
+                                </div>
+
+                                <!-- Display Custom Selected (that aren't in common) -->
+                                <template x-for="size in selected.filter(s => !commonSizes.includes(s))" :key="size">
+                                    <label class="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer">
+                                        <input type="checkbox" checked @change="toggleSize(size)"
+                                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="ml-3 text-sm text-gray-700 font-medium" x-text="size"></span>
+                                    </label>
+                                </template>
+                            </div>
+                            @error('size') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Special Effects -->
+                        <div>
+                            <label for="special_effects" class="block text-sm font-medium text-gray-700 mb-1">Special Effects</label>
+                            <input type="text" name="special_effects" id="special_effects"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('special_effects') }}">
+                            @error('special_effects') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Washing & Dyeing Category -->
+                        <div>
+                            <label for="washing_dyeing_category" class="block text-sm font-medium text-gray-700 mb-1">Washing & Dyeing Category</label>
+                            <input type="text" name="washing_dyeing_category" id="washing_dyeing_category"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('washing_dyeing_category') }}">
+                            @error('washing_dyeing_category') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Fabric Category -->
+                        <div>
+                            <label for="fabric_category_id" class="block text-sm font-medium text-gray-700 mb-1">Fabric Category</label>
+                            <select name="fabric_category_id" id="fabric_category_id"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                                <option value="">Select Fabric Category</option>
+                                @foreach($fabricCategories as $fCategory)
+                                    <option value="{{ $fCategory->id }}" {{ old('fabric_category_id') == $fCategory->id ? 'selected' : '' }}>
+                                        {{ $fCategory->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('fabric_category_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Fabric -->
+                        <div>
+                            <label for="fabric_id" class="block text-sm font-medium text-gray-700 mb-1">Fabric</label>
+                            <select name="fabric_id" id="fabric_id" disabled
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm bg-gray-100">
+                                <option value="">Select Fabric</option>
+                            </select>
+                            @error('fabric_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Main Image -->
+                        <div>
+                            <label for="main_image" class="block text-sm font-medium text-gray-700 mb-1">Main Image</label>
+                            <input type="file" name="main_image" id="main_image"
+                                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            @error('main_image') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Product Gallery -->
+                        <div>
+                            <label for="gallery_images" class="block text-sm font-medium text-gray-700 mb-1">Product Gallery (Multi)</label>
+                            <input type="file" name="gallery_images[]" id="gallery_images" multiple
+                                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            @error('gallery_images.*') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Status -->
+                        <div class="flex items-center mt-6">
+                            <input type="checkbox" name="status" id="status" value="1" {{ old('status', 1) ? 'checked' : '' }}
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="status" class="ml-2 block text-sm text-gray-900">Active</label>
                         </div>
                     </div>
-                </div>
 
-                <!-- Visibility -->
-                <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-8">
-                    <h3 class="text-lg font-bold text-gray-800 mb-6">Visibility</h3>
-                    <div class="space-y-4">
-                        <label class="relative inline-flex items-center cursor-pointer w-full justify-between">
-                            <span class="text-sm font-semibold text-gray-700">Active Listing</span>
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_active" value="1" class="sr-only peer" checked>
-                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-500/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                            </div>
-                        </label>
-                        <label class="relative inline-flex items-center cursor-pointer w-full justify-between">
-                            <span class="text-sm font-semibold text-gray-700">Featured Product</span>
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_featured" value="1" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-500/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                            </div>
-                        </label>
+                    <!-- Description -->
+                    <div class="mb-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea name="description" id="description" rows="4"
+                            class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">{{ old('description') }}</textarea>
+                        @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <!-- Sticky Actions -->
-                <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-xl shadow-gray-900/10">
-                    <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-400 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-indigo-600/20 mb-4 transform hover:-translate-y-0.5">
-                        Publish Product
-                    </button>
-                    <a href="{{ route('admin.products.index') }}" class="block w-full text-center py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                        Discard Draft
-                    </a>
-                </div>
+                    <div class="flex justify-end gap-3">
+                        <a href="{{ route('admin.products.index') }}"
+                            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition duration-200">Cancel</a>
+                        <button type="submit"
+                            class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200">Create
+                            Product</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
+
+    @push('scripts')
+    <script>
+        document.getElementById('category_id').addEventListener('change', function() {
+            var categoryId = this.value;
+            var subCategorySelect = document.getElementById('subcategory_id');
+            var childSubCategorySelect = document.getElementById('child_subcategory_id');
+            
+            // Reset Subcategory
+            subCategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+            subCategorySelect.disabled = true;
+            subCategorySelect.classList.add('bg-gray-100');
+
+            // Reset Child Subcategory
+            childSubCategorySelect.innerHTML = '<option value="">Select Child Subcategory</option>';
+            childSubCategorySelect.disabled = true;
+            childSubCategorySelect.classList.add('bg-gray-100');
+
+            if(categoryId) {
+                fetch(`{{ url('admin/get-subcategories') }}/${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.length > 0) {
+                            subCategorySelect.disabled = false;
+                            subCategorySelect.classList.remove('bg-gray-100');
+                            data.forEach(subcategory => {
+                                var option = document.createElement('option');
+                                option.value = subcategory.id;
+                                option.text = subcategory.category_name;
+                                subCategorySelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching subcategories:', error));
+            }
+        });
+
+        document.getElementById('subcategory_id').addEventListener('change', function() {
+            var subcategoryId = this.value;
+            var childSubCategorySelect = document.getElementById('child_subcategory_id');
+            
+            // Reset
+            childSubCategorySelect.innerHTML = '<option value="">Select Child Subcategory</option>';
+            childSubCategorySelect.disabled = true;
+            childSubCategorySelect.classList.add('bg-gray-100');
+
+            if(subcategoryId) {
+                fetch(`{{ url('admin/get-subcategories') }}/${subcategoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.length > 0) {
+                            childSubCategorySelect.disabled = false;
+                            childSubCategorySelect.classList.remove('bg-gray-100');
+                            data.forEach(child => {
+                                var option = document.createElement('option');
+                                option.value = child.id;
+                                option.text = child.category_name;
+                                childSubCategorySelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching child subcategories:', error));
+            }
+        });
+
+        document.getElementById('fabric_category_id').addEventListener('change', function() {
+            var categoryId = this.value;
+            var fabricSelect = document.getElementById('fabric_id');
+            
+            // Reset Fabric
+            fabricSelect.innerHTML = '<option value="">Select Fabric</option>';
+            fabricSelect.disabled = true;
+            fabricSelect.classList.add('bg-gray-100');
+
+            if(categoryId) {
+                fetch(`{{ url('admin/get-fabrics') }}/${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.length > 0) {
+                            fabricSelect.disabled = false;
+                            fabricSelect.classList.remove('bg-gray-100');
+                            data.forEach(fabric => {
+                                var option = document.createElement('option');
+                                option.value = fabric.id;
+                                option.text = fabric.name;
+                                fabricSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching fabrics:', error));
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            if(typeof CKEDITOR !== 'undefined' && document.getElementById('description')) {
+                CKEDITOR.replace('description');
+            }
+        });
+    </script>
+    @endpush
 @endsection
