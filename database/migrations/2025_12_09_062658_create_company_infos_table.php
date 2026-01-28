@@ -23,6 +23,8 @@ return new class extends Migration {
             $table->string('phone', 20)->nullable();
             $table->string('email', 100)->nullable();
             $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
             $table->timestamps();
         });
     }

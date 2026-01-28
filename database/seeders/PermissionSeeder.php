@@ -30,10 +30,6 @@ class PermissionSeeder extends Seeder
                 'description' => 'Access to Company Info'
             ],
             [
-                'permission_key' => 'team_members',
-                'description' => 'Access to Team Members'
-            ],
-            [
                 'permission_key' => 'services',
                 'description' => 'Access to Services'
             ],

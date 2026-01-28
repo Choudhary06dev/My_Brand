@@ -9,10 +9,7 @@ use App\Models\Service;
 use App\Models\Product;
 use App\Models\Blog;
 use App\Models\CompanyInfo;
-use App\Models\TeamMember;
 use App\Models\ProductCategory;
-
-use App\Models\JobOpening;
 
 class HomeController extends Controller
 {
@@ -22,12 +19,11 @@ class HomeController extends Controller
         $services = Service::where('status', 1)->orderBy('sequence')->get();
         $products = Product::where('status', 1)->latest()->get();
         $blogs = Blog::where('status', 1)->latest('published_at')->take(3)->get();
-        $teamMembers = TeamMember::orderBy('sequence')->get();
         $categories = ProductCategory::whereNull('parent_id')->orderBy('sequence')->take(7)->get();
         $totalCategories = ProductCategory::whereNull('parent_id')->count();
         $company = CompanyInfo::first();
 
-        return view('frontend.home', compact('sliders', 'services', 'products', 'blogs', 'teamMembers', 'company', 'categories', 'totalCategories'));
+        return view('frontend.home', compact('sliders', 'services', 'products', 'blogs', 'company', 'categories', 'totalCategories'));
     }
 
     public function categories()
@@ -97,8 +93,7 @@ class HomeController extends Controller
         if (!$company)
             $company = new CompanyInfo();
 
-        $teamMembers = TeamMember::orderBy('sequence')->get();
-        return view('frontend.about', compact('company', 'teamMembers'));
+        return view('frontend.about', compact('company'));
     }
 
 
@@ -136,16 +131,7 @@ class HomeController extends Controller
     public function careers()
     {
         $company = CompanyInfo::first();
-        $jobs = JobOpening::where('status', 1)->latest()->get();
-        // Note: Check JobOpening status values. Assuming 'Open' or boolean or 'Active'. 
-        // Model definition didn't show enum, but let's assume 'Active' or 1 based on other models.
-        // Actually Service has status 1. Let's check JobOpening status type in db if possible, but safely we can just fetch all for now or check valid statuses.
-        // Let's assume 'Active' or 1. If it's a string, we might need to be careful.
-        // Previous output showed: 'status' in fillable.
-
-        // Let's just fetch all for now and filter in view or if we know the value.
-        // Admin index likely shows status.
-        return view('frontend.careers', compact('company', 'jobs'));
+        return view('frontend.careers', compact('company'));
     }
 
     public function news()
@@ -183,33 +169,10 @@ class HomeController extends Controller
         return view('frontend.product-detail', compact('company', 'product', 'relatedProducts'));
     }
 
-    public function applyJob(Request $request)
-    {
-        $request->validate([
-            'job_id' => 'required|exists:job_openings,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:100',
-            'cv_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
-            'cover_letter' => 'nullable|string',
-        ]);
-
-        $data = $request->except('cv_file');
-
-        if ($request->hasFile('cv_file')) {
-            $data['cv_file'] = $request->file('cv_file')->store('job_applications', 'public');
-        }
-
-        \App\Models\JobApplication::create($data);
-
-        return redirect()->back()->with('success', 'Application submitted successfully. We will get back to you soon.');
-    }
-
     public function contact()
     {
         $company = CompanyInfo::first();
-        $officeLocations = \App\Models\OfficeLocation::where('status', 1)->orderBy('sequence')->get();
-        return view('frontend.contact', compact('company', 'officeLocations'));
+        return view('frontend.contact', compact('company'));
     }
 
     public function storeContact(Request $request)

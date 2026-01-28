@@ -24,5 +24,7 @@ class CompanyInfo extends Model
         'phone',
         'email',
         'address',
+        'city',
+        'country',
     ];
 }

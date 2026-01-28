@@ -19,36 +19,6 @@
                     Manage Sections
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <a href="{{ route('admin.company-info.index') }}"
-                        class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 hover:border-gray-300 group">
-                        <div
-                            class="h-10 w-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mr-3 group-hover:bg-gray-600 group-hover:text-white transition-colors">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="font-medium text-gray-900">Company Profile</div>
-                            <div class="text-xs text-gray-500">Global Settings</div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.team-members.index') }}"
-                        class="flex items-center p-4 bg-gray-50 hover:bg-teal-50 rounded-lg transition-colors border border-gray-200 hover:border-teal-200 group">
-                        <div
-                            class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mr-3 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="font-medium text-gray-900">Management Team</div>
-                            <div class="text-xs text-gray-500">Dynamic Cards</div>
-                        </div>
-                    </a>
-
 
                 </div>
             </div>
@@ -118,6 +88,63 @@
                             <textarea name="history" id="history" rows="6"
                                 class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
                                 placeholder="Year - Event Description...">{{ old('history', $companyInfo->history ?? '') }}</textarea>
+                            <p class="mt-2 text-xs text-gray-500 italic">Tip: Use the format <strong>"Year - Description"</strong> on each new line to create a beautiful vertical timeline on the frontend.</p>
+                        </div>
+
+                        <!-- Contact Information Section -->
+                        <div class="border-t pt-6 mt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="company_name" class="block text-sm font-semibold text-gray-700 mb-1">Company Name</label>
+                                    <input type="text" name="company_name" id="company_name" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="Company Name"
+                                        value="{{ old('company_name', $companyInfo->company_name ?? '') }}">
+                                </div>
+
+                                <div>
+                                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+                                    <input type="email" name="email" id="email" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="contact@company.com"
+                                        value="{{ old('email', $companyInfo->email ?? '') }}">
+                                </div>
+
+                                <div>
+                                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+                                    <input type="text" name="phone" id="phone" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="+1 (555) 123-4567"
+                                        value="{{ old('phone', $companyInfo->phone ?? '') }}">
+                                </div>
+
+                                <div>
+                                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Street Address</label>
+                                    <input type="text" name="address" id="address" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="123 Main Street"
+                                        value="{{ old('address', $companyInfo->address ?? '') }}">
+                                </div>
+
+                                <div>
+                                    <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">City</label>
+                                    <input type="text" name="city" id="city" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="New York"
+                                        value="{{ old('city', $companyInfo->city ?? '') }}">
+                                </div>
+
+                                <div>
+                                    <label for="country" class="block text-sm font-semibold text-gray-700 mb-1">Country</label>
+                                    <input type="text" name="country" id="country" 
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                                        placeholder="United States"
+                                        value="{{ old('country', $companyInfo->country ?? '') }}">
+                                </div>
+                            </div>
+                        </div>
                             <p class="mt-2 text-xs text-gray-500 italic">Tip: Use the format <strong>"Year - Description"</strong> on each new line to create a beautiful vertical timeline on the frontend.</p>
                         </div>
                     </div>

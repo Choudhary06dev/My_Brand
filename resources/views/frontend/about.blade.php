@@ -108,232 +108,64 @@
                 </div>
             @endif
 
-            <!-- Team Section -->
-            @if($teamMembers->count() > 0)
-                <section class="team-section" id="team">
-                    <div class="container-custom">
-                        <div class="section-header">
-                            <h2 class="section-title">Meet Our Team</h2>
-                            <p class="section-subtitle">Meet the experts behind our success</p>
-                        </div>
-                        <div class="team-grid">
-                            @foreach($teamMembers as $member)
-                                <div class="team-card team-item cursor-pointer transform hover:scale-105 transition duration-300 js-open-team-modal"
-                                    style="{{ $loop->index >= 4 ? 'display: none;' : '' }}"
-                                    data-name="{{ $member->name }}"
-                                    data-designation="{{ $member->designation ?? $member->position }}"
-                                    data-photo="{{ $member->photo ? asset('storage/' . $member->photo) : '' }}"
-                                    data-bio="{{ $member->bio }}"
-                                    data-facebook="{{ $member->facebook }}"
-                                    data-linkedin="{{ $member->linkedin }}"
-                                    data-instagram="{{ $member->instagram }}">
-                                    <div class="team-image">
-                                        @if($member->photo)
-                                            <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}">
-                                        @else
-                                            <div class="image-placeholder team-placeholder">
-                                                <span>{{ strtoupper(substr($member->name, 0, 1)) }}</span>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="team-content">
-                                        <h3 class="team-name">{{ $member->name }}</h3>
-                                        <p class="team-position">{{ $member->designation ?? $member->position }}</p>
-                                        @if($member->bio)
-                                            <p class="team-bio">{!! strip_tags($member->bio, '<strong><b>') !!}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <style>
-                                #modal-team-bio b, #modal-team-bio strong {
-                                    font-weight: bold !important;
-                                }
-                                #modal-team-bio ul {
-                                    list-style-type: disc !important;
-                                    margin-left: 1.5rem !important;
-                                }
-                                #modal-team-bio ol {
-                                    list-style-type: decimal !important;
-                                    margin-left: 1.5rem !important;
-                                }
-                            </style>
-                        </div>
-
-                        @if($teamMembers->count() > 4)
-                            <div class="text-center mt-12">
-                                <button id="toggleTeamBtn"
-                                    class="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 text-white font-bold rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg hover:shadow-indigo-200">
-                                    Show More Team
-                                </button>
+            <!-- Contact Information Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-indigo-600 mb-20">
+                <h2 class="text-2xl font-bold text-gray-800 mb-8 border-b-2 border-indigo-500 w-fit pb-2">Contact Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Company Details -->
+                    <div class="space-y-6">
+                        @if($company->company_name)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Company Name</h3>
+                                <p class="text-lg font-bold text-gray-900">{{ $company->company_name }}</p>
                             </div>
+                        @endif
 
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const toggleBtn = document.getElementById('toggleTeamBtn');
-                                    const items = document.querySelectorAll('.team-item');
+                        @if($company->address)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Address</h3>
+                                <p class="text-gray-700">{{ $company->address }}</p>
+                            </div>
+                        @endif
 
-                                    if (toggleBtn) {
-                                        toggleBtn.addEventListener('click', function () {
-                                            const isShowingAll = this.innerText === 'Show Less Team';
-
-                                            if (isShowingAll) {
-                                                items.forEach((el, index) => {
-                                                    if (index >= 4) el.style.display = 'none';
-                                                });
-                                                this.innerText = 'Show More Team';
-                                                document.querySelector('.team-section').scrollIntoView({ behavior: 'smooth' });
-                                            } else {
-                                                items.forEach(el => el.style.display = '');
-                                                this.innerText = 'Show Less Team';
-                                            }
-                                        });
-                                    }
-                                });
-                            </script>
+                        @if($company->city || $company->country)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Location</h3>
+                                <p class="text-gray-700">
+                                    @if($company->city){{ $company->city }}@endif
+                                    @if($company->city && $company->country){{ ', ' }}@endif
+                                    @if($company->country){{ $company->country }}@endif
+                                </p>
+                            </div>
                         @endif
                     </div>
-                </section>
-            @endif
-        </div>
-    </div>
 
-    <!-- Team Member Modal -->
-    <div id="teamModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog"
-        aria-modal="true">
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"
-            style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" onclick="closeTeamModal()"></div>
-
-        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-            <div
-                class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl">
-
-                <div class="bg-indigo-600 px-4 py-4 sm:px-6 flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-white" id="modal-team-name">Member Name</h3>
-                    <button type="button" class="text-white hover:text-gray-200 focus:outline-none" onclick="closeTeamModal()">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="px-6 py-6 max-h-[70vh] overflow-y-auto">
-                    <div class="flex flex-col items-center mb-6">
-                        <!-- Large Image -->
-                        <div id="modal-team-image-container"
-                            class="h-32 w-32 rounded-full overflow-hidden border-4 border-white shadow-lg mb-4">
-                            <img id="modal-team-image" src="" alt="Team Member" class="w-full h-full object-cover hidden">
-                            <div id="modal-team-placeholder"
-                                class="w-full h-full bg-indigo-100 flex items-center justify-center text-4xl font-bold text-indigo-500 hidden">
-                                <span id="modal-team-initials"></span>
+                    <!-- Contact Details -->
+                    <div class="space-y-6">
+                        @if($company->email)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Email</h3>
+                                <a href="mailto:{{ $company->email }}" class="text-indigo-600 hover:text-indigo-700 font-semibold">
+                                    {{ $company->email }}
+                                </a>
                             </div>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-900" id="modal-team-name-display"></h2>
-                        <p class="text-indigo-600 font-medium" id="modal-team-designation"></p>
+                        @endif
 
-                        <!-- Social Links -->
-                        <div class="flex space-x-4 mt-4" id="modal-team-socials">
-                            <a id="modal-team-facebook" href="#" target="_blank" class="text-gray-400 hover:text-blue-600 hidden">
-                                <i class="fab fa-facebook fa-lg"></i>
-                            </a>
-                            <a id="modal-team-linkedin" href="#" target="_blank" class="text-gray-400 hover:text-blue-700 hidden">
-                                <i class="fab fa-linkedin fa-lg"></i>
-                            </a>
-                            <a id="modal-team-instagram" href="#" target="_blank" class="text-gray-400 hover:text-pink-600 hidden">
-                                <i class="fab fa-instagram fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="prose max-w-none text-gray-600 text-justify">
-                        <div id="modal-team-bio"></div>
+                        @if($company->phone)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Phone</h3>
+                                <a href="tel:{{ $company->phone }}" class="text-indigo-600 hover:text-indigo-700 font-semibold">
+                                    {{ $company->phone }}
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const teamGrid = document.querySelector('.team-grid');
-            if (teamGrid) {
-                teamGrid.addEventListener('click', function(e) {
-                    const card = e.target.closest('.js-open-team-modal');
-                    if (card) {
-                        const name = card.getAttribute('data-name');
-                        const designation = card.getAttribute('data-designation');
-                        const photo = card.getAttribute('data-photo');
-                        const bio = card.getAttribute('data-bio');
-                        const facebook = card.getAttribute('data-facebook');
-                        const linkedin = card.getAttribute('data-linkedin');
-                        const instagram = card.getAttribute('data-instagram');
-                        
-                        openTeamModal(name, designation, photo, bio, facebook, linkedin, instagram);
-                    }
-                });
-            }
-        });
-
-        function openTeamModal(name, designation, photo, bio, facebook, linkedin, instagram) {
-            document.getElementById('modal-team-name').innerText = name;
-            document.getElementById('modal-team-name-display').innerText = name;
-            document.getElementById('modal-team-designation').innerText = designation;
-
-            // Handle Photo
-            const img = document.getElementById('modal-team-image');
-            const placeholder = document.getElementById('modal-team-placeholder');
-            const initials = document.getElementById('modal-team-initials');
-
-            if (photo) {
-                img.src = photo;
-                img.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            } else {
-                img.classList.add('hidden');
-                placeholder.classList.remove('hidden');
-                initials.innerText = name.charAt(0).toUpperCase();
-            }
-
-            // Handle Bio
-            const modalBio = document.getElementById('modal-team-bio');
-            modalBio.innerHTML = bio;
-
-            // Handle Social Links
-            const fbLink = document.getElementById('modal-team-facebook');
-            if (facebook) {
-                fbLink.href = facebook;
-                fbLink.classList.remove('hidden');
-            } else {
-                fbLink.classList.add('hidden');
-            }
-
-            const liLink = document.getElementById('modal-team-linkedin');
-            if (linkedin) {
-                liLink.href = linkedin;
-                liLink.classList.remove('hidden');
-            } else {
-                liLink.classList.add('hidden');
-            }
-
-            const instaLink = document.getElementById('modal-team-instagram');
-            if (instagram) {
-                instaLink.href = instagram;
-                instaLink.classList.remove('hidden');
-            } else {
-                instaLink.classList.add('hidden');
-            }
-
-            document.getElementById('teamModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeTeamModal() {
-            document.getElementById('teamModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-    </script>
 @endsection
 
 @push('scripts')

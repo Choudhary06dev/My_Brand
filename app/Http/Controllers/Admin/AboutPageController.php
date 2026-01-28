@@ -24,6 +24,12 @@ class AboutPageController extends Controller
     public function update(Request $request)
     {
         $request->validate([
+            'company_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'address' => 'nullable|string',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
             'mission' => 'nullable|string',
             'vision' => 'nullable|string',
             'history' => 'nullable|string',
@@ -33,7 +39,10 @@ class AboutPageController extends Controller
         $companyInfo = CompanyInfo::first();
 
         // Prepare data
-        $data = $request->only(['mission', 'vision', 'history']);
+        $data = $request->only([
+            'company_name', 'email', 'phone', 'address', 'city', 'country',
+            'mission', 'vision', 'history'
+        ]);
 
         // Handle Image Upload
         if ($request->hasFile('about_image')) {

@@ -17,7 +17,6 @@ class SidebarPermissionSeeder extends Seeder
             'users',
             'roles',
             'company_info',
-            'team_members',
             'services',
             'products',
             'product_categories',

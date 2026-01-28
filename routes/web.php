@@ -27,9 +27,7 @@ Route::middleware(['auth:admin', 'verified'])
         Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 
-        // Company
-        Route::resource('company-info', App\Http\Controllers\Admin\CompanyInfoController::class);
-        Route::resource('team-members', App\Http\Controllers\Admin\TeamMemberController::class);
+        // Company Services (company info managed from frontend)
         Route::resource('services', App\Http\Controllers\Admin\ServiceController::class);
 
         // Product Categories
@@ -59,18 +57,8 @@ Route::middleware(['auth:admin', 'verified'])
         Route::post('contact-messages/{id}/send-reply', [App\Http\Controllers\Admin\ContactMessageController::class, 'sendReply'])
             ->name('contact-messages.send-reply');
 
-        // Jobs
-        Route::resource('job-openings', App\Http\Controllers\Admin\JobOpeningController::class);
-        Route::resource('job-applications', App\Http\Controllers\Admin\JobApplicationController::class);
-
-
-
-        // Sliders & Email Templates
+        // Sliders
         Route::resource('sliders', App\Http\Controllers\Admin\SliderController::class);
-        Route::resource('email-templates', App\Http\Controllers\Admin\EmailTemplateController::class);
-
-        // Office Locations
-        Route::resource('office-locations', App\Http\Controllers\Admin\OfficeLocationController::class);
 
         // Fabrics
         Route::resource('fabric-categories', App\Http\Controllers\Admin\FabricCategoryController::class);

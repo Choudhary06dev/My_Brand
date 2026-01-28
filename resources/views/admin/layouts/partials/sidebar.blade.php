@@ -43,29 +43,7 @@
             </a>
         @endif
 
-        @if(auth()->user()->hasPermission('company_info'))
-            <!-- Company Info Link -->
-            <a href="{{ route('admin.company-info.index') }}"
-                class="flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.company-info.*') ? 'bg-gray-800 text-white' : '' }}">
-                <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                Company Info
-            </a>
-        @endif
 
-        @if(auth()->user()->hasPermission('team_members'))
-            <!-- Team Members Link -->
-            <a href="{{ route('admin.team-members.index') }}"
-                class="flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.team-members.*') ? 'bg-gray-800 text-white' : '' }}">
-                <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                Team Members
-            </a>
-        @endif
 
         @if(auth()->user()->hasPermission('services'))
             <!-- Services Link -->
@@ -186,13 +164,13 @@
             </a>
         @endif
 
-        @if(auth()->user()->hasPermission('contact_messages') || auth()->user()->hasPermission('job_openings') || auth()->user()->hasPermission('job_applications') || auth()->user()->hasPermission('email_templates') || auth()->user()->hasPermission('activity_logs') || auth()->user()->hasPermission('error_logs') || auth()->user()->hasPermission('visitors') || auth()->user()->hasPermission('clients') || auth()->user()->hasPermission('certificates') || auth()->user()->hasPermission('dashboard'))
+        @if(auth()->user()->hasPermission('contact_messages') || auth()->user()->hasPermission('activity_logs') || auth()->user()->hasPermission('error_logs') || auth()->user()->hasPermission('visitors') || auth()->user()->hasPermission('clients') || auth()->user()->hasPermission('certificates') || auth()->user()->hasPermission('dashboard'))
             <!-- Pages with Sub-menu -->
             <div
-                x-data="{ open: {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.office-locations.*') || request()->routeIs('admin.job-openings.*') || request()->routeIs('admin.job-applications.*') || request()->routeIs('admin.email-templates.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'true' : 'false' }} }">
+                x-data="{ open: {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'true' : 'false' }} }">
                 <div class="flex items-center">
                     <a href="#" @click.prevent="open = !open"
-                        class="flex-1 flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-l-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.office-locations.*') || request()->routeIs('admin.job-openings.*') || request()->routeIs('admin.job-applications.*') || request()->routeIs('admin.email-templates.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'bg-gray-800 text-white' : '' }}">
+                        class="flex-1 flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-l-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'bg-gray-800 text-white' : '' }}">
                         <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -200,7 +178,7 @@
                         <span>Pages</span>
                     </a>
                     <button @click="open = !open"
-                        class="px-3 py-3 text-white hover:bg-gray-800 rounded-r-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.job-openings.*') || request()->routeIs('admin.job-applications.*') || request()->routeIs('admin.email-templates.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') ? 'bg-gray-800' : '' }}"
+                        class="px-3 py-3 text-white hover:bg-gray-800 rounded-r-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') ? 'bg-gray-800' : '' }}"
                         :class="{ 'bg-gray-800': open }">
                         <svg class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
@@ -227,20 +205,6 @@
                         </a>
                     @endif
 
-                    <!-- Office Locations Link -->
-                    @if(auth()->user()->hasPermission('company_info'))
-                        <a href="{{ route('admin.office-locations.index') }}"
-                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.office-locations.*') ? 'bg-gray-800 text-white' : '' }}">
-                            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            Office Locations
-                        </a>
-                    @endif
-
                     <!-- Contact Messages Link -->
                     @if(auth()->user()->hasPermission('contact_messages'))
                         <a href="{{ route('admin.contact-messages.index') }}"
@@ -252,42 +216,6 @@
                             Contact Messages
                         </a>
 
-                    @endif
-
-                    <!-- Job Openings Link -->
-                    @if(auth()->user()->hasPermission('job_openings'))
-                        <a href="{{ route('admin.job-openings.index') }}"
-                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.job-openings.*') ? 'bg-gray-800 text-white' : '' }}">
-                            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            Job Openings
-                        </a>
-                    @endif
-
-                    <!-- Job Applications Link -->
-                    @if(auth()->user()->hasPermission('job_applications'))
-                        <a href="{{ route('admin.job-applications.index') }}"
-                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.job-applications.*') ? 'bg-gray-800 text-white' : '' }}">
-                            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Job Applications
-                        </a>
-                    @endif
-
-                    <!-- Email Templates Link -->
-                    @if(auth()->user()->hasPermission('email_templates'))
-                        <a href="{{ route('admin.email-templates.index') }}"
-                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.email-templates.*') ? 'bg-gray-800 text-white' : '' }}">
-                            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            Email Templates
-                        </a>
                     @endif
 
                     <!-- Activity Logs Link -->

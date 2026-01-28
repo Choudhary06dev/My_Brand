@@ -58,43 +58,6 @@
                     </div>
                 </div>
 
-                <!-- Job Applications -->
-                <div
-                    class="group bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/50 overflow-hidden">
-                    <div class="p-8">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-base font-medium text-slate-500 mb-2">Job Applications</p>
-                                <p
-                                    class="text-4xl font-bold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-                                    {{ number_format($jobApplicationsCount) }}
-                                </p>
-                            </div>
-                            <div
-                                class="p-5 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="mt-5 flex items-center text-sm text-slate-500">
-                            <span class="inline-flex items-center text-amber-600 font-medium">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
-                                        clip-rule="evenodd" />
-                                    <path
-                                        d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                                </svg>
-                                Applications
-                            </span>
-                            <span class="ml-2">received</span>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Published News -->
                 <div
                     class="group bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/50 overflow-hidden">
@@ -291,14 +254,6 @@
                             System Management
                         </h3>
                         <div class="space-y-3">
-                            <a href="{{ route('admin.email-templates.index') }}"
-                                class="flex items-center w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 font-medium">
-                                <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                                Manage Email Templates
-                            </a>
                             <a href="{{ route('admin.error-logs.index') }}"
                                 class="flex items-center w-full px-4 py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-xl hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 transition-all duration-300 font-medium">
                                 <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -27,8 +27,7 @@ return new class extends Migration {
             'roles',
             'permissions',
             'services',
-            'sliders',
-            'team_members'
+            'sliders'
         ];
 
         foreach ($tables as $table) {
@@ -64,8 +63,7 @@ return new class extends Migration {
             'roles',
             'permissions',
             'services',
-            'sliders',
-            'team_members'
+            'sliders'
         ];
 
         foreach ($tables as $table) {

@@ -167,7 +167,7 @@
                                         </svg>
                                     </div>
                                 </div>
-                                @if($company->city || $company->country)
+                                @if($company->address || $company->city || $company->country)
                                     <div class="mb-10"><span
                                             class="bg-white/15 backdrop-blur-md border border-white/20 px-6 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-lg inline-flex items-center text-white">
                                             <span class="w-1.5 h-1.5 rounded-full bg-indigo-300 mr-3 animate-pulse"></span>
@@ -202,99 +202,6 @@
                             </div>
                         </div>
 
-                        <!-- Office Locations Loop (6-Color Premium Variety) -->
-                        @foreach($officeLocations as $index => $location)
-                            @php
-                                $cardStyle = '';
-                                $cardBg = '';
-                                switch ($index % 6) {
-                                    case 0: // Emerald
-                                        $cardBg = 'bg-emerald-800 bg-gradient-to-br from-emerald-600 to-emerald-900 shadow-emerald-900/40';
-                                        $cardStyle = 'background-color: #065f46;';
-                                        break;
-                                    case 1: // Orange
-                                        $cardBg = 'bg-orange-600 bg-gradient-to-br from-orange-500 to-orange-700 shadow-orange-900/40';
-                                        $cardStyle = 'background-color: #c2410c;';
-                                        break;
-                                    case 2: // Rose
-                                        $cardBg = 'bg-rose-700 bg-gradient-to-br from-rose-600 to-rose-800 shadow-rose-900/40';
-                                        $cardStyle = 'background-color: #be123c;';
-                                        break;
-                                    case 3: // Luxury Purple
-                                        $cardBg = 'bg-purple-800 bg-gradient-to-br from-purple-700 to-purple-900 shadow-purple-900/40';
-                                        $cardStyle = 'background-color: #6b21a8;';
-                                        break;
-                                    case 4: // Royal Blue
-                                        $cardBg = 'bg-blue-800 bg-gradient-to-br from-blue-700 to-blue-900 shadow-blue-900/40';
-                                        $cardStyle = 'background-color: #1e40af;';
-                                        break;
-                                    case 5: // Crimson Pink
-                                        $cardBg = 'bg-pink-700 bg-gradient-to-br from-pink-600 to-pink-800 shadow-pink-900/40';
-                                        $cardStyle = 'background-color: #be185d;';
-                                        break;
-                                }
-                            @endphp
-                            <div class="group relative {{ $cardBg }} rounded-[2.5rem] p-8 shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-white/10"
-                                style="{{ $cardStyle }}">
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl">
-                                </div>
-                                <div class="relative z-10 h-full flex flex-col text-white">
-                                    <div class="flex items-center justify-between mb-8">
-                                        <h3 class="text-2xl font-black tracking-tight drop-shadow-sm">{{ $location->title }}
-                                        </h3>
-                                        <div
-                                            class="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shadow-lg">
-                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    @if($location->city || $location->country)
-                                        <div class="mb-10 self-start">
-                                            <span
-                                                class="bg-white/15 backdrop-blur-md border border-white/20 px-6 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-lg inline-flex items-center">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-indigo-300 mr-3 animate-pulse"></span>
-                                                {{ $location->city }}{{ $location->city && $location->country ? ' • ' : '' }}{{ $location->country }}
-                                            </span>
-                                        </div>
-                                    @endif
-
-                                    <div class="space-y-6 mt-auto">
-                                        <p class="text-[15px] font-bold leading-relaxed line-clamp-2">
-                                            {{ $location->address ?? 'Office Address available' }}
-                                        </p>
-                                        <div class="pt-6 border-t border-white/20 space-y-4">
-                                            @if($location->email)
-                                                <div class="flex items-center text-sm group/contact">
-                                                    <div
-                                                        class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center mr-4 group-hover/contact:bg-white/20 transition-colors">
-                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                                        </svg>
-                                                    </div>
-                                                    <span class="font-bold tracking-tight">{{ $location->email }}</span>
-                                                </div>
-                                            @endif
-                                            @if($location->phone)
-                                                <div class="flex items-center text-sm group/contact">
-                                                    <div
-                                                        class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center mr-4 group-hover/contact:bg-white/20 transition-colors">
-                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                                        </svg>
-                                                    </div>
-                                                    <span class="font-bold tracking-tight">{{ $location->phone }}</span>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
 
                 </div>

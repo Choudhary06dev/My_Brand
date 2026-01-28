@@ -179,7 +179,8 @@
                         @endif
 
                         <!-- Quantity and Call to Action -->
-                        <!-- <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <!-- Quantity and Call to Action -->
+                        <div class="flex flex-col sm:flex-row gap-4 mb-8">
                             <div class="flex items-center border border-gray-300 h-14 bg-white">
                                 <button type="button" onclick="decrementQty()"
                                     class="w-12 h-full flex items-center justify-center text-xl hover:bg-gray-50 transition-colors">−</button>
@@ -188,15 +189,15 @@
                                     readonly>
                                 <button type="button" onclick="incrementQty()"
                                     class="w-12 h-full flex items-center justify-center text-xl hover:bg-gray-50 transition-colors">+</button>
-                            </div> -->
+                            </div>
 
                             <!-- Add to Cart -->
-                            <!-- <button type="button"
+                            <button type="button" id="addToCartBtn"
                                 class="flex-1 bg-black text-white h-14 text-sm font-bold uppercase tracking-widest hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform active:scale-[0.98]"
                                 onclick="addToCart()">
                                 Add to Cart
                             </button>
-                        </div> -->
+                        </div>
 
                         <!-- Technical Details Accordion (Optional but good) -->
                         <div class="space-y-4 pt-4 border-t border-gray-100">
@@ -249,11 +250,59 @@
                             }
 
                             function addToCart() {
-                                if ({{ $product->size ? 'true' : 'false' }} && !selectedSize) {
+                                // Check if size is selected (only if sizes exist)
+                                const hasSizes = {{ $product->size ? 'true' : 'false' }};
+                                if (hasSizes && !selectedSize) {
                                     alert('Please select a size');
                                     return;
                                 }
-                                alert('Product added to cart! (Functionality pending)');
+
+                                const quantity = document.getElementById('quantity').value;
+                                const btn = document.getElementById('addToCartBtn');
+                                const originalText = btn.innerText;
+
+                                btn.disabled = true;
+                                btn.innerText = 'Adding...';
+
+                                $.ajax({
+                                    url: "{{ route('frontend.cart.add') }}",
+                                    method: "POST",
+                                    data: {
+                                        _token: "{{ csrf_token() }}",
+                                        product_id: {{ $product->id }},
+                                        quantity: quantity,
+                                        size: selectedSize,
+                                        color: "{{ $product->color }}"
+                                    },
+                                    success: function(response) {
+                                        if(response.status === 'success') {
+                                            btn.innerText = 'Added to Cart!';
+                                            btn.classList.add('bg-green-600', 'hover:bg-green-700');
+                                            btn.classList.remove('bg-black', 'hover:bg-gray-900');
+                                            
+                                            setTimeout(function() {
+                                                btn.disabled = false;
+                                                btn.innerText = originalText;
+                                                btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                                                btn.classList.add('bg-black', 'hover:bg-gray-900');
+                                            }, 2000);
+
+                                            // Update cart count
+                                            if (typeof updateCartCount === 'function') {
+                                                updateCartCount();
+                                            }
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        btn.disabled = false;
+                                        btn.innerText = originalText;
+                                        if (xhr.status === 401) {
+                                            window.location.href = "{{ route('frontend.login') }}";
+                                        } else {
+                                            alert('Failed to add to cart. Please try again.');
+                                        }
+                                    }
+                                });
                             }
                         </script>
                     </div>

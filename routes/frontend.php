@@ -79,10 +79,14 @@ Route::get('/companies/{id?}', [HomeController::class, 'companyShow'])->name('fr
 Route::get('/category/{slug}', [HomeController::class, 'categoryDetail'])->name('frontend.category.detail');
 Route::get('/services', [HomeController::class, 'services'])->name('frontend.services');
 Route::get('/services/{slug}', [HomeController::class, 'serviceDetail'])->name('frontend.services.detail');
-Route::get('/careers', [HomeController::class, 'careers'])->name('frontend.careers');
-Route::post('/careers/apply', [HomeController::class, 'applyJob'])->name('frontend.careers.apply');
 Route::get('/news', [HomeController::class, 'news'])->name('frontend.news');
 Route::get('/news/{id}', [HomeController::class, 'newsDetail'])->name('frontend.news.detail');
 Route::get('/products/{slug}', [HomeController::class, 'productDetail'])->name('frontend.products.detail');
 Route::get('/contact', [HomeController::class, 'contact'])->name('frontend.contact');
 Route::post('/contact', [HomeController::class, 'storeContact'])->name('frontend.contact.store');
+
+Route::get('/cart', [App\Http\Controllers\Frontend\CartController::class, 'index'])->name('frontend.cart');
+Route::post('/cart/add', [App\Http\Controllers\Frontend\CartController::class, 'addToCart'])->name('frontend.cart.add');
+Route::post('/cart/update', [App\Http\Controllers\Frontend\CartController::class, 'updateCart'])->name('frontend.cart.update');
+Route::post('/cart/remove', [App\Http\Controllers\Frontend\CartController::class, 'removeFromCart'])->name('frontend.cart.remove');
+Route::get('/cart/count', [App\Http\Controllers\Frontend\CartController::class, 'cartCount'])->name('frontend.cart.count');

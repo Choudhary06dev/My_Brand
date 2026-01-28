@@ -86,13 +86,14 @@
 
       <!-- Right: Cart & User Dropdown -->
       <div class="navbar-right">
-        <a class="icon-link" href="#" title="Shopping Cart">
+        <a class="icon-link relative" href="{{ route('frontend.cart') }}" title="Shopping Cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center cart-count-badge" style="display: none;">0</span>
         </a>
 
         <!-- User Dropdown -->
@@ -199,6 +200,24 @@
         dropdown.classList.add('opacity-0', 'invisible', 'translate-y-2');
       }
     });
+    // Cart Count
+    function updateCartCount() {
+        fetch("{{ route('frontend.cart.count') }}")
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.querySelector('.cart-count-badge');
+                if (badge) {
+                    badge.innerText = data.count;
+                    if (data.count > 0) {
+                        badge.style.display = 'flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching cart count:', error));
+    }
+    document.addEventListener('DOMContentLoaded', updateCartCount);
   </script>
 </header>
 </header>

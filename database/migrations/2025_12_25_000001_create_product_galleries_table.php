@@ -15,7 +15,9 @@ return new class extends Migration {
             $table->unsignedBigInteger('product_id');
             $table->string('image_path')->nullable();
             $table->string('caption')->nullable();
+            $table->softDeletes();
             $table->timestamps();
+
 
             // NOTE: Foreign key constraint explicitly omitted as per user instruction.
             // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

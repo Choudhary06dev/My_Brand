@@ -41,9 +41,6 @@
         <h3>Company</h3>
         <ul>
           <li><a href="{{ route('frontend.about') }}">About Us</a></li>
-          <li><a href="{{ route('frontend.about') }}#team">Leadership</a></li>
-          <li><a href="{{ route('frontend.company.show', 1) }}">Group Businesses</a></li>
-          <li><a href="{{ route('frontend.careers') }}">Careers</a></li>
           <li><a href="{{ route('frontend.news') }}">News & Updates</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
         </ul>
