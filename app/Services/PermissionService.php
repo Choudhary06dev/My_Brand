@@ -14,71 +14,59 @@ class PermissionService
     public function syncPermissions(): void
     {
         $modelFiles = File::files(app_path('Models'));
-        $modelNames = [];
+        $existingKeys = ['dashboard', 'settings', 'error_logs']; // Essential non-model or special permissions
 
         foreach ($modelFiles as $file) {
             $modelName = $file->getFilenameWithoutExtension();
-            // Basic check to exclude base Model or traits if any (though usually stay in Models root)
-            if ($modelName !== 'User' && $modelName !== 'Role' && $modelName !== 'Permission') {
-                $modelNames[] = $modelName;
+            
+            // Exclude Permission model itself
+            if ($modelName === 'Permission') {
+                continue;
             }
-        }
 
-        // Add some fixed permissions that might not be models
-        $fixedPermissions = ['dashboard', 'settings', 'activity_logs', 'error_logs', 'visitors'];
-        
-        $allPermissions = array_unique(array_merge(
-            array_map(fn($name) => Str::snake($name), $modelNames),
-            array_map(fn($name) => Str::plural(Str::snake($name)), $modelNames), // Usually plural form is used in UI
-            $fixedPermissions
-        ));
+            // Standard naming: Plural Snake Case (e.g., Blog -> blogs)
+            $key = Str::plural(Str::snake($modelName));
 
-        // Let's stick to a convention. The seeder used plural for many.
-        // Let's just use plural snake_case for models to match existing seeder style mostly.
-        $finalPermissions = [];
-        foreach ($modelNames as $name) {
-            $key = Str::plural(Str::snake($name));
-            
-            // Special handling to match existing seeder if needed
-            if ($key === 'company_infos') $key = 'company_info';
-            
-            $finalPermissions[] = [
-                'key' => $key,
-                'description' => 'Access to ' . Str::headline(Str::plural($name))
-            ];
-        }
+            // Special handling for specific models to match user preference or table names
+            if ($modelName === 'CompanyInfo') {
+                $key = 'company_info';
+            }
+            if ($modelName === 'ActivityLog') {
+                $key = 'activity_logs';
+            }
+            if ($modelName === 'ContactMessage') {
+                $key = 'contact_messages';
+            }
+            if ($modelName === 'ProductGallery') {
+                $key = 'product_galleries';
+            }
 
-        // Add fixed ones / special ones that were in seeder but not direct models
-        $specialKeys = [
-            'dashboard' => 'Access to Dashboard',
-            'settings' => 'Access to Settings',
-            'activity_logs' => 'Access to Activity Logs',
-            'error_logs' => 'Access to Error Logs',
-            'visitors' => 'Access to Visitors',
-            'clients' => 'Access to Clients',
-            'certificates' => 'Access to Certificates',
-            'product_gallery' => 'Access to Product Gallery',
-        ];
-
-        foreach ($specialKeys as $key => $description) {
-            $finalPermissions[] = [
-                'key' => $key,
-                'description' => $description
-            ];
-        }
-
-        $existingKeys = [];
-        foreach ($finalPermissions as $perm) {
             Permission::updateOrCreate(
-                ['permission_key' => $perm['key']],
-                ['description' => $perm['description']]
+                ['permission_key' => $key],
+                ['description' => 'Access to ' . Str::headline($key)]
             );
-            $existingKeys[] = $perm['key'];
+            $existingKeys[] = $key;
         }
 
-        // Cleanup permissions that are no longer associated with a model or fixed list
-        // Caution: This might delete custom permissions if they aren't in this logic.
-        // But the user specifically asked: "agar koi modal delete ho to wo permission sa automatisc remove ho jia"
+        // Ensure essential keys exist
+        foreach (['dashboard' => 'Access to Dashboard', 'settings' => 'Access to Settings', 'error_logs' => 'Access to Error Logs'] as $key => $desc) {
+            Permission::updateOrCreate(
+                ['permission_key' => $key],
+                ['description' => $desc]
+            );
+            $existingKeys[] = $key; // Add to existing keys list if not already there
+        }
+
+        $existingKeys = array_unique($existingKeys);
+
+        // Cleanup: Remove any permission that is not in our active model/essential list
         Permission::whereNotIn('permission_key', $existingKeys)->delete();
+
+        // Automatically assign all sync'd permissions to Admin role (ID: 1)
+        foreach ($existingKeys as $key) {
+            \DB::table('role_permissions')->updateOrInsert(
+                ['role_id' => 1, 'permission_name' => $key]
+            );
+        }
     }
 }
