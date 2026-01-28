@@ -411,7 +411,7 @@
                 <div class="px-6 py-6 max-h-[70vh] overflow-y-auto">
                     <!-- Profile Tab -->
                     <div id="settings-tab-profile" class="settings-tab-content">
-                        <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
+                        <form method="post" action="{{ route('admin.profile.update') }}" class="space-y-6">
                             @csrf
                             @method('patch')
 

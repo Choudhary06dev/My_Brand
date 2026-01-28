@@ -82,6 +82,11 @@ Route::middleware(['auth:admin', 'verified'])
             ->name('error-logs.index');
         Route::get('visitors', [App\Http\Controllers\Admin\VisitorController::class, 'index'])
             ->name('visitors.index');
+        
+        // Profile
+        Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
 /*
@@ -90,11 +95,6 @@ Route::middleware(['auth:admin', 'verified'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 /*
 |--------------------------------------------------------------------------
