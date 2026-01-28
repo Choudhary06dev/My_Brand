@@ -19,7 +19,7 @@ Route::get('/sale/{slug?}', [HomeController::class, 'saleProducts'])->name('fron
 
 
 // Frontend Authentication Routes
-Route::group([], function () {
+Route::name('frontend.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
