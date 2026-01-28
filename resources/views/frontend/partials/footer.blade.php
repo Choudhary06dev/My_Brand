@@ -11,7 +11,7 @@
           {{ config('app.name') }} is a leading company dedicated to producing premium quality fabrics and garments.
         </p>
 
-        <div class="social-links" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+        <!-- <div class="social-links" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
           <a href="#" class="social-icon" style="color: white; opacity: 0.8; transition: opacity 0.3s;"><svg
               xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -34,7 +34,7 @@
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg></a>
-        </div>
+        </div> -->
       </div>
 
       <div>
