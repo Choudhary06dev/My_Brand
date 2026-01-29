@@ -69,12 +69,23 @@
             font-weight: 700;
             margin-bottom: 0.75rem;
             color: #111827;
+            line-height: 1.4;
+            height: 3.5rem; /* 1.25rem * 1.4 * 2 lines */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .product-description {
             color: #6b7280;
             line-height: 1.6;
             margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 3.2rem; /* line-height (1.6) * 2 lines */
         }
 
         /* Category Hover Label */

@@ -106,7 +106,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('frontend.products') }}" class="block w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 text-center">
+                <a href="{{ route('frontend.checkout') }}" class="block w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 text-center">
                     Proceed to Checkout
                 </a>
                 

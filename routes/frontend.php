@@ -90,3 +90,6 @@ Route::post('/cart/add', [App\Http\Controllers\Frontend\CartController::class, '
 Route::post('/cart/update', [App\Http\Controllers\Frontend\CartController::class, 'updateCart'])->name('frontend.cart.update');
 Route::post('/cart/remove', [App\Http\Controllers\Frontend\CartController::class, 'removeFromCart'])->name('frontend.cart.remove');
 Route::get('/cart/count', [App\Http\Controllers\Frontend\CartController::class, 'cartCount'])->name('frontend.cart.count');
+Route::get('/checkout', [App\Http\Controllers\Frontend\CheckoutController::class, 'index'])->name('frontend.checkout');
+Route::post('/checkout/place-order', [App\Http\Controllers\Frontend\CheckoutController::class, 'placeOrder'])->name('frontend.checkout.place');
+Route::get('/order/success/{order_number}', [App\Http\Controllers\Frontend\CheckoutController::class, 'success'])->name('frontend.order.success');
