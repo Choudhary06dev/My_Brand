@@ -61,6 +61,7 @@
             </p>
         </div>
     </section>
+      <div class="h-5"></div>
 
     <!-- Main Content -->
     <div class="container-custom mt-20 relative z-20 pb-32">
@@ -125,6 +126,7 @@
                     </button>
                 </form>
             </div>
+          
 
             <!-- Right: Info Side -->
             <div class="lg:col-span-6 flex flex-col gap-8">
@@ -201,12 +203,15 @@
                 </div>
 
                 <!-- Social Links -->
-                <div class="flex gap-4" data-aos="fade-up">
+                <!-- <div class="flex gap-4" data-aos="fade-up">
                     <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:shadow-xl transition-all"><i class="fab fa-facebook-f text-xl"></i></a>
                     <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-400 hover:shadow-xl transition-all"><i class="fab fa-twitter text-xl"></i></a>
                     <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-pink-600 hover:shadow-xl transition-all"><i class="fab fa-instagram text-xl"></i></a>
                     <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-800 hover:shadow-xl transition-all"><i class="fab fa-linkedin-in text-xl"></i></a>
-                </div>
+                </div> -->
+                
+                <!-- Spacer to maintain layout gap -->
+                <div class="h-16"></div>
             </div>
         </div>
     </div>

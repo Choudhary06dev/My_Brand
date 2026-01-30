@@ -110,6 +110,7 @@
             transform: translateY(0);
             opacity: 1;
         }
+
     </style>
 
     <section class="products-container">
@@ -145,6 +146,10 @@
                 <div class="products-grid">
                     @foreach($products as $product)
                         <div class="product-card">
+                            @if($product->discount_price)
+                                <div class="sale-badge">Sale</div>
+                            @endif
+
                             @if($product->category)
                                 <div class="category-hover-label">
                                     @if($product->childSubcategory)

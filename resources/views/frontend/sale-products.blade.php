@@ -100,22 +100,6 @@
             opacity: 1;
         }
 
-        /* Sale Badge */
-        .sale-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #ef4444;
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            z-index: 20;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-            letter-spacing: 0.05em;
-        }
     </style>
 
     <section class="products-container">
@@ -180,7 +164,7 @@
                 <div class="products-grid">
                     @foreach($products as $product)
                         <div class="product-card">
-                            <div class="sale-badge">SALE</div>
+                            <div class="sale-badge">Sale</div>
                             
                             @if($product->category)
                                 <div class="category-hover-label">
