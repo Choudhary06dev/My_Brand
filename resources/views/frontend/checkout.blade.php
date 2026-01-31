@@ -36,7 +36,35 @@
     <div class="container-custom">
         <h1 class="text-3xl font-black text-gray-900 mb-8 border-b pb-4">Checkout</h1>
 
-        <form action="{{ route('frontend.checkout.place') }}" method="POST">
+        @if (session('success'))
+            <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-xl flex items-center gap-3 animate-fade-in">
+                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                <p class="text-green-700 font-medium">{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl flex items-center gap-3 animate-fade-in">
+                <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                <p class="text-red-700 font-medium">{{ session('error') }}</p>
+            </div>
+        @endif
+        
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl animate-fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                    <p class="text-red-800 font-bold">Please correct the following errors:</p>
+                </div>
+                <ul class="list-disc list-inside text-red-700 text-sm space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form id="checkout-form" action="{{ route('frontend.checkout.place') }}" method="POST">
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Left: Shipping & Payment Details -->
@@ -144,13 +172,19 @@
                         <div id="stripe-card-element-container" class="mt-8 hidden animate-fade-in">
                             <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                                 <label class="text-sm font-bold text-gray-600 mb-4 block">Card Information</label>
+                                <div class="mb-4">
+                                    <input id="card-holder-name" type="text" placeholder="Card Holder Name"
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-800 outline-none focus:border-[#f85606] transition-colors"
+                                        required>
+                                </div>
                                 <div id="card-element"></div>
                                 <div id="card-errors" role="alert" class="text-xs text-red-500 mt-3 font-medium"></div>
                                 
-                                <div class="mt-4 flex gap-3">
-                                    <img src="https://img.icons8.com/color/48/visa.png" class="h-6 opacity-60">
-                                    <img src="https://img.icons8.com/color/48/mastercard.png" class="h-6 opacity-60">
-                                    <img src="https://img.icons8.com/color/48/amex.png" class="h-6 opacity-60">
+                                <div class="mt-4 flex gap-3 text-3xl text-gray-400">
+                                    <i class="fab fa-cc-visa hover:text-blue-600 transition-colors"></i>
+                                    <i class="fab fa-cc-mastercard hover:text-red-600 transition-colors"></i>
+                                    <i class="fab fa-cc-amex hover:text-blue-400 transition-colors"></i>
+                                    <i class="fab fa-cc-discover hover:text-orange-500 transition-colors"></i>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +291,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const stripeKey = "{{ config('services.stripe.key') }}";
-        const form = document.querySelector('form');
+        const form = document.getElementById('checkout-form');
         const cardContainer = document.getElementById('stripe-card-element-container');
         const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
         const cardErrors = document.getElementById('card-errors');
@@ -328,7 +362,11 @@
                     console.log('Submitting with Mock Token');
                     stripeTokenHandler({id: 'tok_visa'});
                 } else {
-                    const {token, error} = await stripe.createToken(card);
+                    const cardHolderName = document.getElementById('card-holder-name').value;
+                    const {token, error} = await stripe.createToken(card, {
+                        name: cardHolderName,
+                    });
+
                     if (error) {
                         cardErrors.textContent = error.message;
                         console.error('Stripe Tokenization Error:', error);

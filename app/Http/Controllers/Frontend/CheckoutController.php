@@ -97,6 +97,13 @@ class CheckoutController extends Controller
             if ($request->payment_method === 'stripe') {
                 $stripeSecret = config('services.stripe.secret');
                 
+                // Stripe has a minimum transaction amount (approx $0.50 USD). 
+                // 49 PKR is too low. Enforcing a safe minimum of 150 PKR.
+                if ($total < 150) {
+                     DB::rollBack();
+                     return back()->with('error', 'The total amount must be at least PKR 150 to pay via Card. Current total: PKR ' . $total);
+                }
+
                 if ($stripeSecret === 'sk_test_your_secret_key' || empty($stripeSecret)) {
                     // Mock Payment for testing purposes when keys are not set
                     $order->update(['payment_status' => 'paid', 'order_notes' => ($order->order_notes ? $order->order_notes . "\n" : "") . "[TEST MODE] Mock Stripe payment successful."]);
