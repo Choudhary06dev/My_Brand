@@ -77,7 +77,7 @@
   </section>
 
   <!-- CATEGORIES/SALE SECTION -->
-  <section class="categories-section">
+  <section class="categories-section" data-aos="fade-up">
     <div class="container-custom">
       <div class="section-header">
         <h2 class="section-title">Shop by Category</h2>
@@ -205,12 +205,12 @@
         @endif
       </div>
 
-      @if(isset($totalCategories) && $totalCategories > 7)
+      @if($totalCategories > 7)
         <div class="flex justify-center mt-12">
           <a href="{{ route('frontend.categories') }}"
-            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150 ease-in-out">
+            class="inline-flex items-center justify-center px-7 py-2.5 border border-transparent text-sm font-bold rounded-full text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 shadow-lg hover:shadow-indigo-200 transform hover:-translate-y-0.5">
             Show More
-            <svg class="ml-2 -mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <svg class="ml-2 -mr-1 h-4 w-4 mb-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                 clip-rule="evenodd" />
@@ -224,7 +224,7 @@
 
   <!-- FEATURED PROJECTS -->
   @if(!empty($products) && $products->count())
-    <section class="projects-section">
+    <section class="projects-section" data-aos="fade-up">
       <div class="container-custom">
         <div class="section-header">
           <h2 class="section-title">Products</h2>
@@ -236,6 +236,18 @@
               <div class="project-image">
                 @if($product->discount_price)
                   <div class="sale-badge">Sale</div>
+                @endif
+                
+                @if($product->category)
+                  <div class="category-hover-label">
+                    @if($product->childSubcategory)
+                      {{ $product->childSubcategory->category_name }}
+                    @elseif($product->subcategory)
+                      {{ $product->subcategory->category_name }}
+                    @else
+                      {{ $product->category->category_name }}
+                    @endif
+                  </div>
                 @endif
                 
                 <a href="{{ route('frontend.products.detail', $product->slug) }}" class="block w-full h-full">
@@ -271,9 +283,9 @@
         </div>
 
         @if($products->count() > 4)
-          <div class="text-center mt-8">
+          <div class="text-center mt-10">
             <button id="toggleProductsBtn"
-              class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition duration-150 ease-in-out">
+              class="inline-flex items-center justify-center px-7 py-2.5 border border-transparent text-sm font-bold rounded-full text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 shadow-lg hover:shadow-indigo-200 transform hover:-translate-y-0.5">
               Show More
             </button>
           </div>
@@ -316,7 +328,7 @@
 
   <!-- SERVICES SECTION -->
   @if(!empty($services) && $services->count())
-    <section class="services-section">
+    <section class="services-section" data-aos="fade-up">
       <div class="container-custom">
         <div class="section-header">
           <h2 class="section-title">Our Services</h2>
@@ -401,33 +413,10 @@
   @endif
 
 
-  <!-- STATISTICS SECTION -->
-  <!-- <section class="stats-section">
-                        <div class="container-custom">
-                          <div class="stats-grid">
-                            <div class="stat-card">
-                              <div class="stat-number">5000+</div>
-                              <div class="stat-label">Textile Products</div>
-                            </div>
-                            <div class="stat-card">
-                              <div class="stat-number">100+</div>
-                              <div class="stat-label">Global Partners</div>
-                            </div>
-                            <div class="stat-card">
-                              <div class="stat-number">50+</div>
-                              <div class="stat-label">Countries Served</div>
-                            </div>
-                            <div class="stat-card">
-                              <div class="stat-number">10M+</div>
-                              <div class="stat-label">Garments Delivered</div>
-                            </div>
-                          </div>
-                        </div>
-                      </section> -->
 
   <!-- LATEST BLOGS -->
   @if(!empty($blogs) && $blogs->count())
-    <section class="blogs-section">
+    <section class="blogs-section" data-aos="fade-up">
       <div class="container-custom">
         <div class="section-header">
           <h2 class="section-title">Latest News & Insights</h2>
@@ -457,5 +446,15 @@
   @endif
 
 
+<!-- AOS Library for scroll animations -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
+        easing: 'ease-out-cubic'
+    });
+</script>
 
 @endsection

@@ -206,27 +206,6 @@
                             </div>
                         </div>
 
-                        <style>
-                            .size-box.active {
-                                background-color: #111;
-                                color: #fff;
-                                border-color: #111;
-                            }
-
-                            input::-webkit-outer-spin-button,
-                            input::-webkit-inner-spin-button {
-                                -webkit-appearance: none;
-                                margin: 0;
-                            }
-
-                            input[type=number] {
-                                -moz-appearance: textfield;
-                            }
-
-                            .description-content p {
-                                margin-bottom: 0.75rem;
-                            }
-                        </style>
 
                         <script>
                             let selectedSize = '';

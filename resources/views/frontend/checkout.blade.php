@@ -2,33 +2,6 @@
 
 @push('styles')
 <script src="https://js.stripe.com/v3/"></script>
-<style>
-    .StripeElement {
-        box-sizing: border-box;
-        height: 48px;
-        padding: 12px 16px;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        background-color: white;
-        transition: all 0.2s ease;
-    }
-    .StripeElement--focus {
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-    }
-    .StripeElement--invalid {
-        border-color: #ef4444;
-    }
-    
-    /* Daraz Style Payment Selectors */
-    .payment-option-input:checked + .payment-option-card {
-        border-color: #f85606; /* Daraz Orange */
-        background-color: #fff9f6;
-    }
-    .payment-option-input:checked + .payment-option-card .check-icon {
-        display: block;
-    }
-</style>
 @endpush
 
 @section('content')
@@ -270,21 +243,6 @@
     </div>
 </div>
 
-<style>
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(255,255,255,0.05);
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.2);
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(255,255,255,0.3);
-    }
-</style>
 @endsection
 
 @push('scripts')

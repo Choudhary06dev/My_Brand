@@ -4,44 +4,6 @@
 <style>
     .contact-hero {
         background-image: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('{{ asset("assets/contact_hero.png") }}');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
-    
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .floating-anim {
-        animation: floating 3s ease-in-out infinite;
-    }
-    
-    @keyframes floating {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-
-    .input-premium {
-        background: rgba(243, 244, 246, 0.5);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .input-premium:focus {
-        background: #fff;
-        border-color: #7c3aed;
-        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
-        transform: translateY(-2px);
-    }
-
-    .gradient-text {
-        background: linear-gradient(to right, #818cf8, #c084fc);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
     }
 </style>
 
