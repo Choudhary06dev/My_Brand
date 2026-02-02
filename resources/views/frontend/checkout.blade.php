@@ -147,8 +147,7 @@
                                 <label class="text-sm font-bold text-gray-600 mb-4 block">Card Information</label>
                                 <div class="mb-4">
                                     <input id="card-holder-name" type="text" placeholder="Card Holder Name"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-800 outline-none focus:border-[#f85606] transition-colors"
-                                        required>
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-800 outline-none focus:border-[#f85606] transition-colors">
                                 </div>
                                 <div id="card-element"></div>
                                 <div id="card-errors" role="alert" class="text-xs text-red-500 mt-3 font-medium"></div>
