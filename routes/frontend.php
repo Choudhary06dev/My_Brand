@@ -69,6 +69,12 @@ Route::name('frontend.')->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
         Route::get('logout', [AuthenticatedSessionController::class, 'destroy']);
+
+        // Profile & Orders
+        Route::get('profile/orders', [App\Http\Controllers\Frontend\ProfileController::class, 'orders'])
+            ->name('profile.orders');
+        Route::get('profile/orders/{order_number}', [App\Http\Controllers\Frontend\ProfileController::class, 'orderDetail'])
+            ->name('profile.order-detail');
     });
 });
 

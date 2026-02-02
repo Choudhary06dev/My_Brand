@@ -29,6 +29,9 @@
 
   @include('frontend.partials.navbar')
 
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-24 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
   <main>
     @yield('content')
   </main>
@@ -74,6 +77,56 @@
   </script>
 
   @stack('scripts')
+
+  <!-- Global Notify Script -->
+  <script>
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast-message pointer-events-auto bg-white rounded-2xl shadow-2xl p-4 min-w-[300px] border-l-4 ${type === 'success' ? 'border-green-500' : 'border-red-500'} transform translate-x-full transition-all duration-500 flex items-center gap-4`;
+      
+      const icon = type === 'success' ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500';
+      
+      toast.innerHTML = `
+        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center shrink-0">
+          <i class="fas ${icon} text-xl"></i>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm font-black text-gray-900">${message}</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+      container.appendChild(toast);
+
+      // Animate in
+      setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+      }, 100);
+
+      // Auto remove
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-x-4');
+        setTimeout(() => toast.remove(), 500);
+      }, 5000);
+    }
+
+    @if(session('success') || session('status'))
+      document.addEventListener('DOMContentLoaded', () => {
+        showToast("{{ session('success') ?? session('status') }}", "success");
+      });
+    @endif
+
+    @if(session('error'))
+      document.addEventListener('DOMContentLoaded', () => {
+        showToast("{{ session('error') }}", "error");
+      });
+    @endif
+  </script>
 </body>
 
 </html>

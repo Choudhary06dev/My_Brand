@@ -98,18 +98,29 @@
 
         <!-- User Dropdown -->
         <div class="relative">
-          <button class="icon-link" title="Account" onclick="toggleUserDropdown(event)" id="userMenuButton">
+          <button class="icon-link {{ auth()->check() ? 'auth-user-btn' : '' }}" title="Account" onclick="toggleUserDropdown(event)" id="userMenuButton">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
+            @auth
+              <span class="text-xs font-bold text-gray-700 ml-2">{{ auth()->user()->first_name ?? explode(' ', auth()->user()->name)[0] }}</span>
+            @endauth
           </button>
 
           <!-- User Dropdown Menu -->
           <div id="userDropdown"
             class="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl opacity-0 invisible transition-all duration-300 transform translate-y-2 z-50 p-2 border border-gray-100">
             @auth
+                <div class="px-4 py-3 border-b border-gray-100 mb-1">
+                  <p class="text-sm font-black text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                </div>
+                
+                <a href="{{ route('frontend.profile.orders') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-lg">
+                  <i class="fas fa-shopping-bag mr-3 opacity-70"></i> My Orders
+                </a>
+
                 <form method="POST" action="{{ route('frontend.logout') }}" id="logout-form">
                     @csrf
                     <button type="submit"
