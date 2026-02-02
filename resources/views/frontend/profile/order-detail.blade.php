@@ -136,6 +136,22 @@
                                         </form>
                                     </div>
                                 @endif
+
+                                @if($order->isReturnable())
+                                    <div class="pt-6 border-t border-white/10 mt-6">
+                                        <a href="{{ route('frontend.profile.order-return', $order->order_number) }}" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-2xl font-black text-xs transition-all border border-indigo-500/20">
+                                            <i class="fas fa-undo"></i> RETURN ORDER
+                                        </a>
+                                    </div>
+                                @endif
+                                
+                                @if($order->returnRequests()->where('status', '!=', 'rejected')->exists())
+                                    <div class="pt-6 border-t border-white/10 mt-6">
+                                        <div class="px-6 py-4 bg-amber-500/10 text-amber-400 rounded-2xl font-black text-xs text-center border border-amber-500/20">
+                                            <i class="fas fa-spinner fa-spin mr-2"></i> RETURN REQUEST {{ strtoupper($order->returnRequests->first()->status) }}
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

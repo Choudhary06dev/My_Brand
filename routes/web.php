@@ -96,6 +96,14 @@ Route::middleware(['auth:admin', 'verified'])
         Route::patch('orders/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])
             ->name('orders.update-status');
         Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'destroy']);
+
+        // Return Management
+        Route::get('returns', [App\Http\Controllers\Admin\ReturnManagementController::class, 'index'])
+            ->name('returns.index');
+        Route::get('returns/{id}', [App\Http\Controllers\Admin\ReturnManagementController::class, 'show'])
+            ->name('returns.show');
+        Route::patch('returns/{id}/status', [App\Http\Controllers\Admin\ReturnManagementController::class, 'updateStatus'])
+            ->name('returns.update-status');
     });
 
 /*

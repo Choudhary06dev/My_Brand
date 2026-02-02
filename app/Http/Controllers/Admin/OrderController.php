@@ -33,14 +33,20 @@ class OrderController extends Controller
 
             $oldStatus = $order->status;
             
-            $order->update([
+            $updateData = [
                 'status' => $request->status,
                 'payment_status' => $request->payment_status,
-            ]);
+            ];
+
+            if ($request->status === 'completed' && $oldStatus !== 'completed') {
+                $updateData['delivered_at'] = now();
+            }
+
+            $order->update($updateData);
 
             $this->logActivity('Update Order', "Updated order #{$order->order_number} status from {$oldStatus} to {$request->status}");
 
-            return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
+            return redirect()->back()->with('success', 'Order status updated successfully.');
             
         } catch (\Exception $e) {
             \Log::error('Order Update Failed: ' . $e->getMessage());

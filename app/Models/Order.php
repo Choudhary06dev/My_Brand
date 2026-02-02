@@ -29,6 +29,11 @@ class Order extends Model
         'zip_code',
         'order_notes',
         'payment_proof',
+        'delivered_at',
+    ];
+
+    protected $casts = [
+        'delivered_at' => 'datetime',
     ];
 
     public function items()
@@ -39,5 +44,27 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function returnRequests()
+    {
+        return $this->hasMany(ReturnRequest::class);
+    }
+
+    /**
+     * Check if the order is eligible for return (e.g. within 7 days of delivery)
+     */
+    public function isReturnable()
+    {
+        if ($this->status !== 'completed' || !$this->delivered_at) {
+            return false;
+        }
+
+        // Check if already returned or request pending
+        if ($this->returnRequests()->whereNotIn('status', ['rejected'])->exists()) {
+            return false;
+        }
+
+        return $this->delivered_at->addDays(7)->isFuture();
     }
 }
