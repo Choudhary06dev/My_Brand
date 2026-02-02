@@ -231,4 +231,3 @@
     document.addEventListener('DOMContentLoaded', updateCartCount);
   </script>
 </header>
-</header>

@@ -206,6 +206,20 @@
                             <span class="text-indigo-100 font-bold uppercase tracking-widest">Total Paid</span>
                             <span class="text-2xl font-black italic">Rs. {{ number_format($order->total_amount, 2) }}</span>
                         </div>
+                        @if($order->payment_proof)
+                            <div class="mt-6 pt-4 border-t border-indigo-500">
+                                <p class="text-xs text-indigo-100 font-bold uppercase mb-3 text-center tracking-widest">Payment Proof Attachment</p>
+                                <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" class="block group relative overflow-hidden rounded-xl border border-indigo-400 bg-indigo-700 hover:bg-indigo-800 transition-all shadow-inner">
+                                    <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Payment Proof" class="w-full h-auto object-cover max-h-48 group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                                    <div class="absolute inset-0 bg-indigo-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-white transform scale-90 group-hover:scale-100 transition-transform">
+                                            <i class="fas fa-search-plus text-xl"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <p class="text-[10px] text-indigo-200 mt-2 text-center italic">Click image to view full size</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

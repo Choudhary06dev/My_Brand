@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                         </div>
-                            <p class="mt-2 text-xs text-gray-500 italic">Tip: Use the format <strong>"Year - Description"</strong> on each new line to create a beautiful vertical timeline on the frontend.</p>
+
                         </div>
                     </div>
 

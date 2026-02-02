@@ -37,7 +37,7 @@
             </div>
         @endif
 
-        <form id="checkout-form" action="{{ route('frontend.checkout.place') }}" method="POST">
+        <form id="checkout-form" action="{{ route('frontend.checkout.place') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="selected_items" value="{{ implode(',', $itemIds) }}">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -118,7 +118,7 @@
                                         <p class="font-bold text-gray-800">Cash on Delivery</p>
                                         <p class="text-xs text-gray-500">Pay when you receive</p>
                                     </div>
-                                    <div class="check-icon hidden text-[#f85606] text-xl">
+                                    <div class="check-icon hidden text-indigo-600 text-xl">
                                         <i class="fas fa-check-circle"></i>
                                     </div>
                                 </label>
@@ -135,10 +135,94 @@
                                         <p class="font-bold text-gray-800">Credit Card / Debit Card</p>
                                         <p class="text-xs text-gray-500">Secure online payment</p>
                                     </div>
-                                    <div class="check-icon hidden text-[#f85606] text-xl">
+                                    <div class="check-icon hidden text-indigo-600 text-xl">
                                         <i class="fas fa-check-circle"></i>
                                     </div>
                                 </label>
+                            </div>
+                        </div>
+
+                        <!-- Nested Online Methods (JazzCash/EasyPaisa) - Hidden initially -->
+                        <div id="extra-payment-options" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 hidden animate-fade-in pl-4 border-l-2 border-indigo-100">
+                            <!-- JazzCash -->
+                            <div class="relative">
+                                <input type="radio" name="payment_method" value="jazzcash" id="payment_jazzcash" class="hidden payment-option-input">
+                                <label for="payment_jazzcash" class="payment-option-card flex items-center gap-4 border-2 border-gray-100 rounded-2xl p-5 cursor-pointer hover:border-indigo-100 transition-all group relative">
+                                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-indigo-600 rounded-lg text-white">
+                                        <i class="fas fa-wallet text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-gray-800 text-sm">JazzCash</p>
+                                        <p class="text-[10px] text-gray-500">Mobile Wallet</p>
+                                    </div>
+                                    <div class="check-icon hidden text-indigo-600 text-xl">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- EasyPaisa -->
+                            <div class="relative">
+                                <input type="radio" name="payment_method" value="easypaisa" id="payment_easypaisa" class="hidden payment-option-input">
+                                <label for="payment_easypaisa" class="payment-option-card flex items-center gap-4 border-2 border-gray-100 rounded-2xl p-5 cursor-pointer hover:border-indigo-100 transition-all group relative">
+                                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-green-500 rounded-lg text-white">
+                                        <i class="fas fa-mobile-alt text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-gray-800 text-sm">EasyPaisa</p>
+                                        <p class="text-[10px] text-gray-500">Mobile Wallet</p>
+                                    </div>
+                                    <div class="check-icon hidden text-indigo-600 text-xl">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Manual Payment Info (JazzCash/EasyPaisa) -->
+                        <div id="manual-payment-container" class="mt-8 hidden animate-fade-in">
+                            <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100">
+                                <div class="flex items-center gap-3 mb-4 text-amber-800">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                    <h4 class="font-bold">Payment Instructions</h4>
+                                </div>
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div id="jazzcash-details" class="hidden manual-details">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-10 h-10 flex-shrink-0 bg-red-600 rounded-lg flex items-center justify-center text-white">
+                                                <i class="fas fa-wallet"></i>
+                                            </div>
+                                            <p class="text-sm text-amber-900 leading-relaxed font-bold">JazzCash Account Details:</p>
+                                        </div>
+                                        <div class="mt-2 p-3 bg-white rounded-xl border border-amber-200">
+                                            <p class="text-lg font-black text-gray-800">{{ config('services.jazzcash.number') }}</p>
+                                            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Account Title: {{ config('services.jazzcash.title') }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="easypaisa-details" class="hidden manual-details">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-10 h-10 flex-shrink-0 bg-green-500 rounded-lg flex items-center justify-center text-white">
+                                                <i class="fas fa-mobile-alt"></i>
+                                            </div>
+                                            <p class="text-sm text-amber-900 leading-relaxed font-bold">EasyPaisa Account Details:</p>
+                                        </div>
+                                        <div class="mt-2 p-3 bg-white rounded-xl border border-amber-200">
+                                            <p class="text-lg font-black text-gray-800">{{ config('services.easypaisa.number') }}</p>
+                                            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Account Title: {{ config('services.easypaisa.title') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700 block">Upload Payment Screenshot / Proof <span class="text-red-500">*</span></label>
+                                    <div class="relative group">
+                                        <input type="file" name="payment_proof" id="payment_proof" accept="image/*"
+                                            class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-800 outline-none focus:border-amber-500 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer">
+                                    </div>
+                                    <p class="text-[10px] text-gray-500 font-medium italic">Please attach a clear screenshot of the transaction confirmation.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -146,10 +230,6 @@
                         <div id="stripe-card-element-container" class="mt-8 hidden animate-fade-in">
                             <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                                 <label class="text-sm font-bold text-gray-600 mb-4 block">Card Information</label>
-                                <div class="mb-4">
-                                    <input id="card-holder-name" type="text" placeholder="Card Holder Name"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-800 outline-none focus:border-[#f85606] transition-colors">
-                                </div>
                                 <div id="card-element"></div>
                                 <div id="card-errors" role="alert" class="text-xs text-red-500 mt-3 font-medium"></div>
                                 
@@ -291,20 +371,66 @@
             }
         }
 
-        const toggleStripeElement = () => {
-            const checkedRadio = document.querySelector('input[name="payment_method"]:checked');
-            if (!checkedRadio) return;
+        const manualPaymentContainer = document.getElementById('manual-payment-container');
+        const jazzcashDetails = document.getElementById('jazzcash-details');
+        const easypaisaDetails = document.getElementById('easypaisa-details');
+        const paymentOptions = document.querySelectorAll('.payment-option-input');
+
+        const updatePaymentVisibility = (selectedMethod) => {
+            // 1. Handle Selection Styling
+            document.querySelectorAll('.payment-option-card').forEach(card => {
+                card.classList.remove('border-indigo-600', 'bg-indigo-50/30', 'ring-2', 'ring-indigo-600/20');
+                card.classList.add('border-gray-100');
+                card.querySelector('.check-icon').classList.add('hidden');
+            });
+
+            const activeInput = document.querySelector(`input[name="payment_method"][value="${selectedMethod}"]`);
+            if (activeInput) {
+                const label = document.querySelector(`label[for="${activeInput.id}"]`);
+                if (label) {
+                    label.classList.remove('border-gray-100');
+                    label.classList.add('border-indigo-600', 'bg-indigo-50/30', 'ring-2', 'ring-indigo-600/20');
+                    label.querySelector('.check-icon').classList.remove('hidden');
+                }
+            }
+
+            // 2. Handle Content Visibility
+            const extraOptions = document.getElementById('extra-payment-options');
             
-            const selected = checkedRadio.value;
-            if (selected === 'stripe') {
-                cardContainer.classList.remove('hidden');
+            // Hide everything first
+            cardContainer.classList.add('hidden');
+            manualPaymentContainer.classList.add('hidden');
+            jazzcashDetails.classList.add('hidden');
+            easypaisaDetails.classList.add('hidden');
+
+            // Handle the nested categories appearance
+            if (['stripe', 'jazzcash', 'easypaisa'].includes(selectedMethod)) {
+                extraOptions.classList.remove('hidden');
             } else {
-                cardContainer.classList.add('hidden');
+                extraOptions.classList.add('hidden');
+            }
+
+            // Show relevant section
+            if (selectedMethod === 'stripe') {
+                cardContainer.classList.remove('hidden');
+            } else if (selectedMethod === 'jazzcash') {
+                manualPaymentContainer.classList.remove('hidden');
+                jazzcashDetails.classList.remove('hidden');
+            } else if (selectedMethod === 'easypaisa') {
+                manualPaymentContainer.classList.remove('hidden');
+                easypaisaDetails.classList.remove('hidden');
             }
         };
 
-        paymentRadios.forEach(radio => radio.addEventListener('change', toggleStripeElement));
-        toggleStripeElement();
+        paymentOptions.forEach(input => {
+            input.addEventListener('change', (e) => updatePaymentVisibility(e.target.value));
+        });
+
+        // Initial state
+        const initialMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+        if (initialMethod) {
+            updatePaymentVisibility(initialMethod);
+        }
 
         form.addEventListener('submit', async (event) => {
             const checkedRadio = document.querySelector('input[name="payment_method"]:checked');
@@ -320,10 +446,7 @@
                     console.log('Submitting with Mock Token');
                     stripeTokenHandler({id: 'tok_visa'});
                 } else {
-                    const cardHolderName = document.getElementById('card-holder-name').value;
-                    const {token, error} = await stripe.createToken(card, {
-                        name: cardHolderName,
-                    });
+                    const {token, error} = await stripe.createToken(card);
 
                     if (error) {
                         cardErrors.textContent = error.message;

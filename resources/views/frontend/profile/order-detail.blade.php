@@ -99,8 +99,32 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 opacity-50">Payment Method</p>
-                                    <p class="font-bold text-indigo-400 uppercase">{{ str_replace('_', ' ', $order->payment_method) }}</p>
+                                    <p class="font-bold text-indigo-400 uppercase">
+                                        @if($order->payment_method === 'cod')
+                                            Cash on Delivery
+                                        @elseif($order->payment_method === 'stripe')
+                                            Credit / Debit Card
+                                        @elseif($order->payment_method === 'jazzcash')
+                                            JazzCash (Manual)
+                                        @elseif($order->payment_method === 'easypaisa')
+                                            EasyPaisa (Manual)
+                                        @else
+                                            {{ str_replace('_', ' ', $order->payment_method) }}
+                                        @endif
+                                    </p>
                                 </div>
+
+                                @if($order->payment_proof)
+                                <div>
+                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-3 opacity-50">Payment Proof Attached</p>
+                                    <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" class="block rounded-2xl overflow-hidden border border-white/10 group relative">
+                                        <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Payment Proof" class="w-full h-32 object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                                            <i class="fas fa-eye text-white text-xl"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                @endif
 
                                 @if(in_array(strtolower($order->status), ['pending', 'processing', 'shipped']))
                                     <div class="pt-6 border-t border-white/10 mt-6">

@@ -28,6 +28,7 @@ class Order extends Model
         'state',
         'zip_code',
         'order_notes',
+        'payment_proof',
     ];
 
     public function items()

@@ -105,7 +105,20 @@
                             
                             <!-- Tracking Bar (Subtle) -->
                             <div class="px-6 py-2 bg-gray-50/20 border-t border-gray-50 flex items-center justify-between">
-                                <span class="text-[9px] font-extrabold text-gray-400 uppercase tracking-wider">{{ str_replace('_', ' ', $order->payment_status) }} • {{ str_replace('_', ' ', $order->payment_method) }}</span>
+                                <span class="text-[9px] font-extrabold text-gray-400 uppercase tracking-wider">
+                                    {{ str_replace('_', ' ', $order->payment_status) }} • 
+                                    @if($order->payment_method === 'cod')
+                                        Cash on Delivery
+                                    @elseif($order->payment_method === 'stripe')
+                                        Credit Card
+                                    @elseif($order->payment_method === 'jazzcash')
+                                        JazzCash
+                                    @elseif($order->payment_method === 'easypaisa')
+                                        EasyPaisa
+                                    @else
+                                        {{ str_replace('_', ' ', $order->payment_method) }}
+                                    @endif
+                                </span>
                                 <div class="flex items-center gap-1">
                                     @for($i = 0; $i < 4; $i++)
                                         <div class="w-6 h-1 rounded-full {{ $i <= array_search(strtolower($order->status), ['pending', 'processing', 'shipped', 'out_for_delivery', 'completed']) ? 'bg-indigo-600' : 'bg-gray-200' }}"></div>

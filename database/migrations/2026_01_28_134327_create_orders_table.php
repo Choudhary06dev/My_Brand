@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('shipping_cost', 12, 2)->default(0);
             $table->decimal('total_amount', 12, 2);
             $table->string('payment_method')->default('cod');
+            $table->string('payment_proof')->nullable();
             $table->string('payment_status')->default('pending');
             $table->string('status')->default('pending');
             

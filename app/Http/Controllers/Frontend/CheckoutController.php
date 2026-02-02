@@ -48,8 +48,9 @@ class CheckoutController extends Controller
             'phone' => 'required|string|max:20',
             'address' => 'required|string',
             'city' => 'required|string|max:255',
-            'payment_method' => 'required|in:cod,stripe',
+            'payment_method' => 'required|in:cod,stripe,jazzcash,easypaisa',
             'stripeToken' => 'required_if:payment_method,stripe',
+            'payment_proof' => 'required_if:payment_method,jazzcash|required_if:payment_method,easypaisa|image|mimes:jpeg,png,jpg,webp|max:5120',
             'selected_items' => 'required|string', // IDs passed from hidden input
         ]);
 
@@ -85,6 +86,7 @@ class CheckoutController extends Controller
                 'state' => $request->state,
                 'zip_code' => $request->zip_code,
                 'order_notes' => $request->order_notes,
+                'payment_proof' => $request->hasFile('payment_proof') ? $request->file('payment_proof')->store('payment_proofs', 'public') : null,
             ]);
 
             foreach ($cartItems as $item) {

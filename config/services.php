@@ -40,4 +40,14 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'jazzcash' => [
+        'number' => env('JAZZCASH_NUMBER', '03xx-xxxxxxx'),
+        'title' => env('JAZZCASH_TITLE', 'YOUR COMPANY NAME'),
+    ],
+
+    'easypaisa' => [
+        'number' => env('EASYPAISA_NUMBER', '03xx-xxxxxxx'),
+        'title' => env('EASYPAISA_TITLE', 'YOUR COMPANY NAME'),
+    ],
+
 ];

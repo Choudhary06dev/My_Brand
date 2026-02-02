@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->foreignId('fabric_id')->nullable()->constrained('fabrics')->onDelete('set null');
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
+            $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->string('color')->nullable();
             $table->string('size')->nullable();
