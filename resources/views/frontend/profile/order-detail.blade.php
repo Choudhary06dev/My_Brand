@@ -24,27 +24,37 @@
                     <!-- Items List -->
                     <div class="lg:col-span-2 space-y-4">
                         <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-50">
-                            <h2 class="text-lg font-black text-gray-900 mb-6">Order Items ({{ $order->items->count() }})</h2>
-                            <div class="space-y-6">
+                            <h2 class="text-xl font-black text-gray-900 mb-8 flex items-center gap-3">
+                                <i class="fas fa-list-ul text-indigo-300"></i>
+                                Order Items ({{ $order->items->count() }})
+                            </h2>
+                            <div class="space-y-8">
                                 @foreach($order->items as $item)
-                                    <div class="flex gap-6 pb-6 border-b border-gray-50 last:border-0 last:pb-0">
-                                        <div class="w-24 h-24 bg-gray-50 rounded-2xl overflow-hidden shrink-0">
-                                            <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                    <div class="flex gap-8 pb-8 border-b border-gray-50 last:border-0 last:pb-0">
+                                        <div class="w-32 h-32 bg-gray-50 rounded-[2rem] overflow-hidden shrink-0 shadow-sm border border-gray-100">
+                                            <img src="{{ asset('storage/' . $item->product->main_image) }}" 
                                                  alt="{{ $item->product->product_name }}"
-                                                 class="w-full h-full object-cover">
+                                                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                                                 onerror="this.src='{{ asset('assets/placeholder.png') }}'">
                                         </div>
-                                        <div class="flex-1">
-                                            <h4 class="text-base font-bold text-gray-900 mb-1">{{ $item->product->product_name }}</h4>
-                                            <div class="flex flex-wrap gap-4 text-xs font-bold text-gray-400 mb-3">
+                                        <div class="flex-1 py-1">
+                                            <h4 class="text-lg font-black text-gray-900 mb-2 leading-tight">{{ $item->product->product_name }}</h4>
+                                            <div class="flex flex-wrap gap-3 mb-4">
                                                 @if($item->size)
-                                                    <span class="bg-gray-50 px-2 py-1 rounded">SIZE: {{ $item->size }}</span>
+                                                    <span class="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 py-1.5 rounded-lg border border-gray-100">
+                                                        <i class="fas fa-ruler-combined mr-2 opacity-50"></i>{{ $item->size }}
+                                                    </span>
                                                 @endif
                                                 @if($item->color)
-                                                    <span class="bg-gray-50 px-2 py-1 rounded">COLOR: {{ $item->color }}</span>
+                                                    <span class="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 py-1.5 rounded-lg border border-gray-100">
+                                                        <i class="fas fa-palette mr-2 opacity-50"></i>{{ $item->color }}
+                                                    </span>
                                                 @endif
-                                                <span class="bg-gray-50 px-2 py-1 rounded">QTY: {{ $item->quantity }}</span>
+                                                <span class="bg-indigo-50 text-[10px] font-black text-indigo-400 uppercase tracking-widest px-3 py-1.5 rounded-lg border border-indigo-50">
+                                                    <i class="fas fa-box mr-2 opacity-50"></i>QTY: {{ $item->quantity }}
+                                                </span>
                                             </div>
-                                            <p class="text-indigo-600 font-black">{{ number_format($item->price, 2) }} {{ $company->currency_symbol ?? 'PKR' }}</p>
+                                            <p class="text-xl font-black text-indigo-600">{{ number_format($item->price, 2) }} <span class="text-xs ml-1">{{ $company->currency_symbol ?? 'PKR' }}</span></p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -74,21 +84,34 @@
                         </div>
 
                         <!-- Logistics Card -->
-                        <div class="bg-gray-900 rounded-[2rem] p-8 text-white shadow-2xl">
-                            <h2 class="text-lg font-black mb-6">Shipping Details</h2>
-                            <div class="space-y-4">
+                        <div class="bg-gray-900 rounded-[2rem] p-8 text-white shadow-2xl overflow-hidden relative group">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-indigo-500/20"></div>
+                            
+                            <h2 class="text-lg font-black mb-6 relative z-10">Shipping Details</h2>
+                            <div class="space-y-6 relative z-10">
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Customer Name</p>
-                                    <p class="font-bold">{{ $order->first_name }} {{ $order->last_name }}</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 opacity-50">Customer Name</p>
+                                    <p class="font-bold text-base">{{ $order->first_name }} {{ $order->last_name }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Shipping Address</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 opacity-50">Shipping Address</p>
                                     <p class="text-sm font-bold text-gray-300 leading-relaxed">{{ $order->address }}<br>{{ $order->city }}, {{ $order->state }} {{ $order->zip_code }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Payment Method</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 opacity-50">Payment Method</p>
                                     <p class="font-bold text-indigo-400 uppercase">{{ str_replace('_', ' ', $order->payment_method) }}</p>
                                 </div>
+
+                                @if(in_array(strtolower($order->status), ['pending', 'processing', 'shipped']))
+                                    <div class="pt-6 border-t border-white/10 mt-6">
+                                        <form action="{{ route('frontend.profile.order-cancel', $order->order_number) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
+                                            @csrf
+                                            <button type="submit" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-2xl font-black text-xs transition-all border border-red-500/20">
+                                                <i class="fas fa-times-circle"></i> CANCEL ORDER
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

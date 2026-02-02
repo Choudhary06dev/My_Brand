@@ -12,6 +12,9 @@
                     <table class="w-full text-left">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="p-4 w-12 text-center">
+                                    <input type="checkbox" id="select-all" checked class="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer transition-all duration-200 checked:bg-indigo-600">
+                                </th>
                                 <th class="p-4 font-semibold text-gray-600">Product</th>
                                 <th class="p-4 font-semibold text-gray-600">Price</th>
                                 <th class="p-4 font-semibold text-gray-600">Quantity</th>
@@ -21,10 +24,13 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @foreach($cartItems as $item)
-                                <tr class="hover:bg-gray-50 transition-colors" data-id="{{ $item->id }}">
+                                <tr class="hover:bg-gray-50/80 transition-all duration-200 group bg-indigo-50/30" data-id="{{ $item->id }}">
+                                    <td class="p-4 text-center">
+                                        <input type="checkbox" checked class="item-checkbox w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer transition-all duration-200">
+                                    </td>
                                     <td class="p-4">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                            <div class="w-16 h-16 rounded-2xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100 shadow-sm group-hover:scale-105 transition-transform duration-300">
                                                  @if($item->product->main_image)
                                                     <img src="{{ asset('storage/' . $item->product->main_image) }}" alt="{{ $item->product->product_name }}" class="w-full h-full object-cover">
                                                 @else
@@ -106,7 +112,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('frontend.checkout') }}" class="block w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 text-center">
+                <a href="{{ route('frontend.checkout') }}" id="checkout-btn" class="block w-full bg-indigo-600 text-white py-4 rounded-2xl font-black hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 text-center transform hover:-translate-y-1">
                     Proceed to Checkout
                 </a>
                 
@@ -156,9 +162,8 @@
                 success: function(response) {
                     if(response.status === 'success') {
                         row.find('.item-subtotal').text('PKR ' + new Intl.NumberFormat().format(response.subtotal));
-                        $('#cart-subtotal').text('PKR ' + new Intl.NumberFormat().format(response.total));
-                        $('#cart-total').text('PKR ' + new Intl.NumberFormat().format(response.total));
-                        // Update cart count in header if visible
+                        row.find('.item-subtotal').attr('data-value', response.subtotal);
+                        calculateSelectedTotal();
                         updateCartCount(); 
                     }
                 }
@@ -181,9 +186,10 @@
                 },
                 success: function(response) {
                     if(response.status === 'success') {
-                        row.fadeOut(300, function() { $(this).remove(); });
-                        $('#cart-subtotal').text('PKR ' + new Intl.NumberFormat().format(response.total));
-                        $('#cart-total').text('PKR ' + new Intl.NumberFormat().format(response.total));
+                        row.fadeOut(300, function() { 
+                            $(this).remove(); 
+                            calculateSelectedTotal();
+                        });
                         updateCartCount();
                         
                         if(response.cart_count === 0) {
@@ -204,6 +210,56 @@
                 }
             });
         }
+
+        // Select All Functionality
+        $('#select-all').change(function() {
+            $('.item-checkbox').prop('checked', $(this).prop('checked'));
+            updateRowStyles();
+        });
+
+        $('.item-checkbox').change(function() {
+            let allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
+            $('#select-all').prop('checked', allChecked);
+            updateRowStyles();
+        });
+
+        function updateRowStyles() {
+            $('.item-checkbox').each(function() {
+                let row = $(this).closest('tr');
+                if($(this).is(':checked')) {
+                    row.addClass('bg-indigo-50/30');
+                } else {
+                    row.removeClass('bg-indigo-50/30');
+                }
+            });
+            calculateSelectedTotal();
+        }
+
+        function calculateSelectedTotal() {
+            let total = 0;
+            let selectedIds = [];
+            $('.item-checkbox:checked').each(function() {
+                let row = $(this).closest('tr');
+                let subtotalText = row.find('.item-subtotal').text().replace(/PKR\s|,/g, '');
+                total += parseFloat(subtotalText);
+                selectedIds.push(row.data('id'));
+            });
+
+            $('#cart-subtotal').text('PKR ' + new Intl.NumberFormat().format(total));
+            $('#cart-total').text('PKR ' + new Intl.NumberFormat().format(total));
+
+            // Update checkout button link with selected IDs
+            let checkoutUrl = "{{ route('frontend.checkout') }}";
+            if(selectedIds.length > 0) {
+                checkoutUrl += "?items=" + selectedIds.join(',');
+                $('#checkout-btn').attr('href', checkoutUrl).removeClass('opacity-50 pointer-events-none');
+            } else {
+                $('#checkout-btn').attr('href', 'javascript:void(0)').addClass('opacity-50 pointer-events-none');
+            }
+        }
+
+        // Initialize total on load
+        calculateSelectedTotal();
     });
 </script>
 @endsection

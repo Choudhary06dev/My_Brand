@@ -75,6 +75,8 @@ Route::name('frontend.')->group(function () {
             ->name('profile.orders');
         Route::get('profile/orders/{order_number}', [App\Http\Controllers\Frontend\ProfileController::class, 'orderDetail'])
             ->name('profile.order-detail');
+        Route::post('profile/orders/{order_number}/cancel', [App\Http\Controllers\Frontend\ProfileController::class, 'cancelOrder'])
+            ->name('profile.order-cancel');
     });
 });
 

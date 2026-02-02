@@ -20,6 +20,8 @@
                         <select name="status" class="text-sm rounded-lg border-gray-200 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
                             <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
+                            <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
+                            <option value="out_for_delivery" {{ $order->status === 'out_for_delivery' ? 'selected' : '' }}>Out for Delivery</option>
                             <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
                             <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                             <option value="refunded" {{ $order->status === 'refunded' ? 'selected' : '' }}>Refunded</option>

@@ -34,4 +34,24 @@ class ProfileController extends Controller
 
         return view('frontend.profile.order-detail', compact('order'));
     }
+
+    public function cancelOrder($order_number)
+    {
+        $order = Order::where('user_id', Auth::id())
+            ->where('order_number', $order_number)
+            ->firstOrFail();
+
+        // Check if order is cancellable
+        $cancellable_statuses = ['pending', 'processing', 'shipped'];
+        
+        if (!in_array(strtolower($order->status), $cancellable_statuses)) {
+            return back()->with('error', 'This order cannot be cancelled as it is already ' . str_replace('_', ' ', $order->status) . '.');
+        }
+
+        $order->update([
+            'status' => 'cancelled'
+        ]);
+
+        return back()->with('success', 'Your order has been cancelled successfully.');
+    }
 }

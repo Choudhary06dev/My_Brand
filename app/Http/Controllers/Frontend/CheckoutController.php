@@ -14,7 +14,7 @@ use Stripe\Charge;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (!auth()->check()) {
             return redirect()->route('frontend.login')->with('error', 'Please login to proceed to checkout.');
@@ -25,16 +25,18 @@ class CheckoutController extends Controller
             ->whereNull('user_id')
             ->update(['user_id' => auth()->id(), 'session_id' => null]);
 
-        $cartItems = $this->getCartItems();
+        $itemIds = $request->query('items') ? explode(',', $request->query('items')) : [];
+        $cartItems = $this->getCartItems($itemIds);
+
         if ($cartItems->isEmpty()) {
-            return redirect()->route('frontend.products')->with('error', 'Your cart is empty.');
+            return redirect()->route('frontend.cart')->with('error', 'Please select at least one item to checkout.');
         }
 
-        $subtotal = $this->getCartTotal();
+        $subtotal = $this->getCartTotal($itemIds);
         $shipping = 0; // Fixed zero shipping cost as specified
         $total = $subtotal + $shipping;
 
-        return view('frontend.checkout', compact('cartItems', 'subtotal', 'shipping', 'total'));
+        return view('frontend.checkout', compact('cartItems', 'subtotal', 'shipping', 'total', 'itemIds'));
     }
 
     public function placeOrder(Request $request)
@@ -48,14 +50,17 @@ class CheckoutController extends Controller
             'city' => 'required|string|max:255',
             'payment_method' => 'required|in:cod,stripe',
             'stripeToken' => 'required_if:payment_method,stripe',
+            'selected_items' => 'required|string', // IDs passed from hidden input
         ]);
 
-        $cartItems = $this->getCartItems();
+        $itemIds = explode(',', $request->selected_items);
+        $cartItems = $this->getCartItems($itemIds);
+
         if ($cartItems->isEmpty()) {
-            return redirect()->route('frontend.products')->with('error', 'Your cart is empty.');
+            return redirect()->route('frontend.cart')->with('error', 'Your selection is no longer available.');
         }
 
-        $subtotal = $this->getCartTotal();
+        $subtotal = $this->getCartTotal($itemIds);
         $shipping = 0;
         $total = $subtotal + $shipping;
 
@@ -98,21 +103,18 @@ class CheckoutController extends Controller
             if ($request->payment_method === 'stripe') {
                 $stripeSecret = config('services.stripe.secret');
                 
-                // Stripe has a minimum transaction amount (approx $0.50 USD). 
-                // 49 PKR is too low. Enforcing a safe minimum of 150 PKR.
                 if ($total < 150) {
                      DB::rollBack();
                      return back()->with('error', 'The total amount must be at least PKR 150 to pay via Card. Current total: PKR ' . $total);
                 }
 
                 if ($stripeSecret === 'sk_test_your_secret_key' || empty($stripeSecret)) {
-                    // Mock Payment for testing purposes when keys are not set
                     $order->update(['payment_status' => 'paid', 'order_notes' => ($order->order_notes ? $order->order_notes . "\n" : "") . "[TEST MODE] Mock Stripe payment successful."]);
                 } else {
                     Stripe::setApiKey($stripeSecret);
                     
                     $charge = Charge::create([
-                        'amount' => $total * 100, // Amount in cents
+                        'amount' => $total * 100, 
                         'currency' => 'pkr',
                         'description' => 'Payment for Order ' . $order->order_number,
                         'source' => $request->stripeToken,
@@ -127,8 +129,10 @@ class CheckoutController extends Controller
                 }
             }
 
-            // Clear Cart
-            Cart::where('user_id', auth()->id())->delete();
+            // Clear ONLY selected items from Cart
+            Cart::where('user_id', auth()->id())
+                ->whereIn('id', $itemIds)
+                ->delete();
 
             DB::commit();
 
@@ -146,14 +150,18 @@ class CheckoutController extends Controller
         return view('frontend.order-success', compact('order'));
     }
 
-    private function getCartItems()
+    private function getCartItems($ids = [])
     {
-        return Cart::with('product')->where('user_id', auth()->id())->get();
+        $query = Cart::with('product')->where('user_id', auth()->id());
+        if (!empty($ids)) {
+            $query->whereIn('id', $ids);
+        }
+        return $query->get();
     }
 
-    private function getCartTotal()
+    private function getCartTotal($ids = [])
     {
-        $items = $this->getCartItems();
+        $items = $this->getCartItems($ids);
         $total = 0;
         foreach($items as $item) {
             $price = $item->product->discount_price ?? $item->product->price;

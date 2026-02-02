@@ -39,6 +39,7 @@
 
         <form id="checkout-form" action="{{ route('frontend.checkout.place') }}" method="POST">
             @csrf
+            <input type="hidden" name="selected_items" value="{{ implode(',', $itemIds) }}">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Left: Shipping & Payment Details -->
                 <div class="lg:col-span-8 space-y-8">
