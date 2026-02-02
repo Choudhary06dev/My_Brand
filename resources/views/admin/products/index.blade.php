@@ -28,6 +28,7 @@
                             <th class="px-6 py-4">Name</th>
                             <th class="px-6 py-4">Category</th>
                             <th class="px-6 py-4">Subcategory</th>
+                            <th class="px-6 py-4">Purchase Price</th>
                             <th class="px-6 py-4 text-center">Gallery Img</th>
                             <th class="px-6 py-4">Status</th>
                             <th class="px-6 py-4 text-center">Sale</th>
@@ -65,6 +66,13 @@
                                             -
                                         @endif
                                     </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-700 font-medium">
+                                    @if($product->purchase_price)
+                                        <span class="text-sm">Rs. {{ number_format($product->purchase_price, 2) }}</span>
+                                    @else
+                                        <span class="text-gray-400 text-xs">-</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span

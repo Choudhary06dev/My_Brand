@@ -19,6 +19,7 @@ class Product extends Model
         'child_subcategory_id',
         'description',
         'price',
+        'purchase_price',
         'discount_price',
         'color',
         'size',

@@ -80,6 +80,15 @@
                             @error('price') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
+                        <!-- Purchase Price (Admin Only) -->
+                        <div>
+                            <label for="purchase_price" class="block text-sm font-medium text-gray-700 mb-1">Purchase Price (Admin Only)</label>
+                            <input type="number" step="0.01" name="purchase_price" id="purchase_price"
+                                class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                value="{{ old('purchase_price') }}">
+                            @error('purchase_price') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
                         <!-- Discount Price -->
                         <div>
                             <label for="discount_price" class="block text-sm font-medium text-gray-700 mb-1">Discount Price</label>

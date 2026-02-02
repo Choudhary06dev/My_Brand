@@ -89,6 +89,10 @@ Route::middleware(['auth:admin', 'verified'])
         Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // Orders
+        Route::get('orders/summary-page', [App\Http\Controllers\Admin\OrderController::class, 'summaryPage'])
+            ->name('orders.summary-page');
+        Route::get('orders/summary', [App\Http\Controllers\Admin\OrderController::class, 'getOrderSummary'])
+            ->name('orders.summary');
         Route::patch('orders/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])
             ->name('orders.update-status');
         Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'destroy']);

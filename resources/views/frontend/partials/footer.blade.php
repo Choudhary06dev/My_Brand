@@ -41,7 +41,6 @@
         <h3>Company</h3>
         <ul>
           <li><a href="{{ route('frontend.about') }}">About Us</a></li>
-          <li><a href="{{ route('frontend.news') }}">News & Updates</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
         </ul>
       </div>
