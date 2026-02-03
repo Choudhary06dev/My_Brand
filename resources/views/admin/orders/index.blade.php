@@ -51,6 +51,8 @@
                                         <span class="text-xs font-semibold uppercase text-gray-500">{{ strtoupper($order->payment_method) }}</span>
                                         @if($order->payment_status === 'paid')
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 w-fit">Paid</span>
+                                        @elseif($order->payment_status === 'refunded')
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 w-fit">Refunded</span>
                                         @elseif($order->payment_status === 'failed')
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 w-fit">Failed</span>
                                         @else
@@ -64,7 +66,6 @@
                                             'pending' => 'bg-yellow-100 text-yellow-800',
                                             'processing' => 'bg-blue-100 text-blue-800',
                                             'shipped' => 'bg-green-100 text-green-800',
-                                            'out_for_delivery' => 'bg-indigo-100 text-indigo-800',
                                             'completed' => 'bg-emerald-100 text-emerald-800',
                                             'cancelled' => 'bg-red-100 text-red-800',
                                             'refunded' => 'bg-purple-100 text-purple-800',

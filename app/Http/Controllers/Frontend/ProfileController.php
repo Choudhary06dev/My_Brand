@@ -42,7 +42,7 @@ class ProfileController extends Controller
             ->firstOrFail();
 
         // Check if order is cancellable
-        $cancellable_statuses = ['pending', 'processing', 'shipped'];
+        $cancellable_statuses = ['pending', 'processing'];
         
         if (!in_array(strtolower($order->status), $cancellable_statuses)) {
             return back()->with('error', 'This order cannot be cancelled as it is already ' . str_replace('_', ' ', $order->status) . '.');

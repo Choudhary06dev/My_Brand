@@ -21,13 +21,14 @@
                     <div>
                         <label class="block text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Reason for Return <span class="text-red-500">*</span></label>
                         <select name="reason" required class="w-full px-6 py-4 bg-gray-50 border-2 border-gray-100 rounded-2xl focus:border-indigo-600 focus:ring-0 outline-none transition-all font-bold text-gray-700">
-                            <option value="">Select a reason</option>
-                            <option value="Damaged Product">Damaged Product (Toota hua product)</option>
-                            <option value="Wrong Item Received">Wrong Item Received (Ghalt cheez mili hai)</option>
-                            <option value="Defective / Non-functional">Defective / Non-functional (Sahi kaam nahi kar raha)</option>
-                            <option value="Size / Fit Issue">Size / Fit Issue (Size ka masla hai)</option>
-                            <option value="Item not as Pictured">Item not as Pictured (Tasveer se alag hai)</option>
-                            <option value="Changed my mind">Changed my mind (Ab nahi chahiye)</option>
+                            <option value="" selected disabled>Select a reason</option>
+                            <option value="Damaged on Arrival">Damaged on Arrival</option>
+                            <option value="Wrong Item Received">Wrong Item Received</option>
+                            <option value="Defective / Non-Functional">Defective / Non-Functional</option>
+                            <option value="Product Not as Described">Product Not as Described</option>
+                            <option value="Size / Fitment Issue">Size / Fitment Issue</option>
+                            <option value="Quality Concerns">Quality Concerns</option>
+                            <option value="Other">Other (Please specify in description)</option>
                         </select>
                         @error('reason') <p class="text-red-500 text-xs mt-2 font-bold">{{ $message }}</p> @enderror
                     </div>

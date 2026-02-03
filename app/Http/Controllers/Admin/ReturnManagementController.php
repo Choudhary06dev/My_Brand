@@ -35,11 +35,14 @@ class ReturnManagementController extends Controller
             'admin_remark' => $request->admin_remark,
         ]);
 
-        // Optional: If status is refunded, update order payment status too
+        // If status is refunded, update order status and payment status
         if ($request->status === 'refunded') {
-            $returnRequest->order->update(['payment_status' => 'refunded']);
+            $returnRequest->order->update([
+                'status' => 'refunded',
+                'payment_status' => 'refunded'
+            ]);
         }
 
-        return redirect()->back()->with('success', 'Return request status updated successfully.');
+        return redirect()->route('admin.returns.index')->with('success', 'Return request status updated successfully.');
     }
 }

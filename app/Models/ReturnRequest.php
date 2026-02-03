@@ -25,6 +25,20 @@ class ReturnRequest extends Model
         'images' => 'array',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($returnRequest) {
+            if ($returnRequest->status === 'refunded') {
+                $returnRequest->order->update([
+                    'status' => 'refunded',
+                    'payment_status' => 'refunded'
+                ]);
+            }
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
