@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('payment_proof')->nullable();
             $table->string('payment_status')->default('pending');
             $table->string('status')->default('pending');
+            $table->timestamp('delivered_at')->nullable();
             
             // Shipping Details
             $table->string('first_name');

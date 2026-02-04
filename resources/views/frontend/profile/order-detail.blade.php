@@ -105,7 +105,12 @@
     ];
     $statusKeys = array_keys($statuses);
     $currentStatus = strtolower($order->status);
-    $statusIndex = array_search($currentStatus, $statusKeys);
+    if ($currentStatus === 'refunded') {
+        // Keep 'Completed' label, just mark it as the final step
+        $statusIndex = 3; // Index of 'completed'
+    } else {
+        $statusIndex = array_search($currentStatus, $statusKeys);
+    }
     if($statusIndex === false && $currentStatus == 'cancelled') $statusIndex = -1;
     $progressWidth = $statusIndex >= 0 ? ($statusIndex / (count($statusKeys) - 1)) * 100 : 0;
 @endphp

@@ -54,4 +54,9 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Your order has been cancelled successfully.');
     }
+    public function wallet()
+    {
+        $transactions = Auth::user()->transactions()->latest()->paginate(10);
+        return view('frontend.profile.wallet', compact('transactions'));
+    }
 }

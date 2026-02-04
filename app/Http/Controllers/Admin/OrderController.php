@@ -46,7 +46,7 @@ class OrderController extends Controller
 
             $this->logActivity('Update Order', "Updated order #{$order->order_number} status from {$oldStatus} to {$request->status}");
 
-            return redirect()->back()->with('success', 'Order status updated successfully.');
+            return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
             
         } catch (\Exception $e) {
             \Log::error('Order Update Failed: ' . $e->getMessage());

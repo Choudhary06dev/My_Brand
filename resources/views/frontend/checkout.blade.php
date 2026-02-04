@@ -107,6 +107,35 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Wallet Payment -->
+                            <div class="relative col-span-1 md:col-span-2">
+                                @php
+                                    $walletBalance = auth()->user()->wallet_balance;
+                                    $hasSufficientBalance = $walletBalance >= $total;
+                                @endphp
+                                <input type="radio" name="payment_method" value="wallet" id="payment_wallet" 
+                                    class="hidden payment-option-input" {{ !$hasSufficientBalance ? 'disabled' : '' }}>
+                                <label for="payment_wallet" class="payment-option-card flex items-center gap-4 border-2 border-gray-100 rounded-2xl p-5 cursor-pointer hover:border-indigo-100 transition-all group relative {{ !$hasSufficientBalance ? 'opacity-60 cursor-not-allowed bg-gray-50' : '' }}">
+                                    <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-purple-600 rounded-xl text-white shadow-lg shadow-purple-200">
+                                        <i class="fas fa-wallet text-2xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2">
+                                            <p class="font-bold text-gray-800">My Wallet</p>
+                                            <span class="text-[10px] font-black bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">BALANCE: PKR {{ number_format($walletBalance, 2) }}</span>
+                                        </div>
+                                        @if($hasSufficientBalance)
+                                            <p class="text-xs text-gray-500">Fast & secure instant payment</p>
+                                        @else
+                                            <p class="text-[10px] text-red-500 font-bold mt-0.5"><i class="fas fa-times-circle mr-1"></i> Insufficient Balance (Needs PKR {{ number_format($total) }})</p>
+                                        @endif
+                                    </div>
+                                    <div class="check-icon hidden text-indigo-600 text-xl">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </label>
+                            </div>
+
                             <!-- Cash on Delivery -->
                             <div class="relative">
                                 <input type="radio" name="payment_method" value="cod" id="payment_cod" checked class="hidden payment-option-input">
@@ -405,9 +434,9 @@
 
             // Handle the nested categories appearance
             if (['stripe', 'jazzcash', 'easypaisa'].includes(selectedMethod)) {
-                extraOptions.classList.remove('hidden');
+                if (extraOptions) extraOptions.classList.remove('hidden');
             } else {
-                extraOptions.classList.add('hidden');
+                if (extraOptions) extraOptions.classList.add('hidden');
             }
 
             // Show relevant section
@@ -430,6 +459,13 @@
         const initialMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
         if (initialMethod) {
             updatePaymentVisibility(initialMethod);
+        } else {
+            // Default to first available if nothing checked (e.g. if COD checked by default but logic changed)
+            const firstAvailable = document.querySelector('input[name="payment_method"]:not(:disabled)');
+            if (firstAvailable) {
+                firstAvailable.checked = true;
+                updatePaymentVisibility(firstAvailable.value);
+            }
         }
 
         form.addEventListener('submit', async (event) => {

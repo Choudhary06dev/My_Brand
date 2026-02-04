@@ -48,7 +48,7 @@ class CheckoutController extends Controller
             'phone' => 'required|string|max:20',
             'address' => 'required|string',
             'city' => 'required|string|max:255',
-            'payment_method' => 'required|in:cod,stripe,jazzcash,easypaisa',
+            'payment_method' => 'required|in:cod,stripe,jazzcash,easypaisa,wallet',
             'stripeToken' => 'required_if:payment_method,stripe',
             'payment_proof' => 'required_if:payment_method,jazzcash|required_if:payment_method,easypaisa|image|mimes:jpeg,png,jpg,webp|max:5120',
             'selected_items' => 'required|string', // IDs passed from hidden input
@@ -129,6 +129,15 @@ class CheckoutController extends Controller
                         throw new \Exception('Payment failed. Please try again.');
                     }
                 }
+            } elseif ($request->payment_method === 'wallet') {
+                $user = auth()->user();
+                if ($user->wallet_balance < $total) {
+                     DB::rollBack();
+                     return back()->with('error', 'Insufficient wallet balance. Please choose another payment method.')->withInput();
+                }
+
+                $user->debitWallet($total, "Payment for Order #{$order->order_number}", $order->id);
+                $order->update(['payment_status' => 'paid']);
             }
 
             // Clear ONLY selected items from Cart

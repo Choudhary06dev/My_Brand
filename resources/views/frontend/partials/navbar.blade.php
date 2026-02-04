@@ -121,6 +121,10 @@
                   <i class="fas fa-shopping-bag mr-3 opacity-70"></i> My Orders
                 </a>
 
+                <a href="{{ route('frontend.profile.wallet') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-lg">
+                  <i class="fas fa-wallet mr-3 opacity-70"></i> My Wallet
+                </a>
+
                 <form method="POST" action="{{ route('frontend.logout') }}" id="logout-form">
                     @csrf
                     <button type="submit"

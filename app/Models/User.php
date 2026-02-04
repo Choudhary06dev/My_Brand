@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'status',
+        'wallet_balance',
     ];
 
     /**
@@ -71,5 +72,39 @@ class User extends Authenticatable
         }
 
         return in_array($permissionKey, $permissions[$this->id]);
+    }
+    public function transactions()
+    {
+        return $this->hasMany(WalletTransaction::class);
+    }
+
+    public function creditWallet($amount, $description = null, $referenceId = null)
+    {
+        $this->wallet_balance += $amount;
+        $this->save();
+
+        $this->transactions()->create([
+            'amount' => $amount,
+            'type' => 'credit',
+            'description' => $description,
+            'reference_id' => $referenceId,
+        ]);
+    }
+
+    public function debitWallet($amount, $description = null, $referenceId = null)
+    {
+        if ($this->wallet_balance < $amount) {
+            throw new \Exception("Insufficient wallet balance");
+        }
+
+        $this->wallet_balance -= $amount;
+        $this->save();
+
+        $this->transactions()->create([
+            'amount' => $amount,
+            'type' => 'debit',
+            'description' => $description,
+            'reference_id' => $referenceId,
+        ]);
     }
 }
