@@ -1523,6 +1523,11 @@ input[type=number] {
     color: #a16207;
 }
 
+.badge-confirmed {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
 .badge-processing {
     background: #eff6ff;
     color: #1d4ed8;
@@ -1546,6 +1551,11 @@ input[type=number] {
 .badge-cancelled {
     background: #fff1f2;
     color: #be123c;
+}
+
+.badge-refunded {
+    background: #f5f3ff;
+    color: #7c3aed;
 }
 
 .item-thumbnail {

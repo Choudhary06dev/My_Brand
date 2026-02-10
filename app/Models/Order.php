@@ -56,7 +56,7 @@ class Order extends Model
      */
     public function isReturnable()
     {
-        if ($this->status !== 'completed' || !$this->delivered_at) {
+        if ($this->status !== 'delivered' || !$this->delivered_at) {
             return false;
         }
 

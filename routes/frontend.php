@@ -77,6 +77,8 @@ Route::name('frontend.')->group(function () {
             ->name('profile.order-detail');
         Route::post('profile/orders/{order_number}/cancel', [App\Http\Controllers\Frontend\ProfileController::class, 'cancelOrder'])
             ->name('profile.order-cancel');
+        Route::post('profile/orders/{order_number}/reorder', [App\Http\Controllers\Frontend\ProfileController::class, 'reorder'])
+            ->name('profile.order-reorder');
         
         Route::get('profile/wallet', [App\Http\Controllers\Frontend\ProfileController::class, 'wallet'])
             ->name('profile.wallet');

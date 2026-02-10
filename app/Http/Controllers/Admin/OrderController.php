@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         try {
             $request->validate([
-                'status' => 'required|in:pending,processing,shipped,completed,cancelled,refunded',
+                'status' => 'required|in:pending,confirmed,processing,shipped,delivered,cancelled,refunded',
                 'payment_status' => 'required|in:pending,paid,failed,refunded',
             ]);
 
@@ -38,7 +38,7 @@ class OrderController extends Controller
                 'payment_status' => $request->payment_status,
             ];
 
-            if ($request->status === 'completed' && $oldStatus !== 'completed') {
+            if ($request->status === 'delivered' && $oldStatus !== 'delivered') {
                 $updateData['delivered_at'] = now();
             }
 
@@ -63,7 +63,7 @@ class OrderController extends Controller
     {
         $filter = $request->get('filter', 'all');
         
-        $query = Order::with('items.product')->where('status', 'completed');
+        $query = Order::with('items.product')->where('status', 'delivered');
         
         // Apply date filters
         switch ($filter) {

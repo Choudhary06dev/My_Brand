@@ -68,7 +68,9 @@
                             <div class="hidden lg:flex flex-col gap-3 overflow-y-auto pr-1">
                                 @foreach($allImages as $index => $image)
                                     <div class="thumbnail-item w-20 h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 {{ $index === 0 ? 'border-indigo-600 shadow-sm' : 'border-gray-200 hover:border-indigo-400' }}"
-                                        onclick="changeMainImage('{{ asset($image['path']) }}', this)">
+                                        onmouseenter="changeMainImage('{{ asset($image['path']) }}', this)"
+                                        onmouseleave="resetMainImage()"
+                                        onclick="changeMainImage('{{ asset($image['path']) }}', this, true)">
                                         <img src="{{ asset($image['path']) }}" class="w-full h-full object-cover object-top">
                                     </div>
                                 @endforeach
@@ -83,7 +85,7 @@
                                     $displayImage = $product->main_image ? 'storage/' . $product->main_image : 'storage/' . $product->galleries->first()->image_path;
                                 @endphp
                                 <img id="mainProductImage" src="{{ asset($displayImage) }}" alt="{{ $product->product_name }}"
-                                    class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-300">
+                                    class="absolute inset-0 w-full h-full object-contain p-4 transition-all duration-500 transform hover:scale-125 cursor-zoom-in">
                             @else
                                 <div class="absolute inset-0 flex items-center justify-center text-gray-300">
                                     <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,19 +291,28 @@
             </div>
 
             <script>
-                function changeMainImage(imageSrc, clickedThumbnail) {
+                let currentActiveImage = '{{ asset($displayImage) }}';
+
+                function changeMainImage(imageSrc, clickedThumbnail, isClick = false) {
                     // Update main image
                     document.getElementById('mainProductImage').src = imageSrc;
 
-                    // Remove active state from all thumbnails
-                    document.querySelectorAll('.thumbnail-item').forEach(thumb => {
-                        thumb.classList.remove('border-indigo-600');
-                        thumb.classList.add('border-gray-200', 'hover:border-indigo-400');
-                    });
+                    if (isClick) {
+                        currentActiveImage = imageSrc;
+                        // Remove active state from all thumbnails
+                        document.querySelectorAll('.thumbnail-item').forEach(thumb => {
+                            thumb.classList.remove('border-indigo-600');
+                            thumb.classList.add('border-gray-200', 'hover:border-indigo-400');
+                        });
 
-                    // Add active state to clicked thumbnail
-                    clickedThumbnail.classList.remove('border-gray-200', 'hover:border-indigo-400');
-                    clickedThumbnail.classList.add('border-indigo-600');
+                        // Add active state to clicked thumbnail
+                        clickedThumbnail.classList.remove('border-gray-200', 'hover:border-indigo-400');
+                        clickedThumbnail.classList.add('border-indigo-600');
+                    }
+                }
+
+                function resetMainImage() {
+                    document.getElementById('mainProductImage').src = currentActiveImage;
                 }
             </script>
 

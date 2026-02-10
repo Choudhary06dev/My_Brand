@@ -54,8 +54,9 @@
         transition: all 0.4s ease;
     }
     .tracker-step.active .step-icon {
+        background: var(--accent-1);
         border-color: var(--accent-1);
-        color: var(--accent-1);
+        color: white;
         box-shadow: 0 0 20px rgba(var(--accent-1-rgb), 0.2);
     }
     .tracker-step.completed .step-icon {
@@ -99,19 +100,16 @@
 @php
     $statuses = [
         'pending'    => ['icon' => 'fa-clock', 'label' => 'Pending'],
+        'confirmed'  => ['icon' => 'fa-clipboard-check', 'label' => 'Confirmed'],
         'processing' => ['icon' => 'fa-cog', 'label' => 'Processing'],
         'shipped'    => ['icon' => 'fa-shipping-fast', 'label' => 'Shipped'],
-        'completed'  => ['icon' => 'fa-check-double', 'label' => 'Completed']
+        'delivered'  => ['icon' => 'fa-check-double', 'label' => 'Delivered'],
+        'refunded'   => ['icon' => 'fa-undo', 'label' => 'Refunded']
     ];
     $statusKeys = array_keys($statuses);
     $currentStatus = strtolower($order->status);
-    if ($currentStatus === 'refunded') {
-        // Keep 'Completed' label, just mark it as the final step
-        $statusIndex = 3; // Index of 'completed'
-    } else {
-        $statusIndex = array_search($currentStatus, $statusKeys);
-    }
-    if($statusIndex === false && $currentStatus == 'cancelled') $statusIndex = -1;
+    $statusIndex = array_search($currentStatus, $statusKeys);
+    if($statusIndex === false && in_array($currentStatus, ['cancelled'])) $statusIndex = -1;
     $progressWidth = $statusIndex >= 0 ? ($statusIndex / (count($statusKeys) - 1)) * 100 : 0;
 @endphp
 
@@ -125,17 +123,28 @@
                         <i class="fas fa-arrow-left"></i> BACK TO ORDERS
                     </a>
                     <h1 class="text-4xl font-black text-gray-900 tracking-tight">Order Details</h1>
-                    <p class="text-gray-500 mt-2 font-medium flex items-center gap-3">
+                    <p class="text-gray-500 mt-2 font-medium flex flex-wrap items-center gap-3">
                         <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-black text-gray-600">ID: #{{ $order->order_number }}</span>
+                        <span class="order-badge badge-{{ strtolower($order->status) }} px-4 py-1.5 rounded-xl text-[10px] font-black shadow-sm">
+                            <i class="fas fa-circle text-[5px] mr-1.5 opacity-60"></i> {{ strtoupper($order->status) }}
+                        </span>
                         <span>Placed on {{ $order->created_at->format('M d, Y') }}</span>
                     </p>
                 </div>
                 <div class="flex gap-3">
-                    @if(in_array(strtolower($order->status), ['pending', 'processing']))
+                    @if(in_array(strtolower($order->status), ['pending', 'confirmed', 'processing']))
                         <form action="{{ route('frontend.profile.order-cancel', $order->order_number) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
                             @csrf
                             <button type="submit" class="group flex items-center gap-3 px-6 py-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl font-black text-xs transition-all border border-red-100">
                                 <i class="fas fa-times-circle group-hover:rotate-90 transition-transform"></i> CANCEL ORDER
+                            </button>
+                        </form>
+                    @endif
+                    @if(in_array(strtolower($order->status), ['delivered', 'cancelled', 'refunded']))
+                        <form action="{{ route('frontend.profile.order-reorder', $order->order_number) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="group flex items-center gap-3 px-6 py-3 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white rounded-2xl font-black text-xs transition-all border border-indigo-100 shadow-sm">
+                                <i class="fas fa-redo group-hover:rotate-180 transition-transform duration-500"></i> REORDER
                             </button>
                         </form>
                     @endif
@@ -169,14 +178,12 @@
                 </div>
             </div>
             @else
-            <div class="bg-red-50 rounded-[2.5rem] p-8 border border-red-100 mb-12 flex items-center gap-6">
-                <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl">
-                    <i class="fas fa-times"></i>
+            <div class="bg-white rounded-[2.5rem] p-12 shadow-sm border border-gray-100 mb-12 text-center">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center {{ $currentStatus === 'refunded' ? 'bg-purple-50 text-purple-500' : 'bg-red-50 text-red-500' }}">
+                    <i class="fas {{ $currentStatus === 'refunded' ? 'fa-undo' : 'fa-times-circle' }} text-3xl"></i>
                 </div>
-                <div>
-                    <h3 class="text-xl font-black text-red-900">Order Cancelled</h3>
-                    <p class="text-red-700 font-medium">This order was cancelled on {{ $order->updated_at->format('M d, Y') }}.</p>
-                </div>
+                <h3 class="text-2xl font-black text-gray-900 mb-2">Order {{ ucfirst($currentStatus) }}</h3>
+                <p class="text-gray-500 font-medium">This order has been {{ $currentStatus }} on {{ $order->updated_at->format('M d, Y') }}. If you have any questions, please contact support.</p>
             </div>
             @endif
 
