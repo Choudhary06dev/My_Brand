@@ -809,7 +809,7 @@ main {
 .project-card:hover,
 .product-card:hover {
     transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .project-content,
@@ -857,7 +857,7 @@ main {
 .quick-view-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(124, 58, 237, 0.2);
+    background: rgba(31, 41, 55, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;

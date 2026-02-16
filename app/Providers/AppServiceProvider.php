@@ -24,15 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Dynamic Session Isolation
-        $appSlug = Str::slug(config('app.name', 'laravel'), '_');
-        
-        if (request()->is('admin') || request()->is('admin/*')) {
-            config(['session.cookie' => $appSlug . '_admin_session']);
-        } else {
-            config(['session.cookie' => $appSlug . '_session']);
-        }
-
         View::composer('frontend.*', function ($view) {
             $view->with('mainCategories', ProductCategory::whereNull('parent_id')->with('children.children')->orderBy('sequence')->get());
             

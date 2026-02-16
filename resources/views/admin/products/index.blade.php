@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid p-6">
+    <div class="p-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-semibold text-gray-800">Products</h1>
             <a href="{{ route('admin.products.create') }}"
@@ -23,40 +23,42 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100 text-xs uppercase text-gray-500 font-semibold">
-                            <th class="px-6 py-4">ID</th>
-                            <th class="px-6 py-4">Thumbnail</th>
-                            <th class="px-6 py-4">Name</th>
-                            <th class="px-6 py-4">Category</th>
-                            <th class="px-6 py-4">Subcategory</th>
-                            <th class="px-6 py-4">Purchase Price</th>
-                            <th class="px-6 py-4 text-center">Gallery Img</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4 text-center">Sale</th>
-                            <th class="px-6 py-4 text-right">Actions</th>
+                            <th class="px-2 py-4 text-center">ID</th>
+                            <th class="px-2 py-4">Thumbnail</th>
+                            <th class="px-4 py-4 min-w-[150px]">Name</th>
+                            <th class="px-4 py-4">Category</th>
+                            <th class="px-4 py-4">Subcategory</th>
+                            <th class="px-4 py-4">Purchase Price</th>
+                            <th class="px-4 py-4 text-center">Gallery</th>
+                            <th class="px-4 py-4">Status</th>
+                            <th class="px-4 py-4 text-center">Sale</th>
+                            <th class="px-4 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($products as $product)
                             <tr class="hover:bg-gray-50 transition duration-200">
-                                <td class="px-6 py-4 text-gray-500 font-mono text-sm">#{{ $product->id }}</td>
-                                <td class="px-6 py-4">
+                                <td class="px-2 py-4 text-gray-500 font-mono text-xs text-center">#{{ $product->id }}</td>
+                                 <td class="px-2 py-4">
                                     @if($product->main_image)
                                         <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->product_name }}"
-                                            class="w-12 h-12 rounded-full object-cover">
+                                            class="w-10 h-10 rounded-full object-cover mx-auto">
                                     @else
-                                        <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-gray-400">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 mx-auto">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                         </div>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-700">{{ $product->product_name }}</td>
-                                <td class="px-6 py-4 text-gray-600">
-                                    <div class="text-sm">{{ $product->category->category_name ?? 'N/A' }}</div>
+                                <td class="px-4 py-4 font-medium text-gray-700 text-sm leading-tight max-w-xs truncate">
+                                    {{ $product->product_name }}
                                 </td>
-                                <td class="px-6 py-4 text-gray-600">
+                                <td class="px-4 py-4 text-gray-600">
+                                    <div class="text-xs">{{ $product->category->category_name ?? 'N/A' }}</div>
+                                </td>
+                                <td class="px-4 py-4 text-gray-600">
                                     <div class="text-xs text-gray-500">
                                         @if($product->childSubcategory)
                                             {{ $product->childSubcategory->category_name }}
@@ -67,42 +69,43 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-gray-700 font-medium">
+                                <td class="px-4 py-4 text-gray-700 font-medium">
                                     @if($product->purchase_price)
-                                        <span class="text-sm">Rs. {{ number_format($product->purchase_price, 2) }}</span>
+                                        <span class="text-xs">Rs. {{ number_format($product->purchase_price, 2) }}</span>
                                     @else
                                         <span class="text-gray-400 text-xs">-</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-4 py-4 text-center">
                                     <span
-                                        class="inline-flex items-center px-2 py-1 rounded-md text-xs font-bold {{ $product->galleries_count > 0 ? 'bg-indigo-50 text-indigo-700' : 'bg-gray-100 text-gray-400' }}">
-                                        {{ $product->galleries_count }} imgs
+                                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold {{ $product->galleries_count > 0 ? 'bg-indigo-50 text-indigo-700' : 'bg-gray-100 text-gray-400' }}">
+                                        {{ $product->galleries_count }}
                                     </span>
-                                <td class="px-6 py-4">
+                                </td>
+                                <td class="px-4 py-4">
                                     @if($product->status)
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-800">Active</span>
                                     @else
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactive</span>
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-800">Inactive</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-4 py-4 text-center">
                                     @if($product->is_sale)
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Sale On</span>
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Sale</span>
                                     @else
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">Sale Off</span>
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-500">Off</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
+                                <td class="px-4 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-1">
                                         <button onclick="openViewModal({{ $product->id }})"
-                                            class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition duration-200"
+                                            class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition duration-200"
                                             title="View">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -110,9 +113,9 @@
                                             </svg>
                                         </button>
                                         <a href="{{ route('admin.products.edit', $product->id) }}"
-                                            class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition duration-200"
+                                            class="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition duration-200"
                                             title="Edit">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
@@ -123,9 +126,9 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition duration-200"
+                                                class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition duration-200"
                                                 title="Delete">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
@@ -136,7 +139,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-8 text-center text-gray-500">
+                                 <td colspan="10" class="px-6 py-8 text-center text-gray-500">
                                     <div class="flex flex-col items-center justify-center">
                                         <svg class="w-12 h-12 mb-3 text-gray-300" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">

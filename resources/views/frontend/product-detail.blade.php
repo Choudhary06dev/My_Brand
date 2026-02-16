@@ -169,13 +169,82 @@
                         @if($product->color)
                             <div class="mb-8">
                                 <span class="block text-sm font-bold text-gray-900 uppercase mb-4">Color:
-                                    {{ $product->color }}</span>
-                                <div class="flex gap-2">
-                                    <button type="button"
-                                        class="w-8 h-8 rounded-full border-2 border-gray-900 ring-2 ring-transparent ring-offset-2 transition-all p-0.5"
-                                        style="background-color: {{ strtolower($product->color) == 'white' ? '#fff' : strtolower($product->color) }}; border-color: #eee;">
-                                        <span class="sr-only">{{ $product->color }}</span>
-                                    </button>
+                                    <span id="selectedColorName">{{ trim(explode(',', $product->color)[0]) }}</span></span>
+                                <div class="flex flex-wrap gap-3">
+                                    @php
+                                        $colors = explode(',', $product->color);
+                                    @endphp
+                                    @foreach($colors as $index => $color)
+                                        @php
+                                            $trimmedColor = trim($color);
+                                            // Handle special color names or hex codes if needed
+                                            $displayColor = strtolower($trimmedColor);
+                                            // Comprehensive color mapping for common fashion/design colors
+                                            $colorMap = [
+                                                // Standard Colors
+                                                'white' => '#ffffff',
+                                                'black' => '#000000',
+                                                'red' => '#ef4444',
+                                                'blue' => '#3b82f6',
+                                                'green' => '#22c55e',
+                                                'pink' => '#ec4899',
+                                                'yellow' => '#eab308',
+                                                'gray' => '#6b7280',
+                                                'grey' => '#6b7280',
+                                                'orange' => '#f97316',
+                                                'purple' => '#a855f7',
+                                                'indigo' => '#6366f1',
+                                                'violet' => '#8b5cf6',
+                                                
+                                                // Fashion & Common Tones
+                                                'navy' => '#1e3a8a',
+                                                'navy blue' => '#1e3a8a',
+                                                'maroon' => '#800000',
+                                                'burgundy' => '#800020',
+                                                'crimson' => '#dc143c',
+                                                'teal' => '#0d9488',
+                                                'cyan' => '#06b6d4',
+                                                'turquoise' => '#40e0d0',
+                                                'magenta' => '#d946ef',
+                                                'lavender' => '#e6e6fa',
+                                                'beige' => '#f5f5dc',
+                                                'cream' => '#fffdd0',
+                                                'ivory' => '#fffff0',
+                                                'khaki' => '#f0e68c',
+                                                'olive' => '#808000',
+                                                'brown' => '#92400e',
+                                                'chocolate' => '#d2691e',
+                                                'tan' => '#d2b48c',
+                                                'coffee' => '#6f4e37',
+                                                'mustard' => '#ffdb58',
+                                                'gold' => '#ffd700',
+                                                'silver' => '#c0c0c0',
+                                                'charcoal' => '#36454f',
+                                                'slate' => '#708090',
+                                                'sky blue' => '#87ceeb',
+                                                'baby blue' => '#89cff0',
+                                                'baby pink' => '#f4c2c2',
+                                                'peach' => '#ffdab9',
+                                                'coral' => '#ff7f50',
+                                                'salmon' => '#fa8072',
+                                                'mint' => '#98ff98',
+                                                'lime' => '#84cc16',
+                                                'forest green' => '#228b22',
+                                                'rust' => '#b7410e',
+                                                'camel' => '#c19a6b',
+                                                'off white' => '#f8f8ff',
+                                                'zinc' => '#71717a',
+                                            ];
+                                            $hexColor = $colorMap[$displayColor] ?? $displayColor;
+                                        @endphp
+                                        <button type="button"
+                                            class="color-swatch w-10 h-10 rounded-full border-2 transition-all duration-200 p-0.5 {{ $index === 0 ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2' : 'border-gray-200 hover:border-gray-400' }}"
+                                            style="background-color: {{ $hexColor }};"
+                                            onclick="selectColor(this, '{{ $trimmedColor }}')"
+                                            title="{{ $trimmedColor }}">
+                                            <span class="sr-only">{{ $trimmedColor }}</span>
+                                        </button>
+                                    @endforeach
                                 </div>
                             </div>
                         @endif
@@ -211,11 +280,23 @@
 
                         <script>
                             let selectedSize = '';
+                            let selectedColor = '{{ $product->color ? trim(explode(',', $product->color)[0]) : "" }}';
 
                             function selectSize(btn, size) {
                                 document.querySelectorAll('.size-box').forEach(b => b.classList.remove('active'));
                                 btn.classList.add('active');
                                 selectedSize = size;
+                            }
+
+                            function selectColor(btn, color) {
+                                document.querySelectorAll('.color-swatch').forEach(b => {
+                                    b.classList.remove('border-gray-900', 'ring-2', 'ring-gray-900', 'ring-offset-2');
+                                    b.classList.add('border-gray-200');
+                                });
+                                btn.classList.remove('border-gray-200');
+                                btn.classList.add('border-gray-900', 'ring-2', 'ring-gray-900', 'ring-offset-2');
+                                selectedColor = color;
+                                document.getElementById('selectedColorName').innerText = color;
                             }
 
                             function incrementQty() {
@@ -253,7 +334,7 @@
                                         product_id: {{ $product->id }},
                                         quantity: quantity,
                                         size: selectedSize,
-                                        color: "{{ $product->color }}"
+                                        color: selectedColor
                                     },
                                     success: function(response) {
                                         if(response.status === 'success') {

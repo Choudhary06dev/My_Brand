@@ -82,10 +82,12 @@
             <!-- Products with Sub-menu -->
             <!-- Shop Management Link -->
             <div
-                x-data="{ open: {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.product-categories.*') || request()->routeIs('admin.fabric-categories.*') || request()->routeIs('admin.fabrics.*') ? 'true' : 'false' }} }">
+                x-data="{ open: {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.product-categories.*') || request()->routeIs('admin.fabric-categories.*') || request()->routeIs('admin.fabrics.*') ? 'true' : 'false' }} }"
+                class="rounded-lg transition-colors duration-200 hover:bg-gray-800"
+                :class="{ 'bg-gray-800': open || {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.product-categories.*') || request()->routeIs('admin.fabric-categories.*') || request()->routeIs('admin.fabrics.*') ? 'true' : 'false' }} }">
                 <div class="flex items-center">
                     <a href="#" @click.prevent="open = !open"
-                        class="flex-1 flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-l-lg transition-colors duration-200 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.product-categories.*') || request()->routeIs('admin.fabric-categories.*') || request()->routeIs('admin.fabrics.*') ? 'bg-gray-800 text-white' : '' }}">
+                        class="flex-1 flex items-center px-4 py-3 text-white transition-colors duration-200">
                         <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -93,8 +95,7 @@
                         <span>Shop Mgmt.</span>
                     </a>
                     <button @click="open = !open"
-                        class="px-3 py-3 text-white hover:bg-gray-800 rounded-r-lg transition-colors duration-200 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.product-categories.*') || request()->routeIs('admin.fabric-categories.*') || request()->routeIs('admin.fabrics.*') ? 'bg-gray-800' : '' }}"
-                        :class="{ 'bg-gray-800': open }">
+                        class="px-3 py-3 text-white transition-colors duration-200">
                         <svg class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -188,19 +189,20 @@
         @if(auth()->user()->hasPermission('contact_messages') || auth()->user()->hasPermission('activity_logs') || auth()->user()->hasPermission('error_logs') || auth()->user()->hasPermission('visitors') || auth()->user()->hasPermission('clients') || auth()->user()->hasPermission('certificates') || auth()->user()->hasPermission('dashboard'))
             <!-- Pages with Sub-menu -->
             <div
-                x-data="{ open: {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'true' : 'false' }} }">
+                x-data="{ open: {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'true' : 'false' }} }"
+                class="rounded-lg transition-colors duration-200 hover:bg-gray-800"
+                :class="{ 'bg-gray-800': open || {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'true' : 'false' }} }">
                 <div class="flex items-center">
                     <a href="#" @click.prevent="open = !open"
-                        class="flex-1 flex items-center px-4 py-3 text-white hover:bg-gray-800 hover:text-white rounded-l-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') || request()->routeIs('admin.pages.*') || request()->routeIs('admin.clients.*') || request()->routeIs('admin.certificates.*') ? 'bg-gray-800 text-white' : '' }}">
+                        class="flex-1 flex items-center px-4 py-3 text-white transition-colors duration-200">
                         <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                         <span>Pages</span>
                     </a>
                     <button @click="open = !open"
-                        class="px-3 py-3 text-white hover:bg-gray-800 rounded-r-lg transition-colors duration-200 {{ request()->routeIs('admin.contact-messages.*') || request()->routeIs('admin.activity-logs.*') || request()->routeIs('admin.error-logs.*') || request()->routeIs('admin.visitors.*') ? 'bg-gray-800' : '' }}"
-                        :class="{ 'bg-gray-800': open }">
+                        class="px-3 py-3 text-white transition-colors duration-200">
                         <svg class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
