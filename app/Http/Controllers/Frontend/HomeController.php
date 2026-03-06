@@ -18,7 +18,7 @@ class HomeController extends Controller
         $sliders = Slider::where('status', 1)->orderBy('sequence')->get();
         $services = Service::where('status', 1)->orderBy('sequence')->get();
         $products = Product::where('status', 1)->latest()->get();
-        $blogs = Blog::where('status', 1)->latest('published_at')->take(3)->get();
+        $blogs = Blog::where('status', 1)->latest('published_at')->get();
         $categories = ProductCategory::whereNull('parent_id')->orderBy('sequence')->take(7)->get();
         $totalCategories = ProductCategory::whereNull('parent_id')->count();
         $company = CompanyInfo::first();
@@ -100,7 +100,7 @@ class HomeController extends Controller
     public function companyShow($id = null)
     {
         $company = CompanyInfo::first(); // Layout data
-        
+
         if ($id) {
             $targetCompany = CompanyInfo::findOrFail($id);
         } else {
@@ -109,7 +109,7 @@ class HomeController extends Controller
                 return redirect()->route('home'); // Or handle empty state
             }
         }
-        
+
         return view('frontend.company-detail', compact('company', 'targetCompany'));
     }
 
