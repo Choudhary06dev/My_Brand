@@ -40,13 +40,6 @@ class AuthenticatedSessionController extends Controller
         // Log activity
         $this->logActivity('Login', 'User logged in successfully');
 
-        // Strict Guard Separation: Logout from the other guard
-        if ($guard === 'admin') {
-            Auth::guard('web')->logout();
-        } else {
-            Auth::guard('admin')->logout();
-        }
-
         // Redirect based on request path
         if ($request->is('admin/login')) {
             return redirect()->route('admin.dashboard');
@@ -70,19 +63,23 @@ class AuthenticatedSessionController extends Controller
         // Logout from specific guard
         Auth::guard($guard)->logout();
 
-        // If it's a web/frontend logout, we might want to also ensure admin is logged out 
-        // if they share a session (though they shouldn't with separate guards)
-        if (!$isAdmin) {
-             // Optional: Auth::guard('admin')->logout(); 
+        // Check if other guard is still authenticated
+        $otherGuard = $isAdmin ? 'web' : 'admin';
+        $otherActive = Auth::guard($otherGuard)->check();
+
+        if (!$otherActive) {
+            // Only invalidate the full session and regenerate token if NO guards are active
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        } else {
+            // If the other guard is still active, just regenerate the CSRF token to be safe
+            // but keep the session data (like the other guard's login state)
+            $request->session()->regenerateToken();
         }
 
-        // Invalidate the session and regenerate the CSRF token
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
         if ($isAdmin) {
-            return Route::has('admin.login') 
-                ? redirect()->route('admin.login') 
+            return Route::has('admin.login')
+                ? redirect()->route('admin.login')
                 : redirect('/admin/login');
         }
 

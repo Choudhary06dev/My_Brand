@@ -1,192 +1,295 @@
 @extends('frontend.layouts.app')
 
-@section('content')
+@push('styles')
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
+    .contact-page {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(1100px 500px at 0% 0%, rgba(99, 102, 241, 0.14), transparent 55%),
+            radial-gradient(900px 460px at 100% 20%, rgba(6, 182, 212, 0.12), transparent 56%),
+            #f8fafc;
+    }
+
     .contact-hero {
-        background-image: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('{{ asset("assets/contact_hero.png") }}');
+        background-image: linear-gradient(115deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.86) 45%, rgba(30, 64, 175, 0.72) 100%),
+        url('{{ asset("assets/contact_hero.png") }}');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .contact-surface-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 1.5rem;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+        padding: 2rem;
+    }
+
+    .contact-input {
+        width: 100%;
+        border-radius: 0.9rem;
+        border: 1.8px solid #dbe2ea;
+        background: #f8fafc;
+        padding: 0.85rem 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        outline: none;
+    }
+
+    .contact-input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        background: #ffffff;
+    }
+
+    .contact-input.error {
+        border-color: #ef4444;
+    }
+
+    .contact-info-item {
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+        padding: 0.9rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.95rem;
+        background: #f9fafb;
+        transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    a.contact-info-item:hover {
+        transform: translateY(-2px);
+        border-color: rgba(99, 102, 241, 0.55);
+    }
+
+    .contact-info-icon {
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 0.7rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.13), rgba(59, 130, 246, 0.16));
+        color: #4f46e5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .contact-hours-card {
+        background: linear-gradient(140deg, #111827 0%, #1f2937 50%, #1e3a8a 100%);
+        border-radius: 1.5rem;
+        color: #ffffff;
+        padding: 1.6rem;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+    }
+
+    .contact-hours-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.85rem;
+        margin-bottom: 0.85rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .contact-hours-row:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+        .contact-surface-card {
+            padding: 1.25rem;
+            border-radius: 1.1rem;
+        }
+
     }
 </style>
+@endpush
 
-<div class="relative overflow-hidden bg-white">
-    <!-- Hero Section -->
-    <section class="contact-hero relative py-32 md:py-48 px-4 text-center">
-        <div class="relative z-10 max-w-4xl mx-auto" data-aos="fade-up">
-            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-indigo-300 uppercase bg-white/10 rounded-full backdrop-blur-sm border border-white/20">
-                Get In Touch
-            </span>
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight">
-                Let's Start a <span class="gradient-text">Conversation</span>
-            </h1>
-            <p class="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
-                {{ $company->tagline ?? 'Quality and Innovation at every step.' }} 
-                We're here to help you achieve your goals with our premium solutions.
-            </p>
+@section('content')
+@php
+$companyTagline = $company->tagline ?? 'Quality and innovation at every step.';
+$companyEmail = $company->email ?? null;
+$companyPhone = $company->phone ?? null;
+$companyAddress = trim(($company->address ?? '') . ' ' . ($company->city ?? '') . ' ' . ($company->country ?? ''));
+@endphp
+
+<div class="contact-page">
+    <section class="contact-hero pt-32 pb-20 md:pt-40 md:pb-24">
+        <div class="container-custom">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-white">
+                    Tell Us What You Need
+                    <span class="block gradient-text">We Reply Quickly</span>
+                </h1>
+                <p class="mt-5 text-base md:text-lg text-slate-200 leading-relaxed">
+                    {{ $companyTagline }} Reach out for product support, service inquiries, or a custom quote.
+                    Our team reviews every message carefully.
+                </p>
+            </div>
         </div>
     </section>
-      <div class="h-5"></div>
 
-    <!-- Main Content -->
-    <div class="container-custom mt-20 relative z-20 pb-32">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
-            <!-- Left: Contact Form -->
-            <div class="lg:col-span-6 bg-white rounded-[2.5rem] shadow-2xl p-6 md:p-10 border border-gray-100" data-aos="fade-right">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-black text-gray-900 mb-3">Send us a Message</h2>
-                    <p class="text-gray-500 text-sm">Expect a response within 24 hours.</p>
-                </div>
+    <div class="h-10 md:h-5"></div>
 
-                @if(session('success'))
-                    <div class="mb-8 p-6 bg-green-50 border-l-4 border-green-500 rounded-xl flex items-center shadow-sm">
-                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-4 shrink-0 text-white">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <p class="text-green-800 font-bold">{{ session('success') }}</p>
+    <section class="container-custom pb-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div class="lg:col-span-7" data-aos="fade-up">
+                <div class="contact-surface-card">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Send a Message</h2>
+                    <p class="mt-2 text-sm text-gray-500">Fill in your details and our team will get back to you soon.</p>
+
+                    @if(session('success'))
+                    <div class="mt-6 p-4 rounded-xl border border-green-200 bg-green-50 text-green-800 flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fas fa-check text-xs"></i>
+                        </span>
+                        <p class="text-sm font-semibold">{{ session('success') }}</p>
                     </div>
-                @endif
+                    @endif
 
-                <form action="{{ route('frontend.contact.store') }}" method="POST" class="space-y-6">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">Full Name</label>
-                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter your name" 
-                                class="w-full px-6 py-4 rounded-2xl input-premium @error('name') border-red-500 @enderror" required>
-                            @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">Email Address</label>
-                            <input type="email" name="email" value="{{ old('email') }}" placeholder="hello@company.com" 
-                                class="w-full px-6 py-4 rounded-2xl input-premium @error('email') border-red-500 @enderror" required>
-                            @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">Phone Number</label>
-                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="+92 000 0000000" 
-                                class="w-full px-6 py-4 rounded-2xl input-premium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">Subject</label>
-                            <input type="text" name="subject" value="{{ old('subject') }}" placeholder="Inquiry about..." 
-                                class="w-full px-6 py-4 rounded-2xl input-premium">
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">Message</label>
-                        <textarea name="message" rows="5" placeholder="Tell us more about your needs..." 
-                            class="w-full px-6 py-4 rounded-2xl input-premium @error('message') border-red-500 @enderror" required>{{ old('message') }}</textarea>
-                        @error('message') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <button type="submit" class="w-full py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-lg transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-indigo-200 flex items-center justify-center group">
-                        <span>Launch Message</span>
-                        <i class="fas fa-paper-plane ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                    </button>
-                </form>
-            </div>
-          
-
-            <!-- Right: Info Side -->
-            <div class="lg:col-span-6 flex flex-col gap-8">
-                
-                <!-- Profile/Support Card -->
-                <div class="bg-indigo-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden group shadow-2xl" data-aos="fade-left">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-white/10 transition-colors"></div>
-                    <div class="relative z-10 flex flex-col h-full">
-                        <div class="flex items-center gap-6 mb-8">
-                            <div class="relative items-center">
-                                <img src="{{ asset('assets/support_person.png') }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-white/20 shadow-2xl floating-anim" alt="Support">
-                                <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-4 border-indigo-900 rounded-full"></span>
+                    <form action="{{ route('frontend.contact.store') }}" method="POST" class="space-y-5 mt-6">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label for="name" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Full Name</label>
+                                <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Enter your name"
+                                    class="contact-input @error('name') error @enderror" required>
+                                @error('name')
+                                <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <h4 class="text-xl font-black">24/7 Priority Support</h4>
-                                <p class="text-indigo-200 text-sm">Always here to help you</p>
+                                <label for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Email Address</label>
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com"
+                                    class="contact-input @error('email') error @enderror" required>
+                                @error('email')
+                                <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
-                        
-                        <div class="space-y-6 mt-auto">
-                            <a href="mailto:{{ $company->email }}" class="flex items-center p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all">
-                                <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
-                                    <i class="fas fa-envelope text-indigo-300"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] uppercase font-black tracking-widest text-indigo-300 opacity-70">Email Us</p>
-                                    <p class="font-bold">{{ $company->email }}</p>
-                                </div>
-                            </a>
 
-                            <a href="tel:{{ $company->phone }}" class="flex items-center p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all">
-                                <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
-                                    <i class="fas fa-phone-alt text-indigo-300"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] uppercase font-black tracking-widest text-indigo-300 opacity-70">Call Direct</p>
-                                    <p class="font-bold">{{ $company->phone }}</p>
-                                </div>
-                            </a>
-
-                            <div class="flex items-center p-4 bg-white/5 border border-white/10 rounded-2xl">
-                                <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
-                                    <i class="fas fa-map-marker-alt text-indigo-300"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] uppercase font-black tracking-widest text-indigo-300 opacity-70">Office Address</p>
-                                    <p class="font-bold">{{ $company->address }}<br>{{ $company->city }}, {{ $company->country }}</p>
-                                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label for="phone" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Phone Number</label>
+                                <input id="phone" type="text" name="phone" value="{{ old('phone') }}" placeholder="+92 000 0000000"
+                                    class="contact-input">
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Subject</label>
+                                <input id="subject" type="text" name="subject" value="{{ old('subject') }}" placeholder="How can we help?"
+                                    class="contact-input">
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Hours Card -->
-                <div class="bg-gray-900 rounded-[2.5rem] p-8 text-white flex flex-col relative overflow-hidden group shadow-2xl" data-aos="fade-left" data-aos-delay="100">
-                    <div class="absolute bottom-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full -mb-24 -mr-24 blur-3xl"></div>
-                    <h3 class="text-2xl font-black mb-8 flex items-center">
-                        <i class="fas fa-clock mr-4 text-indigo-400"></i> Operational Hours
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center pb-4 border-b border-white/5">
-                            <span class="text-gray-400 font-bold">Mon — Fri</span>
-                            <span class="font-black text-indigo-400">09:00 — 18:00</span>
+                        <div>
+                            <label for="message" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Please share the details of your request..."
+                                class="contact-input @error('message') error @enderror" required>{{ old('message') }}</textarea>
+                            @error('message')
+                            <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="flex justify-between items-center pb-4 border-b border-white/5">
-                            <span class="text-gray-400 font-bold">Saturday</span>
-                            <span class="font-black text-indigo-400">09:00 — 14:00</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400 font-bold">Sunday</span>
-                            <span class="font-black text-red-500 uppercase tracking-widest text-sm">Closed</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Social Links -->
-                <!-- <div class="flex gap-4" data-aos="fade-up">
-                    <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:shadow-xl transition-all"><i class="fab fa-facebook-f text-xl"></i></a>
-                    <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-400 hover:shadow-xl transition-all"><i class="fab fa-twitter text-xl"></i></a>
-                    <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-pink-600 hover:shadow-xl transition-all"><i class="fab fa-instagram text-xl"></i></a>
-                    <a href="#" class="flex-1 h-16 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-indigo-800 hover:shadow-xl transition-all"><i class="fab fa-linkedin-in text-xl"></i></a>
-                </div> -->
-                
-                <!-- Spacer to maintain layout gap -->
-                <div class="h-16"></div>
+                        <button type="submit"
+                            class="w-full md:w-auto inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-indigo-200">
+                            Send Message
+                            <i class="fas fa-paper-plane ml-2 text-sm"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- AOS Library for scroll animations -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+            <div class="lg:col-span-5 flex flex-col gap-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="contact-surface-card">
+                    <h3 class="text-xl font-extrabold text-gray-900">Reach Us Directly</h3>
+                    <p class="text-sm text-gray-500 mt-1">Prefer direct contact? Use the details below.</p>
+
+                    <div class="space-y-3 mt-5">
+                        @if($companyEmail)
+                        <a href="mailto:{{ $companyEmail }}" class="contact-info-item">
+                            <span class="contact-info-icon"><i class="fas fa-envelope"></i></span>
+                            <span>
+                                <span class="block text-xs uppercase tracking-wider text-gray-400 font-bold">Email</span>
+                                <span class="font-semibold text-gray-800 break-all">{{ $companyEmail }}</span>
+                            </span>
+                        </a>
+                        @endif
+
+                        @if($companyPhone)
+                        <a href="tel:{{ $companyPhone }}" class="contact-info-item">
+                            <span class="contact-info-icon"><i class="fas fa-phone-alt"></i></span>
+                            <span>
+                                <span class="block text-xs uppercase tracking-wider text-gray-400 font-bold">Phone</span>
+                                <span class="font-semibold text-gray-800">{{ $companyPhone }}</span>
+                            </span>
+                        </a>
+                        @endif
+
+                        <div class="contact-info-item">
+                            <span class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <span>
+                                <span class="block text-xs uppercase tracking-wider text-gray-400 font-bold">Address</span>
+                                <span class="font-semibold text-gray-800">
+                                    {{ $companyAddress !== '' ? $companyAddress : 'Address details are not available yet.' }}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-hours-card flex-grow flex flex-col justify-between">
+                    <h3 class="text-lg font-extrabold mb-4 flex items-center">
+                        <i class="fas fa-clock mr-2 text-indigo-300"></i>
+                        Office Hours
+                    </h3>
+                    <div class="contact-hours-row">
+                        <span class="text-slate-300">Mon - Fri</span>
+                        <span class="font-semibold">09:00 - 18:00</span>
+                    </div>
+                    <div class="contact-hours-row">
+                        <span class="text-slate-300">Saturday</span>
+                        <span class="font-semibold">09:00 - 14:00</span>
+                    </div>
+                    <div class="contact-hours-row">
+                        <span class="text-slate-300">Sunday</span>
+                        <span class="font-semibold text-rose-300">Closed</span>
+                    </div>
+                </div>
+
+                <!-- <div class="contact-surface-card mt-auto">
+                    <h3 class="text-xl font-extrabold text-gray-900">Need Product Help?</h3>
+                    <p class="text-sm text-gray-500 mt-2">
+                        Browse our latest products and include item names in your message for faster support.
+                    </p>
+                    <a href="{{ route('frontend.products') }}"
+                        class="inline-flex items-center mt-5 text-indigo-600 font-bold hover:text-indigo-700 transition-colors">
+                        View Products
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div> -->
+            </div>
+
+            <div class="h-10 md:h-5"></div>
+    </section>
+</div>
+@endsection
+
+@push('scripts')
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    AOS.init({
-        duration: 1000,
-        once: true,
-        easing: 'ease-out-cubic'
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 850,
+                once: true,
+                easing: 'ease-out-cubic'
+            });
+        }
     });
 </script>
-@endsection
+@endpush

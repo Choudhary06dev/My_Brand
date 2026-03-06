@@ -63,6 +63,8 @@ class ProductCategoryController extends Controller
             $validatedData['image'] = $imagePath;
         }
 
+        $validatedData['sequence'] = $validatedData['sequence'] ?? 0;
+
         ProductCategory::create($validatedData);
 
         return redirect()->route('admin.product-categories.index')->with('success', 'Product Category created successfully.');
@@ -107,6 +109,8 @@ class ProductCategoryController extends Controller
             $validatedData['image'] = $imagePath;
         }
 
+        $validatedData['sequence'] = $validatedData['sequence'] ?? 0;
+
         $productCategory->update($validatedData);
 
         return redirect()->route('admin.product-categories.index')->with('success', 'Product Category updated successfully.');
@@ -148,6 +152,8 @@ class ProductCategoryController extends Controller
             $validatedData['image'] = $imagePath;
         }
 
+        $validatedData['sequence'] = $validatedData['sequence'] ?? 0;
+
         $subcategory = ProductCategory::create($validatedData);
 
         return response()->json([
@@ -184,6 +190,8 @@ class ProductCategoryController extends Controller
             $imagePath = $request->file('image')->store('categories', 'public');
             $validatedData['image'] = $imagePath;
         }
+
+        $validatedData['sequence'] = $validatedData['sequence'] ?? 0;
 
         $subcategory->update($validatedData);
 

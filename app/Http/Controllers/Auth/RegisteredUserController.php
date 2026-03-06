@@ -50,21 +50,14 @@ class RegisteredUserController extends Controller
 
         Auth::guard($guard)->login($user);
 
-        // Clear session data from other guards to ensure isolation during login
         if ($isAdmin) {
-            Auth::guard('web')->logout();
-        } else {
-            Auth::guard('admin')->logout();
-        }
-
-        if ($isAdmin) {
-            return Route::has('admin.dashboard') 
-                ? redirect()->route('admin.dashboard') 
+            return Route::has('admin.dashboard')
+                ? redirect()->route('admin.dashboard')
                 : redirect('/admin/dashboard');
         }
 
-        return Route::has('home') 
-            ? redirect()->route('home') 
+        return Route::has('home')
+            ? redirect()->route('home')
             : redirect('/');
     }
 }
