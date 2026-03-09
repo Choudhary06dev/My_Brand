@@ -40,7 +40,11 @@
       <div>
         <h3>Company</h3>
         <ul>
+          <li><a href="{{ route('home') }}">Home</a></li>
           <li><a href="{{ route('frontend.about') }}">About Us</a></li>
+          <li><a href="{{ route('frontend.products') }}">Products</a></li>
+          <li><a href="{{ route('frontend.sale') }}">Sale</a></li>
+          <li><a href="{{ route('frontend.services') }}">Services</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
         </ul>
       </div>

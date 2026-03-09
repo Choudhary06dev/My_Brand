@@ -125,7 +125,7 @@ $companyAddress = trim(($company->address ?? '') . ' ' . ($company->city ?? '') 
                     Tell Us What You Need
                     <span class="block gradient-text">We Reply Quickly</span>
                 </h1>
-                <p class="mt-5 text-base md:text-lg text-slate-200 leading-relaxed">
+                <p class="mt-5 text-base md:text-lg text-white leading-relaxed">
                     {{ $companyTagline }} Reach out for product support, service inquiries, or a custom quote.
                     Our team reviews every message carefully.
                 </p>
@@ -137,8 +137,8 @@ $companyAddress = trim(($company->address ?? '') . ' ' . ($company->city ?? '') 
 
     <section class="container-custom pb-24">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            <div class="lg:col-span-7" data-aos="fade-up">
-                <div class="contact-surface-card">
+            <div class="lg:col-span-7 flex flex-col h-full" data-aos="fade-up">
+                <div class="contact-surface-card flex-grow">
                     <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Send a Message</h2>
                     <p class="mt-2 text-sm text-gray-500">Fill in your details and our team will get back to you soon.</p>
 
@@ -202,8 +202,8 @@ $companyAddress = trim(($company->address ?? '') . ' ' . ($company->city ?? '') 
                     </form>
                 </div>
             </div>
-
-            <div class="lg:col-span-5 flex flex-col gap-6" data-aos="fade-up" data-aos-delay="100">
+<!-- Reach Us Directly -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-6 h-full" data-aos="fade-up" data-aos-delay="100">
                 <div class="contact-surface-card">
                     <h3 class="text-xl font-extrabold text-gray-900">Reach Us Directly</h3>
                     <p class="text-sm text-gray-500 mt-1">Prefer direct contact? Use the details below.</p>
@@ -240,7 +240,7 @@ $companyAddress = trim(($company->address ?? '') . ' ' . ($company->city ?? '') 
                         </div>
                     </div>
                 </div>
-
+<!-- Office Hours -->
                 <div class="contact-hours-card flex-grow flex flex-col justify-between">
                     <h3 class="text-lg font-extrabold mb-4 flex items-center">
                         <i class="fas fa-clock mr-2 text-indigo-300"></i>

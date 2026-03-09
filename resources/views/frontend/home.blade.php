@@ -351,9 +351,8 @@
       <p class="section-subtitle">Comprehensive solutions tailored to your business needs</p>
     </div>
     <div class="services-grid">
-      @foreach($services as $service)
-      <div class="service-card service-item hover:shadow-xl transition-all duration-300"
-        style="padding: 0; {{ $loop->index >= 3 ? 'display: none;' : '' }}">
+      @foreach($services->take(3) as $service)
+      <div class="service-card hover:shadow-xl transition-all duration-300" style="padding: 0;">
         <a href="{{ route('frontend.services.detail', $service->slug) }}" class="block h-full">
           @if($service->banner_image)
           <div class="h-40 w-full overflow-hidden rounded-t-2xl">
@@ -392,40 +391,7 @@
       @endforeach
     </div>
 
-    @if($services->count() > 3)
-    <div class="text-center mt-12">
-      <button id="toggleServicesBtn"
-        class="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 text-white font-bold rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg hover:shadow-indigo-200">
-        Show More
-      </button>
-    </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.getElementById('toggleServicesBtn');
-        const items = document.querySelectorAll('.service-item');
-
-        if (toggleBtn) {
-          toggleBtn.addEventListener('click', function() {
-            const isShowingAll = this.innerText === 'Show Less';
-
-            if (isShowingAll) {
-              items.forEach((el, index) => {
-                if (index >= 3) el.style.display = 'none';
-              });
-              this.innerText = 'Show More';
-              document.querySelector('.services-section').scrollIntoView({
-                behavior: 'smooth'
-              });
-            } else {
-              items.forEach(el => el.style.display = '');
-              this.innerText = 'Show Less';
-            }
-          });
-        }
-      });
-    </script>
-    @endif
   </div>
 </section>
 @endif
@@ -445,7 +411,7 @@
       <div class="blog-card blog-item" style="{{ $index >= 3 ? 'display: none;' : '' }}">
         <div class="blog-image">
           @if($blog->thumbnail)
-          <img src="{{ asset('storage/' . $blog->thumbnail) }}" alt="{{ $blog->title }}">
+          <img src="{{ asset('storage/' . $blog->thumbnail) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
           @else
           <div class="image-placeholder">
             <span>📰</span>
