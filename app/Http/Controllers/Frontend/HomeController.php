@@ -128,11 +128,6 @@ class HomeController extends Controller
         return view('frontend.services', compact('company', 'singleService', 'otherServices'));
     }
 
-    public function careers()
-    {
-        $company = CompanyInfo::first();
-        return view('frontend.careers', compact('company'));
-    }
 
     public function news()
     {
