@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
@@ -34,10 +37,10 @@
             <!-- Page Content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
                 @isset($header)
-                    <!-- Optional Header for breadcrumbs or page titles if passed -->
-                    <div class="mb-6">
-                        {{ $header }}
-                    </div>
+                <!-- Optional Header for breadcrumbs or page titles if passed -->
+                <div class="mb-6">
+                    {{ $header }}
+                </div>
                 @endisset
 
                 <div class="px-4 sm:px-6 lg:px-8">
@@ -51,13 +54,13 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
                 const alerts = document.querySelectorAll('[role="alert"]');
-                alerts.forEach(function (alert) {
+                alerts.forEach(function(alert) {
                     alert.style.transition = 'opacity 0.3s ease-out';
                     alert.style.opacity = '0';
-                    setTimeout(function () {
+                    setTimeout(function() {
                         alert.remove();
                     }, 500);
                 });
