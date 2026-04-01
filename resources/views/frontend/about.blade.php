@@ -3,7 +3,9 @@
 @section('content')
 <div class="bg-gray-100 py-8">
     <div class="container-custom max-w-5xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-8 text-center border-b-2 border-indigo-500 w-fit mx-auto pb-2">About Us</h1>
+        <div class="section-header">
+            <h1 class="section-title">About Us</h1>
+        </div>
 
         <!-- Company Info Section -->
         <div class="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-gray-100 p-8 md:p-14 mb-16 overflow-hidden relative group">

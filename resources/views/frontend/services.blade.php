@@ -109,9 +109,10 @@
                 </div>
             @else
                 <!-- SERVICES LISTING VIEW -->
-                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 text-center">Our Services</h1>
-                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">We offer a wide range of comprehensive solutions
-                    tailored to meet your unique business needs.</p>
+                <div class="section-header">
+                    <h1 class="section-title">Our Services</h1>
+                    <p class="section-subtitle">We offer a wide range of comprehensive solutions tailored to meet your unique business needs.</p>
+                </div>
 
                 @if($services->count() > 0)
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
