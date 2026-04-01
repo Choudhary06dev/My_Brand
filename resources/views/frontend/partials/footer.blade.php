@@ -1,85 +1,91 @@
-<footer class="site-footer">
-  <div class="container">
-    <div class="grid">
+<footer class="site-footer bg-gray-950 text-white pt-6">
+    <!-- Main Footer Grid -->
+    <div class="container-custom footer-main pb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            
+            <!-- Brand Column -->
+            <div class="footer-column" data-aos="fade-up" data-aos-delay="100">
+                <a href="{{ url('/') }}" class="footer-logo-link inline-block">
+                    <img src="{{ asset('assets/logo.png') }}" class="footer-logo h-16 mb-6 brightness-0 invert"
+                        alt="{{ $company->company_name ?? config('app.name') }}">
+                </a>
+                <p class="footer-about text-gray-400 mb-2 leading-relaxed text-sm">
+                    {{ config('app.name') }} is a premier brand dedicated to textile excellence, delivering premium quality fabrics and garments with a commitment to innovation and craftsmanship.
+                </p>
+                <div class="social-links-modern flex gap-4">
+                    <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-indigo-600 transition-all duration-300 shadow-lg"><i class="fab fa-facebook-f text-white group-hover:scale-110"></i></a>
+                    <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-sky-500 transition-all duration-300 shadow-lg"><i class="fab fa-twitter text-white group-hover:scale-110"></i></a>
+                    <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-pink-600 transition-all duration-300 shadow-lg"><i class="fab fa-instagram text-white group-hover:scale-110"></i></a>
+                    <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-blue-700 transition-all duration-300 shadow-lg"><i class="fab fa-linkedin-in text-white group-hover:scale-110"></i></a>
+                </div>
+            </div>
 
-      <div>
-        <a href="{{ url('/') }}">
-          <img src="{{ asset('assets/logo.png') }}" class="footer-logo"
-            alt="{{ $company->company_name ?? config('app.name') }}">
-        </a>
-        <p class="footer-about">
-          {{ config('app.name') }} is a leading company dedicated to producing premium quality fabrics and garments.
-        </p>
+            <!-- Company Column -->
+            <div class="footer-column" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="footer-heading text-white font-black text-xl mb-4 relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-indigo-600">Company</h3>
+                <ul class="footer-links space-y-4">
+                    <li><a href="{{ route('frontend.about') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> About Our Brand</a></li>
+                    <li><a href="{{ route('frontend.contact') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> Get In Touch</a></li>
+                    <li><a href="{{ route('frontend.categories') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> Shop Collection</a></li>
+                    <li><a href="{{ route('frontend.news') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> Latest News</a></li>
+                </ul>
+            </div>
 
-        <div class="social-links">
-          <a href="#" class="social-icon"><svg
-              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-            </svg></a>
-          <a href="#" class="social-icon"><svg
-              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg></a>
-          <a href="#" class="social-icon"><svg
-              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-            </svg></a>
-          <a href="#" class="social-icon"><svg
-              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg></a>
+            <!-- Services Column -->
+            <div class="footer-column" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="footer-heading text-white font-black text-xl mb-4 relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-indigo-600">Our Services</h3>
+                <ul class="footer-links space-y-4">
+                    @if(isset($services) && $services->count() > 0)
+                        @foreach($services->take(4) as $s)
+                            <li><a href="{{ route('frontend.services.detail', $s->slug) }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> {{ $s->service_name }}</a></li>
+                        @endforeach
+                    @else
+                        <li><a href="{{ route('frontend.services') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> IT Solutions</a></li>
+                        <li><a href="{{ route('frontend.services') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> Real Estate</a></li>
+                        <li><a href="{{ route('frontend.services') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> HR Outsourcing</a></li>
+                        <li><a href="{{ route('frontend.services') }}" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600 scale-0 group-hover:scale-100 transition-transform"></span> Consultancy</a></li>
+                    @endif
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div class="footer-column" data-aos="fade-up" data-aos-delay="400">
+                <h3 class="footer-heading text-white font-black text-xl mb-4 relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-indigo-600">Contact Info</h3>
+                <ul class="contact-info-list space-y-6">
+                    <li class="flex gap-4 group">
+                        <div class="w-10 h-10 rounded-xl bg-gray-900 border border-white/5 flex items-center justify-center shrink-0 text-indigo-500 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300"><i class="fas fa-map-marker-alt"></i></div>
+                        <span class="text-gray-400 text-sm py-1 group-hover:text-gray-200 transition-colors">{{ $company->address ?? 'Karachi, Pakistan' }}</span>
+                    </li>
+                    <li class="flex gap-4 group">
+                        <div class="w-10 h-10 rounded-xl bg-gray-900 border border-white/5 flex items-center justify-center shrink-0 text-indigo-500 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300"><i class="fas fa-envelope"></i></div>
+                        <a href="mailto:{{ $company->email ?? 'info@example.com' }}" class="text-gray-400 hover:text-gray-200 transition-all duration-300 text-sm py-1">{{ $company->email ?? 'info@example.com' }}</a>
+                    </li>
+                    <li class="flex gap-4 group">
+                        <div class="w-10 h-10 rounded-xl bg-gray-900 border border-white/5 flex items-center justify-center shrink-0 text-indigo-500 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300"><i class="fas fa-phone-alt"></i></div>
+                        <a href="tel:{{ $company->phone ?? '+923001234567' }}" class="text-gray-400 hover:text-gray-200 transition-all duration-300 text-sm py-1">{{ $company->phone ?? '+92 300 1234567' }}</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
-      </div>
-
-      <div>
-        <h3>Company</h3>
-        <ul>
-          <li><a href="{{ route('home') }}">Home</a></li>
-          <li><a href="{{ route('frontend.about') }}">About Us</a></li>
-          <li><a href="{{ route('frontend.products') }}">Products</a></li>
-          <li><a href="{{ route('frontend.sale') }}">Sale</a></li>
-          <li><a href="{{ route('frontend.services') }}">Services</a></li>
-          <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h3>Services</h3>
-        <ul>
-          @if(isset($services) && $services->count() > 0)
-            @foreach($services->take(5) as $s)
-              <li><a href="{{ route('frontend.services.detail', $s->slug) }}">{{ $s->service_name }}</a></li>
-            @endforeach
-          @else
-            <li><a href="{{ route('frontend.services') }}">IT Solutions</a></li>
-            <li><a href="{{ route('frontend.services') }}">Real Estate Services</a></li>
-            <li><a href="{{ route('frontend.services') }}">HR Outsourcing</a></li>
-            <li><a href="{{ route('frontend.services') }}">Consultancy</a></li>
-          @endif
-        </ul>
-      </div>
-
-      <div>
-        <h3>Contact</h3>
-        <p class="footer-contact-info">
-          <span><b>Address:</b> {{ $company->address ?? 'Karachi, Pakistan' }}</span>
-          <span><b>Email:</b> {{ $company->email ?? 'info@example.com' }}</span>
-          <span><b>Phone:</b> {{ $company->phone ?? '+92 300 1234567' }}</span>
-        </p>
-      </div>
-
     </div>
 
-    <div class="copyright">
-      © {{ now()->year }} {{ $company->company_name ?? config('app.name') }} — All rights reserved | <a href="#">Privacy
-        Policy</a> | <a href="#">Terms of Use</a> | Powered by <a href="https://nexertechsolutions.com" target="_blank"
-        style="color: var(--accent-1); font-weight: 600;">Nexer Tech Solutions</a>
+    <!-- Bottom Copyright Bar -->
+    <div class="footer-bottom py-8 border-t border-white/5 bg-black">
+        <div class="container-custom">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="copyright-year text-gray-500 text-sm">
+                    © {{ now()->year }} <span class="font-bold text-gray-300">{{ $company->company_name ?? config('app.name') }}</span> — All rights reserved.
+                </div>
+                <div class="footer-legal-links flex gap-8 text-sm text-gray-500">
+                    <a href="#" class="hover:text-white transition-all duration-300 underline underline-offset-4 decoration-indigo-600/30">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-all duration-300 underline underline-offset-4 decoration-indigo-600/30">Terms of Use</a>
+                </div>
+                <div class="powered-by text-sm text-gray-500 flex items-center gap-2">
+                    Crafted with <i class="fas fa-heart text-red-600 animate-pulse"></i> by 
+                    <a href="https://nexertechsolutions.com" target="_blank" class="font-black text-indigo-500 hover:text-indigo-400 hover:scale-105 transition-all">Nexer Tech Solutions</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </footer>
