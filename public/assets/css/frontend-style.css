@@ -13,7 +13,7 @@
 }
 
 * {
-    margin: 0;
+    margin: 2px;
     padding: 0;
     box-sizing: border-box;
 }
@@ -1015,10 +1015,13 @@ main {
 }
 
 .site-footer .container {
-    width: 100%;            /* span full width */
-    max-width: 1400px;      /* keep same max as other sections */
+    width: 100%;
+    /* span full width */
+    max-width: 1400px;
+    /* keep same max as other sections */
     margin: 0 auto;
-    padding: 3rem 1.5rem;   /* match .container-custom side padding */
+    padding: 3rem 1.5rem;
+    /* match .container-custom side padding */
 }
 
 .site-footer h3 {
@@ -1337,7 +1340,8 @@ input[type=number] {
 }
 
 .blog-image {
-    height: 200px; /* smaller, consistent height */
+    height: 200px;
+    /* smaller, consistent height */
     background: #e2e8f0;
     overflow: hidden;
 }
@@ -1587,7 +1591,7 @@ input[type=number] {
     color: #94a3b8;
     position: relative;
     overflow: hidden;
-    padding-top: 1.5rem !important;
+    padding-top: 2.5rem !important;
 }
 
 .footer-heading {
