@@ -12,7 +12,7 @@
                 <p class="footer-about text-gray-400 mb-2 leading-relaxed text-sm">
                     {{ config('app.name') }} is a premier brand dedicated to textile excellence, delivering premium quality fabrics and garments with a commitment to innovation and craftsmanship.
                 </p>
-                <div class="social-links-modern flex gap-4">
+                <div class="social-links-modern flex gap-4 mt-6 mb-4">
                     <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-indigo-600 transition-all duration-300 shadow-lg"><i class="fab fa-facebook-f text-white group-hover:scale-110"></i></a>
                     <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-sky-500 transition-all duration-300 shadow-lg"><i class="fab fa-twitter text-white group-hover:scale-110"></i></a>
                     <a href="#" class="social-icon-modern group w-10 h-10 rounded-full bg-gray-900 border border-white/5 flex items-center justify-center hover:bg-pink-600 transition-all duration-300 shadow-lg"><i class="fab fa-instagram text-white group-hover:scale-110"></i></a>

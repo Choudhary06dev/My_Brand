@@ -1,20 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-<style>
-  .blog-link,
-  .read-more-btn {
-    color: #2563eb !important;
-    /* Blue color */
-    font-weight: 600;
-  }
 
-  .blog-link:hover,
-  .read-more-btn:hover {
-    color: #1d4ed8 !important;
-    text-decoration: underline;
-  }
-</style>
 
 <!-- HERO SLIDER -->
 <section class="hero-slider">
